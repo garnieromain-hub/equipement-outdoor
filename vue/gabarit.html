@@ -348,8 +348,14 @@ function rendreManques() {
 
 /* Mes équipements : ce que je possède, rangé selon le premier rôle de chaque objet */
 function mesEquipements() { return D.objets.filter(o => POSSEDES.includes(o.statut)); }
+// Rangés par groupe seulement (Haut, Bas, Accessoires…), sans distinction d'univers.
+function parGroupe(elements, cle, rendu) {
+  const paquets = {}, ordre = [...new Set(D.roles.map(r => r.groupe))];
+  elements.forEach(x => { const r = ROLE[cle(x)]; if (r) (paquets[r.groupe] ||= []).push(x); });
+  return ordre.filter(g => paquets[g]).map(g => `<h2 class="univers">${GROUPES[g] || g}</h2>${rendu(paquets[g])}`).join("");
+}
 function rendreEquipements() {
-  $("#i-liste").innerHTML = parUnivers(mesEquipements(), o => o.roles[0], (liste, g) => carte(g, liste.map(o => {
+  $("#i-liste").innerHTML = parGroupe(mesEquipements(), o => o.roles[0], liste => `<div class="carte">${liste.map(o => {
     const details = [plage(o), o.poids_g != null ? `${o.poids_g} g` : "", (o.activites || []).join(", "),
       o.roles.map(r => ROLE[r]?.libelle || r).join(", "),
       ...Object.entries(o.roles_par_activite || {}).map(([act, rs]) => `en ${act} : ${rs.map(r => ROLE[r]?.libelle || r).join(", ")}`)].filter(Boolean).join(" · ");
@@ -357,7 +363,7 @@ function rendreEquipements() {
       <div class="sous">${esc(details)}</div>${o.notes ? `<div class="sous">${esc(o.notes)}</div>` : ""}</div>
       <div class="droite">${o.statut === "a-confirmer" ? `<span class="pastille prevu">À confirmer</span>` : ""}
         ${EDITION ? `<button class="btn petit" data-modifier="${esc(o.id)}">Modifier</button>` : ""}</div></div>`;
-  }).join(""))) || `<p class="vide">Aucun équipement.</p>`;
+  }).join("")}</div>`) || `<p class="vide">Aucun équipement.</p>`;
 }
 $("#i-export").onclick = () => {
   const cols = ["id", "nom", "marque", "modele", "univers", "groupe", "saison", "roles", "activites", "temp_min", "temp_max", "impermeable", "poids_g", "statut", "lien", "notes"];
