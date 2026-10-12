@@ -19,39 +19,39 @@
   marque: Petzl
   modele: NAO+ Reactive Lighting
   roles: [frontale]
-  activites: [trail, rando, bikepacking]
+  activites: [trail, bikepacking, rando]
   temp_min: null
   temp_max: null
   impermeable: false
   poids_g: 185
   statut: possede
   lien: https://www.running-conseil.com/petzl-lampe-frontale-naor-reactive-lighting-3342540105911.html
-  notes: "750 lm (réactif : 320 lm pendant 15 h, 750 lm pendant 6 h 30). Batterie Li-ion 3100 mAh, recharge micro-USB (6 à 8 h), IPX4, Bluetooth (app MyPetzl Light). Pour les sorties engagées de nuit."
+  notes: "Pour les sorties engagées de nuit avec besoin d'autonomie"
 
 - id: frontale-black-diamond-cosmo
   nom: Frontale Black Diamond Cosmo
   marque: Black Diamond
   modele: Cosmo
   roles: [frontale]
-  activites: [trail, rando, bikepacking]
+  activites: [rando, bikepacking]
   temp_min: null
   temp_max: null
   impermeable: false
   poids_g: 88
   statut: possede
   lien: https://www.snowleader.com/cosmo-black-1-BLAD03129.html
-  notes: "3 piles AAA (ou batterie BD 1500 vendue à part), jusqu’à 200 h, étanche, LED rouge. Légère : frontale de secours ou de bivouac."
+  notes: "Réservée à la rando et au bivouac, ou en secours ; en trail, la NAO+."
 
 - id: montre-suunto-9-baro
   nom: Montre GPS Suunto 9 Baro
   marque: Suunto
   modele: "9 Baro Black"
   roles: [gps]
-  activites: [trail, rando, gravel, bikepacking]
+  activites: [trail, rando]
   temp_min: null
   temp_max: null
   impermeable: false
   poids_g: null
   statut: possede
   lien: https://www.suunto.com/fr-fr/Produits/Montres-de-sport/suunto-9-baro2/suunto-9-baro-black/
-  notes: "Altimètre barométrique (FusedAlti), alarme tempête. GPS : 40 h en mode Endurance (50 h avec ceinture cardio), plus en mode Tour. Itinéraires préparés dans l’app Suunto ou komoot."
+  notes: "Altimètre barométrique, alarme tempête. GPS : 40 h en mode Endurance."

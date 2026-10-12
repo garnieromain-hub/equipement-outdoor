@@ -213,14 +213,14 @@
 - id: batons-black-diamond-distance-z
   nom: Bâtons Black Diamond Distance Z
   marque: Black Diamond
-  modele: Distance Z Pewter
+  modele: Distance Z Pewter, 120 cm
   roles: [batons]
   activites: [trail, rando]
   saison: toutes-saisons
   temp_min: null
   temp_max: null
   impermeable: false
-  poids_g: null
+  poids_g: 344
   statut: possede
   lien: https://www.snowleader.com/distance-z-pewter-BLAD01961.html
-  notes: "Aluminium, pliables en 3 brins, longueur fixe, poignée mousse, pointe carbure. Longueur à préciser : 100 à 130 cm, 158 à 179 g par bâton selon la taille."
+  notes: "Aluminium, pliables en 3 brins (40 cm repliés), longueur fixe 120 cm, poignée mousse, pointe carbure. Poids de la paire (172 g par bâton)."

@@ -35,7 +35,6 @@ en-action:
     chaussures-velo: Chaussures vélo
     chaussures-trail: Chaussures de trail
     casquette: Casquette ou visière
-    batons: Bâtons
     lunettes: Lunettes
     gants-ete: Gants courts
     gants-mi-saison: Gants longs légers
@@ -81,6 +80,7 @@ en-action:
     sac-etanche: Pochette étanche (téléphone, papiers)
     sifflet: Sifflet
     antivol: Antivol
+    batons: Bâtons
 
 hors-action:
   haut:
