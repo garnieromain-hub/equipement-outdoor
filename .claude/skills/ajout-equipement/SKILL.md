@@ -5,6 +5,16 @@ description: Ajoute ou met à jour un objet dans l'inventaire à partir d'un doc
 
 # Ajout d'équipement
 
+## Objets à compléter
+
+Quand Romain clique sur « Acheté » dans l'application, l'objet entre dans l'inventaire avec
+`a_completer: true`, un `lien` ou une « Référence : … » dans `notes`, et un nom provisoire.
+Quand il demande de compléter ses équipements (« complète mes équipements », « j'ai acheté
+des trucs »), traiter chacun de ces objets avec les étapes ci-dessous : lire la fiche,
+renseigner nom, marque, modèle, caractéristiques, vérifier rôles, activités et saison,
+puis retirer `a_completer`. Garder l'`id` s'il est déjà utilisé ailleurs, sinon le renommer
+d'après le modèle (kebab-case).
+
 ## Étapes
 
 1. Lire la source (document de `documents/a-traiter/`, lien, ou message).
