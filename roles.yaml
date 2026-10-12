@@ -1,0 +1,100 @@
+# Vocabulaire commun des rôles. Un objet remplit un ou plusieurs rôles,
+# une activité réclame des rôles. Ajouter ici avant d'utiliser un nouveau rôle.
+#
+# Deux univers, nommés par chaque activité (champ `univers` de activites/*.yaml) :
+# - en-action : ce qu'on porte et emporte pendant l'effort (gravel : « On bike »)
+# - hors-action : la rechange et les nuits, dès 2 jours (gravel : « Off bike »)
+# Les vêtements sont rangés en haut / bas / accessoires.
+# Les rôles sont génériques : c'est le champ `activites` de chaque objet qui dit
+# s'il sert en gravel, en trail… (un maillot vélo et un t-shirt de trail remplissent
+# tous deux `maillot-court`).
+
+en-action:
+  haut:
+    sous-maillot-court: Sous-couche manches courtes
+    sous-maillot-long: Sous-couche manches longues
+    maillot-court: Maillot ou t-shirt manches courtes
+    maillot-long: Maillot ou haut manches longues
+    manchettes: Manchettes amovibles
+    gilet-coupe-vent: Gilet coupe-vent sans manches
+    coupe-vent: Veste coupe-vent compressible
+    veste-pluie: Veste imperméable
+    doudoune-legere: Isolant léger pour les pauses
+
+  bas:
+    cuissard-court: Cuissard court
+    short-course: Short ou cuissard de course à pied
+    collant-long: Collant / cuissard long
+    collant-thermique: Collant long thermique
+    jambieres: Jambières ou genouillères amovibles
+    surpantalon-pluie: Surpantalon imperméable
+
+  accessoires:
+    casque: Casque
+    chaussures-velo: Chaussures vélo
+    chaussures-trail: Chaussures de trail
+    casquette: Casquette ou visière
+    batons: Bâtons
+    lunettes: Lunettes
+    gants-ete: Gants courts
+    gants-mi-saison: Gants longs légers
+    gants-hiver: Gants hiver
+    sur-gants-pluie: Sur-gants ou gants imperméables
+    sous-casque: Sous-casque ou bonnet fin
+    tour-de-cou: Buff / tour de cou
+    cagoule: Cagoule
+    chaussettes-ete: Chaussettes fines
+    chaussettes-hiver: Chaussettes mérinos épaisses
+    couvre-chaussures: Couvre-chaussures
+    chaussettes-impermeables: Chaussettes imperméables
+
+  portage:
+    sac-hydratation: Sac ou gilet d'hydratation
+
+  reparation:
+    reparation-tubeless: Mèches et outil tubeless
+    pompe: Pompe
+    chambre-secours: Chambre à air de secours
+    demonte-pneus: Démonte-pneus
+    multi-outil: Multi-outil avec dérive-chaîne
+    attache-rapide: Attache rapide de chaîne
+    patte-derailleur: Patte de dérailleur de rechange
+
+  navigation-energie:
+    gps: GPS ou compteur
+    telephone: Téléphone
+    batterie-externe: Batterie externe et câble
+    eclairage-avant: Éclairage avant
+    eclairage-arriere: Éclairage arrière
+    frontale: Lampe frontale
+
+  ravitaillement:
+    bidons: Bidons
+    flasques: Flasques souples
+    nourriture: Barres, gels, solide
+    electrolytes: Électrolytes
+
+  securite:
+    trousse-secours: Mini trousse de secours
+    couverture-survie: Couverture de survie
+    papiers-argent: Papiers, carte bancaire, liquide
+    sac-etanche: Pochette étanche (téléphone, papiers)
+    sifflet: Sifflet
+
+hors-action:
+  haut:
+    haut-rechange: Haut de rechange (soir, après l'effort)
+
+  bas:
+    bas-rechange: Bas de rechange (pantalon ou short)
+
+  accessoires:
+    chaussures-rechange: Chaussures légères pour le soir
+
+  nuit-refuge:
+    drap-sac: Drap de sac (refuge)
+
+  bivouac:
+    duvet: Sac de couchage
+    matelas: Matelas
+    abri: Tente, bivy ou tarp

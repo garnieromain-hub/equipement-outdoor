@@ -1,0 +1,74 @@
+activite: trail
+description: >
+  Trail à la journée ou en itinérance (plusieurs jours, nuits en refuge ou en bivouac).
+  Première version à valider : listes et seuils proposés par Claude.
+
+univers:
+  en-action: En course
+  hors-action: Après
+
+parametres:
+  vitesse:
+    methode: km-effort   # durée = (km + D+ / 100) / km_effort_h
+    km_effort_h: null    # à renseigner (ton allure habituelle en km-effort par heure)
+  pluie_proba_min: 40
+  pluie_mm_min: 1
+
+base:
+  - chaussures-trail
+  - sac-hydratation
+  - flasques
+  - coupe-vent
+  - lunettes
+  - telephone
+  - couverture-survie
+  - sifflet
+  - nourriture
+  - papiers-argent
+
+# Le trail chauffe plus que le vélo (pas de vent relatif) : seuil plus bas.
+temperature:
+  seuil: 10
+  chaud:
+    ajouter: [short-course, maillot-court, chaussettes-ete, casquette, electrolytes]
+    renfort:
+      nom: mi-saison
+      condition: "temp_min <= 14"
+      ajouter: [manchettes, gants-ete]
+  froid:
+    ajouter: [collant-long, maillot-long, gants-mi-saison, tour-de-cou, sous-casque, chaussettes-hiver]
+    renfort:
+      nom: grand froid
+      condition: "temp_min <= 2"
+      ajouter: [gants-hiver, collant-thermique, doudoune-legere]
+      retirer: [gants-mi-saison, collant-long]
+
+modules:
+  pluie:
+    condition: "risque de pluie"
+    declencheur: { pluie: true }
+    ajouter: [veste-pluie, sur-gants-pluie, sac-etanche]
+  longue-sortie:
+    condition: "plus de 3 h"
+    declencheur: { duree_h: 3 }
+    ajouter: [batterie-externe, trousse-secours, frontale]
+  montagne:
+    condition: "point haut au-dessus de 1 500 m ou plus de 1 000 m de D+"
+    declencheur: { altitude_m: 1500, denivele_m: 1000 }
+    ajouter: [veste-pluie, batons, doudoune-legere, gants-mi-saison, trousse-secours]
+  nuit:
+    condition: "départ ou retour de nuit"
+    declencheur: { nuit: true }
+    ajouter: [frontale]
+  itinerance:
+    condition: "au moins 2 jours (une nuit) : la tenue « Après » apparaît"
+    declencheur: { jours: 2 }
+    ajouter: [haut-rechange, bas-rechange, chaussures-rechange, batterie-externe, trousse-secours, frontale, doudoune-legere]
+  refuge:
+    condition: "nuit en refuge"
+    declencheur: { hebergement: refuge }
+    ajouter: [drap-sac]
+  bivouac:
+    condition: "nuit en bivouac"
+    declencheur: { hebergement: bivouac }
+    ajouter: [duvet, matelas, abri]

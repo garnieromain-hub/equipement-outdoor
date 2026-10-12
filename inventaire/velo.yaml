@@ -1,0 +1,16 @@
+# Même modèle d'objet que vetements.yaml.
+
+- id: chaussures-fizik-terra-powerstrap-x4
+  nom: Chaussures gravel Fizik Terra Powerstrap X4
+  marque: Fizik
+  modele: Terra Powerstrap X4 noir
+  roles: [chaussures-velo]
+  activites: [gravel, bikepacking]
+  saison: toutes-saisons
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: 292
+  statut: possede
+  lien: https://www.alltricks.fr/F-10006-chaussures-velo/P-1233413-paire_de_chaussures_gravel_fizik_terra_powerstrap_x4_noir
+  notes: "Poids fabricant pour une chaussure en 42. Fermeture velcro Powerstrap 2 sangles, semelle nylon X4 rigidité 6 avec crampons caoutchouc. Pointure 41, cales SPD."

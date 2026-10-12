@@ -1,0 +1,72 @@
+activite: gravel
+description: Sorties gravel à la journée. Le bikepacking viendra en activité séparée.
+
+# Libellés des deux univers de roles.yaml pour cette activité
+univers:
+  en-action: On bike
+  hors-action: Off bike
+
+# Réglages partagés par la page (vue/) et la skill checklist-sortie
+parametres:
+  vitesse:               # estimation de durée depuis une trace GPX
+    methode: velo        # durée = km / plat_kmh + D+ / montee_m_h
+    plat_kmh: 18
+    montee_m_h: 600
+  pluie_proba_min: 40    # % : au-delà, module pluie
+  pluie_mm_min: 1        # mm cumulés sur le créneau : au-delà, module pluie
+
+# Toujours emporté, quelle que soit la température
+base:
+  - casque
+  - chaussures-velo
+  - gilet-coupe-vent
+  - lunettes
+  - reparation-tubeless
+  - pompe
+  - chambre-secours
+  - demonte-pneus
+  - multi-outil
+  - attache-rapide
+  - telephone
+  - bidons
+  - nourriture
+  - papiers-argent
+
+# Bascule chaud / froid, décidée par la température ressentie la plus basse prévue
+# sur la sortie (départ matinal, descente, vent, altitude).
+# Les vêtements portent un tag saison (chaud, froid, toutes-saisons) assorti.
+temperature:
+  seuil: 12            # ressenti le plus bas > seuil : chaud, sinon : froid
+  chaud:
+    ajouter: [cuissard-court, maillot-court, sous-maillot-court, gants-ete, chaussettes-ete, electrolytes]
+    renfort:
+      nom: mi-saison
+      condition: "temp_min <= 16"
+      ajouter: [manchettes, jambieres]
+  froid:
+    ajouter: [sous-maillot-long, maillot-long, collant-long, coupe-vent, gants-mi-saison, tour-de-cou, sous-casque, chaussettes-hiver]
+    renfort:
+      nom: grand froid
+      condition: "temp_min <= 5"
+      ajouter: [collant-thermique, gants-hiver, cagoule, couvre-chaussures, doudoune-legere]
+      retirer: [collant-long, gants-mi-saison, sous-casque]
+
+# Modules : activés en plus de la température quand leur déclencheur est rempli.
+# Déclencheurs possibles : pluie, nuit, duree_h, jours, altitude_m, denivele_m, hebergement.
+modules:
+  pluie:
+    condition: "risque de pluie"
+    declencheur: { pluie: true }
+    ajouter: [veste-pluie, sur-gants-pluie, sac-etanche, couvre-chaussures]
+  longue-sortie:
+    condition: "plus de 4 h ou loin de tout"
+    declencheur: { duree_h: 4 }
+    ajouter: [batterie-externe, patte-derailleur, trousse-secours, couverture-survie, gps]
+  itinerance:
+    condition: "au moins 2 jours (une nuit) : la tenue off bike apparaît"
+    declencheur: { jours: 2 }
+    ajouter: [haut-rechange, bas-rechange, chaussures-rechange, batterie-externe, trousse-secours]
+  nuit:
+    condition: "départ ou retour de nuit, ou tombée du jour possible"
+    declencheur: { nuit: true }
+    ajouter: [eclairage-avant, eclairage-arriere]

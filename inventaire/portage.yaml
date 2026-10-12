@@ -1,0 +1,13 @@
+# Sacs et gilets. Même modèle d'objet que vetements.yaml (sans tag saison).
+
+- id: sac-salomon-sense-pro-10
+  nom: Gilet d'hydratation Salomon Sense Pro 10
+  marque: Salomon
+  modele: Sense Pro 10 Race Flag Set
+  roles: [sac-hydratation, flasques, sifflet]
+  activites: [trail]
+  impermeable: false
+  poids_g: 165
+  statut: possede
+  lien: https://www.i-run.fr/accessoires/Sac-hydratation-Gourde_c1008/Salomon_m96/Salomon-Sense-Pro-10-Race-Flag-Set_Salomon_fiche_126072.html
+  notes: "10 L. 165 g nu, 249 g avec accessoires. 2 flasques souples de 500 ml et sifflet inclus. Sangles porte-bâtons. Compatibilité poche à eau non précisée."

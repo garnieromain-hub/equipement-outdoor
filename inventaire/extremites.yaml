@@ -1,0 +1,121 @@
+# Gants, tête, pieds, lunettes. Même modèle que vetements.yaml.
+
+- id: chaussettes-gobik-pure
+  nom: Chaussettes Gobik Pure
+  marque: Gobik
+  modele: Pure Unisex Black
+  roles: [chaussettes-ete]
+  activites: [gravel, bikepacking]
+  saison: chaud
+  temp_min: 15
+  temp_max: 30
+  impermeable: false
+  poids_g: 40
+  statut: possede
+  lien: https://gobik.com/fr/products/socks-pure-unisex-black
+  notes: "Plage et poids fabricant (taille M). Polyamide Meryl Skinlife aux ions d'argent, tige 17-18 cm, UPF 40."
+
+- id: chaussettes-van-rysel-900
+  nom: Chaussettes vélo Van Rysel 900
+  marque: Van Rysel
+  modele: Chaussettes vélo 900 noir fumé
+  roles: [chaussettes-ete]
+  activites: [gravel, bikepacking]
+  saison: chaud
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: null
+  statut: possede
+  lien: https://www.decathlon.fr/p/chaussettes-velo-900/330704/c382m8615610
+  notes: "Fines et respirantes, tige jusqu'à la base du mollet. Ni plage de température ni composition sur la fiche."
+
+- id: gants-ete-van-rysel-900
+  nom: Gants vélo Van Rysel 900
+  marque: Van Rysel
+  modele: Gants de vélo 900
+  roles: [gants-ete]
+  activites: [gravel, bikepacking]
+  saison: chaud
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: null
+  statut: possede
+  lien: https://www.decathlon.fr/p/gants-de-velo-900-blanc/356209/c183m8901066
+  notes: "Gants courts pour l'été : inserts gel sur la paume, dos en mesh, velcro au poignet, ergots pour les retirer. Couleur noire."
+
+- id: tour-de-cou-buff-tissu
+  nom: Buff en tissu
+  marque: null
+  modele: null
+  roles: [tour-de-cou]
+  activites: [gravel, bikepacking, trail, rando]
+  saison: toutes-saisons
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: null
+  statut: possede
+  lien: null
+  notes: "Buff classique en tissu."
+
+- id: chaussures-nnormal-tomir-02
+  nom: Chaussures de trail NNormal Tomir 02
+  marque: NNormal
+  modele: Tomir 02 Brown
+  roles: [chaussures-trail]
+  activites: [trail, rando]
+  saison: toutes-saisons
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: 264
+  statut: possede
+  lien: https://www.nnormal.com/fr_FR/homme/chaussures/tmi/nnormal-tomir_02_shoe_brown-N2ZTR25-008
+  notes: "Poids fabricant en UK 8.5. Drop 8 mm, stack 25/33 mm, semelle Vibram Megagrip Litebase, crampons 5 mm. Pour sorties longues et techniques. Pas de membrane mentionnée."
+
+- id: chaussettes-salomon-pulse-race-flag
+  nom: Chaussettes Salomon Pulse Race Flag Crew
+  marque: Salomon
+  modele: Pulse Race Flag Crew
+  roles: [chaussettes-ete]
+  activites: [trail]
+  saison: chaud
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: 19
+  statut: possede
+  lien: https://www.salomon.com/fr-fr/product/pulse-race-flag-crew-lc15254/LC2910100
+  notes: "Poids unitaire fabricant. Nylon très fin, pour courses courtes à moyennes. Blanc."
+
+- id: casquette-ciele
+  nom: Casquette Ciele
+  marque: Ciele
+  modele: null
+  roles: [casquette]
+  activites: [trail]
+  saison: chaud
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: null
+  statut: possede
+  lien: null
+  notes: "Modèle à préciser."
+
+- id: bonnet-icebreaker-merino
+  nom: Bonnet mérinos Icebreaker
+  marque: Icebreaker
+  modele: null
+  roles: [sous-casque]
+  activites: [trail, rando]
+  saison: froid
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: null
+  statut: possede
+  lien: null
+  notes: "Bonnet en mérinos. Modèle à préciser."

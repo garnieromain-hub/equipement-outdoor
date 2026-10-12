@@ -1,0 +1,19 @@
+- id: kit-tubeless
+  nom: Kit réparation tubeless
+  marque: null
+  modele: null
+  roles: [reparation-tubeless]
+  activites: [gravel, bikepacking]
+  poids_g: null
+  statut: possede
+  notes: "Kit constitué maison. Détailler le contenu (mèches, outil, préventif)."
+
+- id: pompe-gravel
+  nom: Pompe gravel
+  marque: null
+  modele: null
+  roles: [pompe]
+  activites: [gravel, bikepacking]
+  poids_g: null
+  statut: possede
+  notes: "Mode haut volume, flexible déporté. Choisie plutôt que le CO2. Préciser le modèle."
