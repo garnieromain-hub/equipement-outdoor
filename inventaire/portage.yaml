@@ -11,3 +11,39 @@
   statut: possede
   lien: https://www.i-run.fr/accessoires/Sac-hydratation-Gourde_c1008/Salomon_m96/Salomon-Sense-Pro-10-Race-Flag-Set_Salomon_fiche_126072.html
   notes: "10 L. 165 g nu, 249 g avec accessoires. 2 flasques souples de 500 ml et sifflet inclus. Sangles porte-bâtons. Compatibilité poche à eau non précisée."
+
+- id: sacoche-cadre-restrap-large
+  nom: Sacoche de cadre Restrap Large
+  marque: Restrap
+  modele: Frame Bag Large 4,5 L
+  roles: [sacoche-cadre]
+  activites: [gravel, bikepacking]
+  impermeable: false
+  poids_g: 238
+  statut: possede
+  lien: https://eu.restrap.com/fr/collections/frame-bags/products/frame-bag-large
+  notes: "4,5 L. Matériaux étanches et zips YKK AquaGuard (sans indice d’imperméabilité). Fixation par sangles caoutchoutées, passage de câble dynamo."
+
+- id: sacoche-tube-restrap
+  nom: Sacoche de tube supérieur Restrap
+  marque: Restrap
+  modele: Top Tube Bag 0,8 L
+  roles: [sacoche-tube]
+  activites: [gravel, bikepacking]
+  impermeable: true
+  poids_g: 95
+  statut: possede
+  lien: https://eu.restrap.com/fr/collections/cockpit-bags/products/top-tube-bag
+  notes: "0,8 L. Nylon annoncé 100 % imperméable, zip YKK AquaGuard. Fixation sur le jeu de direction."
+
+- id: sacoche-selle-topeak-backloader
+  nom: Sacoche de selle Topeak BackLoader
+  marque: Topeak
+  modele: BackLoader
+  roles: [sacoche-selle]
+  activites: [gravel, bikepacking]
+  impermeable: false
+  poids_g: null
+  statut: possede
+  lien: https://www.topeak.com/global/en/product/969-BACKLOADER
+  notes: "Volume à préciser (6, 10 ou 15 L ; 413 à 565 g selon version et couleur). Sac intérieur étanche 10 000 mm inclus. Fixation rails de selle et tige, charge maxi 5 kg."

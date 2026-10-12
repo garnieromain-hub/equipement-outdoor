@@ -19,6 +19,7 @@ parametres:
 base:
   - casque
   - chaussures-velo
+  - sacoche-tube
   - lunettes
   - reparation-tubeless
   - pompe
@@ -65,7 +66,7 @@ modules:
   itinerance:
     condition: "au moins 2 jours (une nuit) : la tenue off bike apparaît"
     declencheur: { jours: 2 }
-    ajouter: [haut-rechange, bas-rechange, chaussures-rechange, batterie-externe, trousse-secours]
+    ajouter: [haut-rechange, bas-rechange, chaussures-rechange, batterie-externe, trousse-secours, sacoche-cadre, sacoche-selle]
   nuit:
     condition: "départ ou retour de nuit, ou tombée du jour possible"
     declencheur: { nuit: true }

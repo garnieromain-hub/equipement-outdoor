@@ -46,6 +46,9 @@ en-action:
 
   portage:
     sac-hydratation: Sac ou gilet d'hydratation
+    sacoche-tube: Sacoche de tube supérieur
+    sacoche-cadre: Sacoche de cadre
+    sacoche-selle: Sacoche de selle (bikepacking)
 
   reparation:            # affiché « Réparation et outils »
     reparation-tubeless: Mèches et outil tubeless

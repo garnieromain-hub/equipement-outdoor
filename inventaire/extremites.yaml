@@ -21,14 +21,14 @@
   modele: Chaussettes vélo 900 noir fumé
   roles: [chaussettes-ete]
   activites: [gravel, bikepacking]
-  saison: chaud
+  saison: froid
   temp_min: null
   temp_max: null
   impermeable: false
   poids_g: null
   statut: possede
   lien: https://www.decathlon.fr/p/chaussettes-velo-900/330704/c382m8615610
-  notes: "Fines et respirantes, tige jusqu'à la base du mollet. Ni plage de température ni composition sur la fiche."
+  notes: "Fines et respirantes pour l'hiver."
 
 - id: gants-ete-van-rysel-900
   nom: Gants vélo Van Rysel 900
