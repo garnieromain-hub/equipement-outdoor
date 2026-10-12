@@ -95,6 +95,8 @@ dialog::backdrop { background: rgba(0, 0, 0, .35); }
 #e-form, #a-form, #n-form { padding: 16px 18px; }
 #n-form h2, #a-form h2 { margin-top: 0; }
 #a-form label, #n-form label { display: flex; flex-direction: column; gap: 3px; font-size: 13px; color: var(--doux); }
+#n-form select { font: inherit; font-size: 14px; color: var(--texte); padding: 8px 10px; border: 1px solid var(--ligne);
+  border-radius: 8px; background: var(--fond); width: 100%; }
 #a-form input, #n-form input { font: inherit; font-size: 14px; color: var(--texte); padding: 8px 10px; border: 1px solid var(--ligne);
   border-radius: 8px; background: var(--fond); width: 100%; }
 #e-form h2 { margin-top: 0; }
@@ -191,6 +193,8 @@ dialog::backdrop { background: rgba(0, 0, 0, .35); }
     <h2 id="n-titre">Ajouter à ma liste</h2>
     <label>Nom<input name="nom" required autocomplete="off" placeholder="Gants hiver"></label>
     <label style="margin-top:10px">Modèle envisagé (facultatif)<input name="modele" autocomplete="off" placeholder="Nom du modèle ou lien internet"></label>
+    <label style="margin-top:10px">Pour<select name="role"></select></label>
+    <div class="sous">Deviné d'après le nom : c'est ce qui permet de retrouver l'objet dans « Ce qui manque encore » s'il est supprimé.</div>
     <div class="erreur" id="n-erreurs"></div>
     <div class="outils actions"><span class="espace"></span>
       <button type="button" class="btn" id="n-annuler">Annuler</button>
@@ -551,10 +555,39 @@ async function envoyer(methode, url, corps, zoneErreurs) {
 const idLibre = nom => { let id = slug(nom) || "objet", n = 2; const base = id; while (D.objets.some(o => o.id === id)) id = `${base}-${n++}`; return id; };
 
 // Ajouter à ma liste : un nom, un modèle envisagé facultatif (texte ou lien dont on lit le titre).
+// Rôle le plus probable pour un nom tapé : mots en commun avec le libellé et l'identifiant du rôle.
+const MOTS_VIDES = new Set(["de", "des", "du", "la", "le", "les", "ou", "et", "pour", "avec", "en", "un", "une", "a"]);
+// Quelques équivalences de vocabulaire (« gants chauds » = gants d'hiver).
+const SYNONYMES = { chaud: "hiver", chaude: "hiver", hivernal: "hiver", epai: "hiver", epaisse: "hiver" };
+const mots = t => norm(t).split(/[^a-z0-9]+/).filter(m => m.length > 1 && !MOTS_VIDES.has(m))
+  .map(m => m.replace(/s$/, "")).map(m => SYNONYMES[m] || m);
+// Un mot rare (« pantalon ») pèse plus qu'un mot présent dans plusieurs rôles (« soir »).
+function deviner(nom) {
+  const cherche = new Set(mots(nom)), motsRole = r => [...new Set([...mots(r.libelle), ...mots(r.id)])];
+  const frequence = {};
+  D.roles.forEach(r => motsRole(r).forEach(m => frequence[m] = (frequence[m] || 0) + 1));
+  let meilleur = null, score = 0;
+  for (const r of D.roles) {
+    const s = motsRole(r).filter(m => cherche.has(m)).reduce((t, m) => t + 1 / frequence[m], 0);
+    if (s > score) { meilleur = r.id; score = s; }
+  }
+  return meilleur;
+}
+function remplirRoles(choisi) {
+  const f = $("#n-form"), groupes = [...new Set(D.roles.map(r => r.groupe))];
+  f.role.innerHTML = `<option value="">— à classer (Claude choisira) —</option>` + groupes.map(g =>
+    `<optgroup label="${esc(GROUPES[g] || g)}">${D.roles.filter(r => r.groupe === g).map(r =>
+      `<option value="${r.id}"${r.id === choisi ? " selected" : ""}>${esc(r.libelle)}</option>`).join("")}</optgroup>`).join("");
+}
+$("#n-form").nom.addEventListener("input", e => { if (!$("#n-form").role.dataset.touche) remplirRoles(deviner(e.target.value)); });
+$("#n-form").role.addEventListener("change", e => { e.target.dataset.touche = "1"; });
 function listeOuvrir(id) {
   const f = $("#n-form"), o = D.objets.find(x => x.id === id);
   listeOuvrir.id = o ? id : null;
   f.reset(); $("#n-erreurs").textContent = "";
+  delete f.role.dataset.touche;
+  remplirRoles(o ? o.roles?.[0] : null);
+  if (o) f.role.dataset.touche = "1";
   $("#n-titre").textContent = o ? `Modèle envisagé : ${o.nom}` : "Ajouter à ma liste";
   $("#n-valider").textContent = o ? "Enregistrer" : "Ajouter";
   if (o) { f.nom.value = o.nom; f.modele.value = o.lien || o.modele || ""; }
@@ -572,19 +605,34 @@ $("#n-form").onsubmit = async e => {
     $("#n-erreurs").textContent = "Lecture du lien…";
     try { modele = (await (await fetch("/api/titre", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ url: lien }) })).json()).titre; } catch {}
   }
+  const classe = classement(f.role.value);
   const existant = D.objets.find(x => x.id === listeOuvrir.id);
   if (existant) {
     // Garde le titre déjà lu si le lien n'a pas changé.
     if (lien && lien === existant.lien && !modele) modele = existant.modele;
-    const objet = { ...existant, nom, modele, lien }, fichier = objet.fichier;
+    const objet = { ...existant, nom, modele, lien, ...classe.champs };
+    if (!classe.champs.saison) delete objet.saison;
+    const fichier = existant.fichier === "a-classer" || !f.role.value ? classe.fichier : existant.fichier;
     delete objet.fichier;
     if (await envoyer("PUT", `/api/objets/${encodeURIComponent(existant.id)}`, { objet, fichier }, $("#n-erreurs"))) $("#nouvel-achat").close();
     return;
   }
   const objet = { id: idLibre(nom), nom, marque: null, modele, roles: [], activites: [], temp_min: null, temp_max: null,
-    impermeable: false, poids_g: null, statut: "a-acheter", lien, notes: "" };
-  if (await envoyer("POST", "/api/objets", { objet, fichier: "a-classer" }, $("#n-erreurs"))) $("#nouvel-achat").close();
+    impermeable: false, poids_g: null, statut: "a-acheter", lien, notes: "", ...classe.champs };
+  if (await envoyer("POST", "/api/objets", { objet, fichier: classe.fichier }, $("#n-erreurs"))) $("#nouvel-achat").close();
 };
+// Rôle choisi → activités qui le réclament, saison déduite, fichier de sa catégorie.
+function classement(role) {
+  const r = ROLE[role];
+  if (!r) return { champs: { roles: [], activites: [] }, fichier: "a-classer" };
+  const activites = D.activites.filter(a => rolesActivite(a).includes(role));
+  const c = activites.flatMap(a => contextes(a, role));
+  const froid = c.some(x => /froid/.test(x)), chaud = c.some(x => x === "chaud" || x === "mi-saison");
+  const champs = { roles: [role], activites: (activites.length ? activites : D.activites).map(a => a.activite) };
+  if (VETEMENTS_GROUPES.includes(r.groupe)) champs.saison = froid && !chaud ? "froid" : chaud && !froid ? "chaud" : "toutes-saisons";
+  const voulu = FICHIER_PAR_GROUPE[r.groupe] || r.groupe;
+  return { champs, fichier: D.fichiers.includes(voulu) ? voulu : "a-classer" };
+}
 // Depuis « Ce qui manque encore » : ajoute le rôle à ma liste, déjà rattaché à l'activité.
 function ajouterAListe(role) {
   const r = ROLE[role], a = D.activites.find(x => x.activite === activiteManques), c = contextes(a, role);

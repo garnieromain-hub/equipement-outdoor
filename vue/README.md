@@ -15,7 +15,8 @@ puis ouvrir http://localhost:4567 (fermer la fenêtre du Terminal ou Ctrl+C pour
   (`- [x]`), donc Claude voit ce qui a été pris au moment du retour.
 - **À acheter** : « Ma liste » d'achats (objets à acheter ou envisagés), chacun avec Acheté et
   Supprimer ; « Ajouter un objet » demande un nom et un modèle envisagé facultatif (texte ou lien,
-  dont l'app essaie de lire le titre). Dessous, « Ce qui manque encore » par activité (Gravel / Trail),
+  dont l'app essaie de lire le titre ; rôle deviné d'après le nom, modifiable). Le nom est cliquable
+  pour changer le modèle envisagé. Dessous, « Ce qui manque encore » par activité (Gravel / Trail),
   avec « Ajouter à ma liste ».
 - **Mes équipements** : ce que je possède (statut possédé ou à confirmer), avec ajout et modification.
   Les modifications sont contrôlées (id en kebab-case et unique, rôles connus de `roles.yaml`,
