@@ -13,12 +13,10 @@ puis ouvrir http://localhost:4567 (fermer la fenêtre du Terminal ou Ctrl+C pour
 - **Mes sorties** : les checklists écrites par Claude (skill `checklist-sortie`) dans `sorties/`,
   la plus récente d'abord. On en ouvre une et on coche : chaque case est écrite dans le fichier
   (`- [x]`), donc Claude voit ce qui a été pris au moment du retour.
-- **À acheter** : par activité, uniquement les rôles qu'aucun objet possédé ne remplit, avec le
-  contexte où ils servent (toujours, froid, grand froid, pluie, itinérance…) et les objets
-  envisagés ou à acheter qui les combleront. « Ajouter un objet » (statut à acheter par défaut),
-  Un seul bouton « Acheté » par ligne : on donne la référence ou le lien, l'objet entre dans
-  Mes équipements marqué « à compléter » (`a_completer: true`) ; Claude lit ensuite la fiche et
-  le complète (skill `ajout-equipement`).
+- **À acheter** : « Ma liste » d'achats (objets à acheter ou envisagés), chacun avec Acheté et
+  Supprimer ; « Ajouter un objet » demande un nom et un modèle envisagé facultatif (texte ou lien,
+  dont l'app essaie de lire le titre). Dessous, « Ce qui manque encore » par activité (Gravel / Trail),
+  avec « Ajouter à ma liste ». « Ajouter un objet » (statut à acheter par défaut),
 - **Mes équipements** : ce que je possède (statut possédé ou à confirmer), avec ajout et modification.
   Les modifications sont contrôlées (id en kebab-case et unique, rôles connus de `roles.yaml`,
   statut valide, tag saison pour les vêtements) puis écrites dans `inventaire/*.yaml`.

@@ -91,8 +91,10 @@ module Donnees
     e << "id déjà utilisé : #{o['id']}" if autres_ids.include?(o["id"])
     e << "nom manquant" if o["nom"].to_s.strip.empty?
     tous_roles = Array(o["roles"]) + (o["roles_par_activite"] || {}).values.flatten
-    e << "au moins un rôle est nécessaire" if Array(o["roles"]).empty?
-    e << "coche au moins une activité (sinon l'objet n'apparaît dans aucune checklist)" if Array(o["activites"]).empty?
+    # Un objet de la liste d'achats, ou acheté mais pas encore complété par Claude, peut rester à classer.
+    a_classer = !%w[possede a-confirmer].include?(o["statut"]) || o["a_completer"]
+    e << "au moins un rôle est nécessaire" if Array(o["roles"]).empty? && !a_classer
+    e << "coche au moins une activité (sinon l'objet n'apparaît dans aucune checklist)" if Array(o["activites"]).empty? && !a_classer
     inconnus = tous_roles - groupe.keys
     e << "rôles absents de roles.yaml : #{inconnus.join(', ')}" unless inconnus.empty?
     e << "statut invalide : #{o['statut']}" unless STATUTS.include?(o["statut"])
@@ -195,6 +197,28 @@ module Donnees
     end
     File.write(f, lignes.join)
     []
+  end
+
+  # Titre d'une page produit (balise og:title ou title), au mieux : beaucoup de sites bloquent les robots.
+  def titre_page(url, redirections = 3)
+    require "net/http"
+    uri = URI(url)
+    return nil unless %w[http https].include?(uri.scheme)
+    rep = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https", open_timeout: 5, read_timeout: 6) do |http|
+      http.get(uri.request_uri, "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0 Safari/537.36",
+                                "Accept-Language" => "fr-FR,fr;q=0.9")
+    end
+    return titre_page(URI.join(url, rep["location"]).to_s, redirections - 1) if rep.is_a?(Net::HTTPRedirection) && redirections > 0
+    return nil unless rep.is_a?(Net::HTTPSuccess)
+    html = rep.body.to_s.force_encoding("UTF-8")
+    t = html[/<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']+)/i, 1] ||
+        html[/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:title/i, 1] || html[%r{<title[^>]*>([^<]+)</title>}i, 1]
+    return nil unless t
+    t = t.gsub("&amp;", "&").gsub("&#39;", "'").gsub("&quot;", '"').gsub(/&#(\d+);/) { [$1.to_i].pack("U") }.strip
+    t = t.split(/\s+[|–-]\s+/).first.strip if t.length > 60 || t.include?(" | ")
+    t.empty? || t.match?(/robot|captcha|access denied|forbidden/i) ? nil : t
+  rescue StandardError
+    nil
   end
 
   def nettoyer(o)

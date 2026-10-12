@@ -89,9 +89,10 @@ h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: v
 dialog { border: 1px solid var(--ligne); border-radius: 14px; padding: 0; width: min(720px, calc(100vw - 32px));
   max-height: calc(100vh - 32px); background: var(--carte); color: var(--texte); }
 dialog::backdrop { background: rgba(0, 0, 0, .35); }
-#e-form, #a-form { padding: 16px 18px; }
-#a-form label { display: flex; flex-direction: column; gap: 3px; font-size: 13px; color: var(--doux); }
-#a-form input { font: inherit; font-size: 14px; color: var(--texte); padding: 8px 10px; border: 1px solid var(--ligne);
+#e-form, #a-form, #n-form { padding: 16px 18px; }
+#n-form h2, #a-form h2 { margin-top: 0; }
+#a-form label, #n-form label { display: flex; flex-direction: column; gap: 3px; font-size: 13px; color: var(--doux); }
+#a-form input, #n-form input { font: inherit; font-size: 14px; color: var(--texte); padding: 8px 10px; border: 1px solid var(--ligne);
   border-radius: 8px; background: var(--fond); width: 100%; }
 #e-form h2 { margin-top: 0; }
 .champs { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
@@ -132,8 +133,7 @@ dialog::backdrop { background: rgba(0, 0, 0, .35); }
   </section>
 
   <section id="manques" hidden>
-    <div class="outils"><span id="m-activites" class="segments"></span><span class="espace"></span>
-      <button class="btn principal" id="m-ajouter" hidden>Ajouter un objet</button></div>
+    <div class="outils"><button class="btn principal" id="m-ajouter" hidden>Ajouter un objet</button></div>
     <div id="m-liste"></div>
   </section>
 
@@ -183,10 +183,22 @@ dialog::backdrop { background: rgba(0, 0, 0, .35); }
   </form>
 </dialog>
 
+<dialog id="nouvel-achat">
+  <form method="dialog" id="n-form">
+    <h2>Ajouter à ma liste</h2>
+    <label>Nom<input name="nom" required autocomplete="off" placeholder="Gants hiver"></label>
+    <label style="margin-top:10px">Modèle envisagé (facultatif)<input name="modele" autocomplete="off" placeholder="Nom du modèle ou lien internet"></label>
+    <div class="erreur" id="n-erreurs"></div>
+    <div class="outils actions"><span class="espace"></span>
+      <button type="button" class="btn" id="n-annuler">Annuler</button>
+      <button type="submit" class="btn principal">Ajouter</button></div>
+  </form>
+</dialog>
+
 <dialog id="achat">
   <form method="dialog" id="a-form">
     <h2 id="a-titre">Acheté</h2>
-    <label class="large">Référence ou lien<input name="reference" autocomplete="off" placeholder="https://… ou marque et modèle"></label>
+    <label class="large">Lien du produit (facultatif)<input name="reference" autocomplete="off" placeholder="https://…"></label>
     <div class="sous" style="margin-top:6px">L'objet rejoint Mes équipements, marqué « à compléter ». Demande ensuite à Claude
       de compléter tes équipements : il lit le lien et remplit la fiche.</div>
     <div class="erreur" id="a-erreurs"></div>
@@ -357,48 +369,48 @@ function rolesActivite(a) {
     ...Object.values(a.modules || {}).flatMap(m => m.ajouter || [])])];
 }
 
-/* À acheter : les rôles qu'aucun objet possédé ne remplit, et les achats prévus (même pour remplacer) */
+/* À acheter : ma liste d'achats (objets à acheter ou envisagés), puis ce qui manque encore par activité */
+const A_ACHETER = ["a-acheter", "envisage"];
+function maListe() { return D.objets.filter(o => A_ACHETER.includes(o.statut)); }
+// Rôles d'une activité qu'aucun objet (possédé ou prévu) ne remplit.
 function manquesDe(a) {
-  const prevus = D.objets.filter(o => !POSSEDES.includes(o.statut) && o.statut !== "reforme" && (o.activites || []).includes(a.activite))
-    .flatMap(o => rolesObjet(o, a.activite));
-  return [...new Set([...rolesActivite(a), ...prevus])].filter(r => ROLE[r] &&
-    (!objetsPour(r, a.activite).some(o => POSSEDES.includes(o.statut)) || prevus.includes(r)));
+  return rolesActivite(a).filter(r => ROLE[r] && !objetsPour(r, a.activite).length);
 }
 let activiteManques = stocker.lire("activite-manques", null);
+const domaine = u => { try { return new URL(u).hostname.replace(/^www\./, ""); } catch { return u; } };
 function rendreManques() {
+  const liste = maListe();
+  const lignes = liste.map(o => `<div class="ligne"><div class="corps">
+      <div class="titre">${esc(o.nom)}</div>
+      <div class="sous">${[o.modele ? esc(o.modele) : "", o.lien ? `<a href="${esc(o.lien)}" target="_blank" rel="noopener">${esc(domaine(o.lien))}</a>` : ""].filter(Boolean).join(" · ") || "modèle à choisir"}</div></div>
+    ${EDITION ? `<div class="boutons"><button class="btn petit principal" data-achete-objet="${esc(o.id)}">Acheté</button>
+      <button class="btn petit danger" data-supprimer="${esc(o.id)}">Supprimer</button></div>` : ""}</div>`).join("");
   if (!D.activites.some(a => a.activite === activiteManques)) activiteManques = D.activites[0]?.activite;
-  $("#m-activites").innerHTML = D.activites.map(a =>
-    `<button data-activite-manques="${esc(a.activite)}" class="${a.activite === activiteManques ? "actif" : ""}">${majuscule(a.activite)}</button>`).join("");
-  $("#m-liste").innerHTML = D.activites.filter(a => a.activite === activiteManques).map(a => {
-    const roles = manquesDe(a);
-    const corps = roles.length ? parUnivers(roles, x => x, (liste, g) => carte(g, liste.map(r => {
-      const tous = objetsPour(r, a.activite), prevus = tous.filter(o => !POSSEDES.includes(o.statut));
-      const actuels = tous.filter(o => POSSEDES.includes(o.statut)), quand = contextes(a, r);
-      const boutons = id => !EDITION ? "" : `<div class="boutons">
-        <button class="btn petit principal" data-achete="${r}" data-activite="${esc(a.activite)}"${id ? ` data-objet="${esc(id)}"` : ""}>Acheté</button>
-        ${id ? `<button class="btn petit danger" data-supprimer="${esc(id)}">Supprimer</button>` : ""}</div>`;
-      return `<div class="ligne"><div class="corps"><div class="titre">${esc(ROLE[r].libelle)}</div>
-        <div class="sous">${[actuels.length ? `remplace : ${actuels.map(o => esc(o.nom)).join(", ")}` : "",
-          quand.length ? `sert : ${esc(quand.join(", "))}` : ""].filter(Boolean).join(" · ")}</div>
-        ${prevus.map(o => `<div class="prevu-objet"><span>${esc(o.nom)} <span class="sous">(${STATUTS[o.statut].toLowerCase()})</span></span>${boutons(o.id)}</div>`).join("")}
-        </div>${prevus.length ? "" : `<div class="droite">${boutons(null)}</div>`}</div>`;
-    }).join("")), a.univers) : `<p class="vide">Rien ne manque.</p>`;
-    return `<h2 class="activite">${majuscule(a.activite)} <span class="sous">· ${roles.length} à acheter</span></h2>${corps}`;
-  }).join("");
+  const a = D.activites.find(x => x.activite === activiteManques), manques = a ? manquesDe(a) : [];
+  const suggestions = manques.length ? parUnivers(manques, x => x, (l, g) => carte(g, l.map(r => `<div class="ligne"><div class="corps">
+      <div class="titre">${esc(ROLE[r].libelle)}</div><div class="sous">sert : ${esc(contextes(a, r).join(", "))}</div></div>
+      ${EDITION ? `<button class="btn petit" data-ajouter-liste="${r}">Ajouter à ma liste</button>` : ""}</div>`).join("")), a.univers)
+    : `<p class="vide">Rien ne manque en ${esc(activiteManques)}.</p>`;
+  $("#m-liste").innerHTML = `<h2 class="univers">Ma liste <span class="sous">· ${liste.length}</span></h2>
+    ${liste.length ? `<div class="carte">${lignes}</div>` : `<p class="vide">Liste vide.</p>`}
+    <h2 class="univers">Ce qui manque encore</h2>
+    <div class="outils"><span class="segments">${D.activites.map(x =>
+      `<button data-activite-manques="${esc(x.activite)}" class="${x.activite === activiteManques ? "actif" : ""}">${majuscule(x.activite)}</button>`).join("")}</span></div>
+    ${suggestions}`;
 }
 
 /* Mes équipements : ce que je possède, rangé selon le premier rôle de chaque objet */
 function mesEquipements() { return D.objets.filter(o => POSSEDES.includes(o.statut)); }
 // Rangés par groupe seulement (Haut, Bas, Accessoires…), sans distinction d'univers.
 function parGroupe(elements, cle, rendu) {
-  const paquets = {}, ordre = [...new Set(D.roles.map(r => r.groupe))];
-  elements.forEach(x => { const r = ROLE[cle(x)]; if (r) (paquets[r.groupe] ||= []).push(x); });
-  return ordre.filter(g => paquets[g]).map(g => `<h2 class="univers">${GROUPES[g] || g}</h2>${rendu(paquets[g])}`).join("");
+  const paquets = {}, ordre = ["a-classer", ...new Set(D.roles.map(r => r.groupe))];
+  elements.forEach(x => { const r = ROLE[cle(x)]; (paquets[r ? r.groupe : "a-classer"] ||= []).push(x); });
+  return ordre.filter(g => paquets[g]).map(g => `<h2 class="univers">${g === "a-classer" ? "À classer" : GROUPES[g] || g}</h2>${rendu(paquets[g])}`).join("");
 }
 function rendreEquipements() {
   $("#i-liste").innerHTML = parGroupe(mesEquipements(), o => o.roles[0], liste => `<div class="carte">${liste.map(o => {
     const details = [plage(o), o.poids_g != null ? `${o.poids_g} g` : "", (o.activites || []).join(", "),
-      o.roles.map(r => ROLE[r]?.libelle || r).join(", "),
+      (o.roles || []).map(r => ROLE[r]?.libelle || r).join(", "),
       ...Object.entries(o.roles_par_activite || {}).map(([act, rs]) => `en ${act} : ${rs.map(r => ROLE[r]?.libelle || r).join(", ")}`)].filter(Boolean).join(" · ");
     return `<div class="ligne"><div class="corps"><div class="titre">${o.lien ? `<a href="${esc(o.lien)}" target="_blank" rel="noopener" style="color:inherit">${esc(o.nom)}</a>` : esc(o.nom)}${tag(o.saison)}</div>
       <div class="sous">${esc(details)}</div>${o.notes ? `<div class="sous">${esc(o.notes)}</div>` : ""}</div>
@@ -524,59 +536,68 @@ $("#e-supprimer").onclick = () => {
     editeurEnvoyer("DELETE", `/api/objets/${encodeURIComponent(c.id)}`);
 };
 $("#i-ajouter").onclick = () => editeurOuvrir(null);
-$("#m-activites").onclick = e => {
-  const a = e.target.dataset?.activiteManques;
-  if (a) { activiteManques = a; stocker.ecrire("activite-manques", a); rendreManques(); }
-};
-$("#m-ajouter").onclick = () => editeurOuvrir(null, { statut: "a-acheter", activites: [activiteManques] });
 const FICHIER_PAR_GROUPE = { haut: "vetements", bas: "vetements", accessoires: "extremites", "nuit-refuge": "bivouac" };
-// « Acheté » : un objet possédé entre dans Mes équipements avec la référence ou le lien donné,
-// marqué a_completer pour que Claude lise la fiche et la complète.
-function acheteOuvrir(role, activite, objetId) {
-  const f = $("#a-form"), o = D.objets.find(x => x.id === objetId);
-  acheteOuvrir.contexte = { role, activite, objetId };
-  $("#a-titre").textContent = `Acheté : ${o ? o.nom : ROLE[role].libelle}`;
-  f.reference.value = o?.lien || ""; $("#a-erreurs").textContent = "";
+async function envoyer(methode, url, corps, zoneErreurs) {
+  const r = await fetch(url, { method: methode, headers: { "Content-Type": "application/json" }, body: corps && JSON.stringify(corps) });
+  const j = await r.json();
+  if (!r.ok) { const m = (j.erreurs || ["erreur inconnue"]).map(esc).join("<br>"); zoneErreurs ? zoneErreurs.innerHTML = m : alert(m); return false; }
+  appliquerDonnees(j); return true;
+}
+const idLibre = nom => { let id = slug(nom) || "objet", n = 2; const base = id; while (D.objets.some(o => o.id === id)) id = `${base}-${n++}`; return id; };
+
+// Ajouter à ma liste : un nom, un modèle envisagé facultatif (texte ou lien dont on lit le titre).
+$("#m-ajouter").onclick = () => { const f = $("#n-form"); f.reset(); $("#n-erreurs").textContent = ""; $("#nouvel-achat").showModal(); f.nom.focus(); };
+$("#n-annuler").onclick = () => $("#nouvel-achat").close();
+$("#n-form").onsubmit = async e => {
+  e.preventDefault();
+  const f = $("#n-form"), nom = f.nom.value.trim(), saisie = f.modele.value.trim();
+  if (!nom) return;
+  const lien = /^https?:\/\//.test(saisie) ? saisie : null;
+  let modele = lien ? null : saisie || null;
+  if (lien) {
+    $("#n-erreurs").textContent = "Lecture du lien…";
+    try { modele = (await (await fetch("/api/titre", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ url: lien }) })).json()).titre; } catch {}
+  }
+  const objet = { id: idLibre(nom), nom, marque: null, modele, roles: [], activites: [], temp_min: null, temp_max: null,
+    impermeable: false, poids_g: null, statut: "a-acheter", lien, notes: "" };
+  if (await envoyer("POST", "/api/objets", { objet, fichier: "a-classer" }, $("#n-erreurs"))) $("#nouvel-achat").close();
+};
+// Depuis « Ce qui manque encore » : ajoute le rôle à ma liste, déjà rattaché à l'activité.
+function ajouterAListe(role) {
+  const r = ROLE[role], a = D.activites.find(x => x.activite === activiteManques), c = contextes(a, role);
+  const froid = c.some(x => /froid/.test(x)), chaud = c.some(x => x === "chaud" || x === "mi-saison");
+  const objet = { id: idLibre(r.libelle), nom: r.libelle, marque: null, modele: null, roles: [role], activites: [a.activite],
+    temp_min: null, temp_max: null, impermeable: false, poids_g: null, statut: "a-acheter", lien: null, notes: "" };
+  if (VETEMENTS_GROUPES.includes(r.groupe)) objet.saison = froid && !chaud ? "froid" : chaud && !froid ? "chaud" : "toutes-saisons";
+  const voulu = FICHIER_PAR_GROUPE[r.groupe] || r.groupe;
+  envoyer("POST", "/api/objets", { objet, fichier: D.fichiers.includes(voulu) ? voulu : "a-classer" });
+}
+// « Acheté » : l'objet passe dans Mes équipements, avec le lien du produit si donné, à compléter par Claude.
+function acheteOuvrir(id) {
+  const f = $("#a-form"), o = D.objets.find(x => x.id === id);
+  acheteOuvrir.id = id;
+  $("#a-titre").textContent = `Acheté : ${o.nom}`;
+  f.reference.value = o.lien || ""; $("#a-erreurs").textContent = "";
   $("#achat").showModal(); f.reference.focus();
 }
 $("#a-annuler").onclick = () => $("#achat").close();
 $("#a-form").onsubmit = async e => {
   e.preventDefault();
-  const { role, activite, objetId } = acheteOuvrir.contexte, ref = $("#a-form").reference.value.trim();
-  if (!ref) { $("#a-erreurs").textContent = "Indique une référence ou un lien."; return; }
-  const lien = /^https?:\/\//.test(ref) ? ref : null;
-  let objet, fichier, methode = "PUT", url;
-  const existant = D.objets.find(x => x.id === objetId);
-  if (existant) {
-    objet = { ...existant, statut: "possede", a_completer: true, lien: lien || existant.lien,
-      notes: [existant.notes, lien ? "" : `Référence : ${ref}`].filter(Boolean).join(" ") };
-    fichier = objet.fichier; delete objet.fichier;
-    url = `/api/objets/${encodeURIComponent(existant.id)}`;
-  } else {
-    const r = ROLE[role], a = D.activites.find(x => x.activite === activite), c = contextes(a, role);
-    const froid = c.some(x => /froid/.test(x)), chaud = c.some(x => x === "chaud" || x === "mi-saison");
-    const nom = lien ? r.libelle : ref;
-    let id = slug(nom), n = 2;
-    while (D.objets.some(o => o.id === id)) id = `${slug(nom)}-${n++}`;
-    objet = { id, nom, marque: null, modele: null, roles: [role], activites: [activite], temp_min: null, temp_max: null,
-      impermeable: false, poids_g: null, statut: "possede", lien, notes: lien ? "" : `Référence : ${ref}`, a_completer: true };
-    if (VETEMENTS_GROUPES.includes(r.groupe)) objet.saison = froid && !chaud ? "froid" : chaud && !froid ? "chaud" : "toutes-saisons";
-    const voulu = FICHIER_PAR_GROUPE[r.groupe] || r.groupe;
-    fichier = D.fichiers.includes(voulu) ? voulu : "vetements";
-    methode = "POST"; url = "/api/objets";
-  }
-  const rep = await fetch(url, { method: methode, headers: { "Content-Type": "application/json" }, body: JSON.stringify({ objet, fichier }) });
-  const j = await rep.json();
-  if (!rep.ok) { $("#a-erreurs").innerHTML = (j.erreurs || ["erreur inconnue"]).map(esc).join("<br>"); return; }
-  appliquerDonnees(j); $("#achat").close();
+  const existant = D.objets.find(x => x.id === acheteOuvrir.id), ref = $("#a-form").reference.value.trim();
+  const lien = /^https?:\/\//.test(ref) ? ref : existant.lien;
+  const objet = { ...existant, statut: "possede", a_completer: true, lien,
+    notes: [existant.notes, ref && !/^https?:\/\//.test(ref) ? `Référence : ${ref}` : ""].filter(Boolean).join(" ") };
+  const fichier = objet.fichier; delete objet.fichier;
+  if (await envoyer("PUT", `/api/objets/${encodeURIComponent(existant.id)}`, { objet, fichier }, $("#a-erreurs"))) $("#achat").close();
 };
 document.querySelector("main").addEventListener("click", e => {
   const d = e.target.dataset || {};
-  if (d.achete) acheteOuvrir(d.achete, d.activite, d.objet);
+  if (d.acheteObjet) acheteOuvrir(d.acheteObjet);
+  if (d.ajouterListe) ajouterAListe(d.ajouterListe);
+  if (d.activiteManques) { activiteManques = d.activiteManques; stocker.ecrire("activite-manques", activiteManques); rendreManques(); }
   if (d.supprimer) {
     const o = D.objets.find(x => x.id === d.supprimer);
-    if (o && confirm(`Supprimer « ${o.nom} » de la liste à acheter ?`))
-      fetch(`/api/objets/${encodeURIComponent(o.id)}`, { method: "DELETE" }).then(r => r.json()).then(j => j.erreurs ? alert(j.erreurs.join("\n")) : appliquerDonnees(j));
+    if (o && confirm(`Supprimer « ${o.nom} » de ta liste ?`)) envoyer("DELETE", `/api/objets/${encodeURIComponent(o.id)}`);
   }
   if (d.modifier) editeurOuvrir(D.objets.find(o => o.id === d.modifier));
 });
@@ -597,7 +618,7 @@ if (EDITION) {
   $("#i-ajouter").hidden = false; $("#m-ajouter").hidden = false;
   // Surveille les fichiers : une modification faite ailleurs (par Claude, à la main) s'affiche toute seule.
   setInterval(async () => {
-    if ($("#editeur").open || $("#achat").open) return;
+    if ($("#editeur").open || $("#achat").open || $("#nouvel-achat").open) return;
     try {
       const v = (await (await fetch("/api/version")).json()).version;
       if (v !== D.version) appliquerDonnees(await (await fetch("/api/donnees")).json());

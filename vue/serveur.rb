@@ -66,6 +66,15 @@ serveur.mount_proc("/api/sorties") do |req, res|
   end
 end
 
+# POST /api/titre  { url } : titre de la page produit, au mieux
+serveur.mount_proc("/api/titre") do |req, res|
+  begin
+    json(res, 200, titre: Donnees.titre_page(JSON.parse(req.body.to_s)["url"].to_s))
+  rescue JSON::ParserError
+    json(res, 400, erreurs: ["requête illisible"])
+  end
+end
+
 # PUT /api/roles/<id>  { groupe } : change la catégorie d'un rôle
 serveur.mount_proc("/api/roles") do |req, res|
   id = req.path.sub(%r{\A/api/roles/?}, "")

@@ -7,12 +7,14 @@ description: Ajoute ou met à jour un objet dans l'inventaire à partir d'un doc
 
 ## Objets à compléter
 
-Quand Romain clique sur « Acheté » dans l'application, l'objet entre dans l'inventaire avec
-`a_completer: true`, un `lien` ou une « Référence : … » dans `notes`, et un nom provisoire.
+Dans l'application, l'onglet À acheter est une liste d'achats : Romain ajoute un objet avec
+un nom et un modèle envisagé (texte ou lien), rangé dans `inventaire/a-classer.yaml`, sans rôle
+ni activité. Quand il clique sur « Acheté », l'objet passe en `possede` avec `a_completer: true`,
+éventuellement un `lien` ou une « Référence : … » dans `notes`.
 Quand il demande de compléter ses équipements (« complète mes équipements », « j'ai acheté
 des trucs »), traiter chacun de ces objets avec les étapes ci-dessous : lire la fiche,
 renseigner nom, marque, modèle, caractéristiques, vérifier rôles, activités et saison,
-puis retirer `a_completer`. Garder l'`id` s'il est déjà utilisé ailleurs, sinon le renommer
+puis retirer `a_completer` et déplacer l'objet de `a-classer.yaml` vers le fichier de sa catégorie. Garder l'`id` s'il est déjà utilisé ailleurs, sinon le renommer
 d'après le modèle (kebab-case).
 
 ## Étapes
