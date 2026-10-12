@@ -92,6 +92,7 @@ module Donnees
     e << "nom manquant" if o["nom"].to_s.strip.empty?
     tous_roles = Array(o["roles"]) + (o["roles_par_activite"] || {}).values.flatten
     e << "au moins un rôle est nécessaire" if Array(o["roles"]).empty?
+    e << "coche au moins une activité (sinon l'objet n'apparaît dans aucune checklist)" if Array(o["activites"]).empty?
     inconnus = tous_roles - groupe.keys
     e << "rôles absents de roles.yaml : #{inconnus.join(', ')}" unless inconnus.empty?
     e << "statut invalide : #{o['statut']}" unless STATUTS.include?(o["statut"])

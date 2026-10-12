@@ -212,3 +212,18 @@
   statut: possede
   lien: null
   notes: "Manchettes classiques pour les bras."
+
+- id: veste-trail-de-pluie-compatible-umtb
+  nom: Veste trail de pluie, compatible UTMB
+  marque: null
+  modele: null
+  roles: [veste-pluie]
+  activites: [trail]
+  saison: toutes-saisons
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: null
+  statut: a-acheter
+  lien: null
+  notes: ""

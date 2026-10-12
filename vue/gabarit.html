@@ -354,9 +354,12 @@ function rolesActivite(a) {
     ...Object.values(a.modules || {}).flatMap(m => m.ajouter || [])])];
 }
 
-/* Manques : uniquement les rôles qu'aucun objet possédé ne remplit, par activité */
+/* À acheter : les rôles qu'aucun objet possédé ne remplit, et les achats prévus (même pour remplacer) */
 function manquesDe(a) {
-  return rolesActivite(a).filter(r => !objetsPour(r, a.activite).some(o => POSSEDES.includes(o.statut)));
+  const prevus = D.objets.filter(o => !POSSEDES.includes(o.statut) && o.statut !== "reforme" && (o.activites || []).includes(a.activite))
+    .flatMap(o => rolesObjet(o, a.activite));
+  return [...new Set([...rolesActivite(a), ...prevus])].filter(r => ROLE[r] &&
+    (!objetsPour(r, a.activite).some(o => POSSEDES.includes(o.statut)) || prevus.includes(r)));
 }
 let activiteManques = stocker.lire("activite-manques", null);
 function rendreManques() {
@@ -366,12 +369,15 @@ function rendreManques() {
   $("#m-liste").innerHTML = D.activites.filter(a => a.activite === activiteManques).map(a => {
     const roles = manquesDe(a);
     const corps = roles.length ? parUnivers(roles, x => x, (liste, g) => carte(g, liste.map(r => {
-      const prevus = objetsPour(r, a.activite).filter(o => !POSSEDES.includes(o.statut));
+      const tous = objetsPour(r, a.activite), prevus = tous.filter(o => !POSSEDES.includes(o.statut));
+      const actuels = tous.filter(o => POSSEDES.includes(o.statut)), quand = contextes(a, r);
       return `<div class="ligne"><div class="corps"><div class="titre">${esc(ROLE[r].libelle)}</div>
-        <div class="sous">${prevus.map(o => `${esc(o.nom)} (${STATUTS[o.statut].toLowerCase()}) · `).join("")}sert : ${esc(contextes(a, r).join(", "))}</div></div>
+        <div class="sous">${[...prevus.map(o => `${esc(o.nom)} (${STATUTS[o.statut].toLowerCase()})`),
+          actuels.length ? `remplace : ${actuels.map(o => esc(o.nom)).join(", ")}` : "",
+          quand.length ? `sert : ${esc(quand.join(", "))}` : ""].filter(Boolean).join(" · ")}</div></div>
         <div class="droite">${EDITION ? `<button class="btn petit principal" data-achete="${r}" data-activite="${esc(a.activite)}"${prevus.length ? ` data-objet="${esc(prevus[0].id)}"` : ""}>Acheté</button>` : ""}</div></div>`;
     }).join("")), a.univers) : `<p class="vide">Rien ne manque.</p>`;
-    return `<h2 class="activite">${majuscule(a.activite)} <span class="sous">· ${roles.length} manque${roles.length > 1 ? "s" : ""}</span></h2>${corps}`;
+    return `<h2 class="activite">${majuscule(a.activite)} <span class="sous">· ${roles.length} à acheter</span></h2>${corps}`;
   }).join("");
 }
 
@@ -516,7 +522,7 @@ $("#m-activites").onclick = e => {
   const a = e.target.dataset?.activiteManques;
   if (a) { activiteManques = a; stocker.ecrire("activite-manques", a); rendreManques(); }
 };
-$("#m-ajouter").onclick = () => editeurOuvrir(null, { statut: "a-acheter" });
+$("#m-ajouter").onclick = () => editeurOuvrir(null, { statut: "a-acheter", activites: [activiteManques] });
 const FICHIER_PAR_GROUPE = { haut: "vetements", bas: "vetements", accessoires: "extremites", "nuit-refuge": "bivouac" };
 // « Acheté » : un objet possédé entre dans Mes équipements avec la référence ou le lien donné,
 // marqué a_completer pour que Claude lise la fiche et la complète.
