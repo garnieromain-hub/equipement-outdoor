@@ -66,6 +66,18 @@ serveur.mount_proc("/api/sorties") do |req, res|
   end
 end
 
+# PUT /api/roles/<id>  { groupe } : change la catégorie d'un rôle
+serveur.mount_proc("/api/roles") do |req, res|
+  id = req.path.sub(%r{\A/api/roles/?}, "")
+  next json(res, 405, erreurs: ["méthode non gérée"]) unless req.request_method == "PUT"
+  begin
+    erreurs = Donnees.deplacer_role(id, JSON.parse(req.body.to_s)["groupe"])
+    erreurs.empty? ? json(res, 200, Donnees.tout) : json(res, 422, erreurs: erreurs)
+  rescue JSON::ParserError
+    json(res, 400, erreurs: ["requête illisible"])
+  end
+end
+
 trap("INT") { serveur.shutdown }
 puts "Équipement outdoor : http://localhost:#{PORT}  (Ctrl+C pour arrêter)"
 serveur.start

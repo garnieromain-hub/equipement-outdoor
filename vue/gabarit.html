@@ -142,6 +142,7 @@ dialog::backdrop { background: rgba(0, 0, 0, .35); }
       <label>Fichier<select name="fichier"></select></label>
       <label>Marque<input name="marque"></label>
       <label>Modèle<input name="modele"></label>
+      <label>Catégorie<select name="categorie"></select></label>
       <label>Statut<select name="statut"></select></label>
       <label>Saison<select name="saison"><option value="">—</option></select></label>
       <label>Temp. mini (°C)<input name="temp_min" type="number" step="any"></label>
@@ -157,6 +158,7 @@ dialog::backdrop { background: rgba(0, 0, 0, .35); }
     <fieldset><legend>Rôles différents selon l'activité (facultatif)</legend>
       <textarea name="roles_par_activite" rows="2" placeholder="gravel: haut-rechange"></textarea>
       <div class="sous">Une ligne par activité : « activité: rôle1, rôle2 ». Ces rôles remplacent les rôles ci-dessus pour cette activité.</div></fieldset>
+    <div class="sous" id="e-aide-categorie"></div>
     <label class="large">Notes<textarea name="notes" rows="3"></textarea></label>
     <div class="erreur" id="e-erreurs"></div>
     <div class="outils actions">
@@ -400,8 +402,26 @@ function editeurOuvrir(o) {
   }
   $("#e-roles").innerHTML = html; $("#e-filtre-roles").value = "";
   f.roles_par_activite.value = Object.entries(o.roles_par_activite || {}).map(([a, rs]) => `${a}: ${rs.join(", ")}`).join("\n");
+  majCategorie();
   $("#editeur").showModal();
 }
+// La catégorie est celle du premier rôle coché ; la changer déplace ce rôle (et tous ses objets).
+function majCategorie() {
+  const f = $("#e-form"), r = ROLE[document.querySelector("#e-roles input:checked")?.value];
+  const groupes = [...new Set(D.roles.filter(x => !r || x.univers === r.univers).map(x => x.groupe))];
+  f.categorie.innerHTML = groupes.map(g => `<option value="${g}">${GROUPES[g] || g}</option>`).join("");
+  f.categorie.disabled = !r;
+  if (r) f.categorie.value = r.groupe;
+  majAideCategorie();
+}
+function majAideCategorie() {
+  const f = $("#e-form"), r = ROLE[document.querySelector("#e-roles input:checked")?.value];
+  const autres = r ? D.objets.filter(o => o.roles.includes(r.id) && o.id !== editeurOuvrir.courant?.id).length : 0;
+  $("#e-aide-categorie").textContent = r && f.categorie.value !== r.groupe
+    ? `Le rôle « ${r.libelle} » passera dans ${GROUPES[f.categorie.value]}${autres ? `, avec ${autres} autre${autres > 1 ? "s" : ""} objet${autres > 1 ? "s" : ""} qui le remplissent` : ""}.`
+    : "";
+}
+$("#e-form").categorie.onchange = majAideCategorie;
 $("#e-form").nom.oninput = e => { const f = $("#e-form"); if (f.id.dataset.auto) f.id.value = slug(e.target.value); };
 $("#e-form").id.oninput = e => { e.target.dataset.auto = ""; };
 $("#e-filtre-roles").oninput = e => {
@@ -410,6 +430,7 @@ $("#e-filtre-roles").oninput = e => {
 };
 // Fichier proposé d'après le groupe du premier rôle coché, pour un nouvel objet.
 $("#e-roles").onchange = () => {
+  majCategorie();
   if (editeurOuvrir.courant) return;
   const r = ROLE[document.querySelector("#e-roles input:checked")?.value];
   const parGroupe = { haut: "vetements", bas: "vetements", accessoires: "extremites", "nuit-refuge": "bivouac" };
@@ -444,9 +465,15 @@ async function editeurEnvoyer(methode, url, corps) {
   if (!r.ok) { $("#e-erreurs").innerHTML = (j.erreurs || ["erreur inconnue"]).map(esc).join("<br>"); return false; }
   appliquerDonnees(j); $("#editeur").close(); return true;
 }
-$("#e-form").onsubmit = e => {
+$("#e-form").onsubmit = async e => {
   e.preventDefault();
-  const c = editeurOuvrir.courant;
+  const c = editeurOuvrir.courant, f = $("#e-form");
+  const r = ROLE[document.querySelector("#e-roles input:checked")?.value], groupe = f.categorie.value;
+  if (r && groupe && groupe !== r.groupe) {
+    const rep = await fetch(`/api/roles/${encodeURIComponent(r.id)}`, { method: "PUT",
+      headers: { "Content-Type": "application/json" }, body: JSON.stringify({ groupe }) });
+    if (!rep.ok) { $("#e-erreurs").innerHTML = ((await rep.json()).erreurs || ["erreur"]).map(esc).join("<br>"); return; }
+  }
   editeurEnvoyer(c ? "PUT" : "POST", c ? `/api/objets/${encodeURIComponent(c.id)}` : "/api/objets", editeurLire());
 };
 $("#e-annuler").onclick = () => $("#editeur").close();

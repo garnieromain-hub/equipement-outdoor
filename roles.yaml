@@ -26,6 +26,9 @@ en-action:
     collant-long: Collant / cuissard long
     collant-thermique: Collant long thermique
     surpantalon-pluie: Surpantalon imperméable
+    chaussettes-ete: Chaussettes fines
+    chaussettes-hiver: Chaussettes mérinos épaisses
+    chaussettes-impermeables: Chaussettes imperméables
 
   accessoires:
     casque: Casque
@@ -40,9 +43,6 @@ en-action:
     sur-gants-pluie: Sur-gants ou gants imperméables
     sous-casque: Bonnet fin
     tour-de-cou: Buff / tour de cou
-    chaussettes-ete: Chaussettes fines
-    chaussettes-hiver: Chaussettes mérinos épaisses
-    chaussettes-impermeables: Chaussettes imperméables
 
   portage:
     sac-hydratation: Sac ou gilet d'hydratation

@@ -166,6 +166,36 @@ module Donnees
     File.write(f, [entete, corps].reject(&:empty?).join("\n\n") + "\n")
   end
 
+  GROUPES_CONNUS = %w[haut bas accessoires portage reparation navigation-energie ravitaillement securite
+                      nuit-refuge bivouac].freeze
+
+  # Déplace un rôle vers un autre groupe du même univers, en réécrivant roles.yaml ligne à ligne
+  # (les commentaires sont conservés). Tous les objets qui remplissent ce rôle changent de catégorie.
+  def deplacer_role(id, groupe)
+    return ["catégorie inconnue : #{groupe}"] unless GROUPES_CONNUS.include?(groupe)
+    f = chemin("roles.yaml")
+    lignes = File.readlines(f)
+    i = lignes.index { |l| l.match?(/\A    #{Regexp.escape(id.to_s)}:/) } or return ["rôle introuvable : #{id}"]
+    debut_univers = (0...i).to_a.reverse.find { |k| lignes[k].match?(/\A[a-z-]+:/) }
+    fin_univers = ((i + 1)...lignes.size).find { |k| lignes[k].match?(/\A[a-z-]+:/) } || lignes.size
+    groupe_actuel = (0...i).to_a.reverse.map { |k| lignes[k][/\A  ([a-z-]+):/, 1] }.compact.first
+    return [] if groupe_actuel == groupe
+    ligne = lignes.delete_at(i)
+    fin_univers -= 1
+    entete = (debut_univers...fin_univers).find { |k| lignes[k].match?(/\A  #{Regexp.escape(groupe)}:/) }
+    if entete
+      k = entete + 1
+      k += 1 while k < fin_univers && lignes[k].start_with?("    ")
+      lignes.insert(k, ligne)
+    else
+      k = fin_univers
+      k -= 1 while k > debut_univers && lignes[k - 1].strip.empty?
+      lignes.insert(k, "\n", "  #{groupe}:\n", ligne)
+    end
+    File.write(f, lignes.join)
+    []
+  end
+
   def nettoyer(o)
     o = o.reject { |k, _| k == "fichier" }
     o["roles_par_activite"] = (o["roles_par_activite"] || {}).reject { |_, v| Array(v).empty? }

@@ -50,7 +50,7 @@
   marque: null
   modele: null
   roles: [tour-de-cou]
-  activites: [gravel, bikepacking, trail, rando]
+  activites: [gravel, trail, bikepacking, rando]
   saison: toutes-saisons
   temp_min: null
   temp_max: null
