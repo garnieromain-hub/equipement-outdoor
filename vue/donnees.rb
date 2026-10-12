@@ -49,12 +49,36 @@ module Donnees
 
   # Empreinte des fichiers : change dès qu'un YAML est modifié (par la page ou à la main).
   def version
-    fichiers = [chemin("roles.yaml")] + Dir[chemin("inventaire/*.yaml")] + Dir[chemin("activites/*.yaml")]
+    fichiers = [chemin("roles.yaml")] + Dir[chemin("inventaire/*.yaml")] + Dir[chemin("activites/*.yaml")] +
+               Dir[chemin("sorties/????-??-??-*.md")]
     fichiers.map { |f| "#{f}:#{File.mtime(f).to_f}" }.sort.join("|").hash.to_s
   end
 
+  # Checklists écrites par la skill checklist-sortie : sorties/AAAA-MM-JJ-activite.md, la plus récente d'abord.
+  def sorties
+    Dir[chemin("sorties/????-??-??-*.md")].sort.reverse.map do |f|
+      nom = File.basename(f, ".md")
+      contenu = File.read(f)
+      { "fichier" => nom, "date" => nom[0, 10], "activite" => nom[11..-1],
+        "titre" => contenu[/^# (.+)$/, 1] || nom, "contenu" => contenu }
+    end
+  end
+
+  # Coche ou décoche la case de la ligne `ligne` (numérotée à partir de 0) d'une sortie.
+  def cocher(nom, ligne, coche)
+    return ["sortie inconnue : #{nom}"] unless nom.to_s.match?(/\A\d{4}-\d{2}-\d{2}-[a-z0-9-]+\z/)
+    f = chemin("sorties", "#{nom}.md")
+    return ["sortie introuvable : #{nom}"] unless File.exist?(f)
+    lignes = File.read(f).split("\n", -1)
+    l = lignes[ligne.to_i].to_s
+    return ["la ligne #{ligne} n'est pas une case à cocher"] unless l.match?(/\A\s*- \[[ xX]\] /)
+    lignes[ligne.to_i] = l.sub(/- \[[ xX]\] /, coche ? "- [x] " : "- [ ] ")
+    File.write(f, lignes.join("\n"))
+    []
+  end
+
   def tout
-    { "roles" => roles, "objets" => objets, "activites" => activites, "fichiers" => fichiers_inventaire,
+    { "roles" => roles, "objets" => objets, "activites" => activites, "fichiers" => fichiers_inventaire, "sorties" => sorties,
       "statuts" => STATUTS, "saisons" => SAISONS, "version" => version,
       "genere_le" => Time.now.strftime("%Y-%m-%d %H:%M") }
   end

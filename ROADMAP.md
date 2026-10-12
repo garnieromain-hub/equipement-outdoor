@@ -29,12 +29,13 @@ Dernière mise à jour : 2026-10-12.
   envisagés (veste Raidlight Ultralight 3.0, duvet).
 
 ### Application locale (`Lancer équipement.command` ou `ruby vue/serveur.rb`)
-- Onglet Préparer : phrase libre (date, « we prochain », plusieurs jours, lieu « à Tours », refuge / bivouac),
-  trace GPX, météo Open-Meteo, correction d'altitude, choix automatique chaud / froid et modules.
-- Checklist cochable, Manques, Inventaire filtrable.
-- Édition des objets (ajout, modification, suppression) avec contrôles, écriture directe dans les YAML,
-  mise à jour en direct quand un fichier change.
-- Exports Markdown, CSV, impression / PDF.
+- Mes sorties : les checklists préparées avec Claude, cochables, cases écrites dans les fichiers.
+- Manques : uniquement ce qui manque vraiment, par activité, avec le contexte où ça sert.
+- Mes équipements : ce que je possède, édition (ajout, modification, suppression) avec contrôles,
+  écriture directe dans les YAML, mise à jour en direct quand un fichier change.
+- Export CSV, impression / PDF.
+- Abandonné : l'onglet Préparer (phrase libre, météo, normales de saison, forçages) et les filtres ;
+  la préparation se fait avec Claude. Le code reste dans l'historique git si besoin.
 
 ### Skills et outils
 - `ajout-equipement` : intégrer un objet depuis un lien, une photo, une description.

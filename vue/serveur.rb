@@ -53,6 +53,19 @@ serveur.mount_proc("/api/objets") do |req, res|
   end
 end
 
+# POST /api/sorties/<fichier>/cocher  { ligne, coche }
+serveur.mount_proc("/api/sorties") do |req, res|
+  m = req.path.match(%r{\A/api/sorties/([^/]+)/cocher\z})
+  next json(res, 404, erreurs: ["introuvable"]) unless m && req.request_method == "POST"
+  begin
+    corps = JSON.parse(req.body.to_s)
+    erreurs = Donnees.cocher(m[1], corps["ligne"], corps["coche"])
+    erreurs.empty? ? json(res, 200, version: Donnees.version) : json(res, 422, erreurs: erreurs)
+  rescue JSON::ParserError
+    json(res, 400, erreurs: ["requête illisible"])
+  end
+end
+
 trap("INT") { serveur.shutdown }
 puts "Équipement outdoor : http://localhost:#{PORT}  (Ctrl+C pour arrêter)"
 serveur.start

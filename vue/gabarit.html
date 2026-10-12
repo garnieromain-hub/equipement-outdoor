@@ -39,20 +39,21 @@ nav button.actif { color: var(--texte); border-color: var(--accent); }
 main { max-width: 860px; margin: 0 auto; padding: 16px; }
 section[hidden] { display: none; }
 .outils { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; align-items: center; }
-select, input[type=search] { font: inherit; padding: 8px 10px; border: 1px solid var(--ligne);
-  border-radius: 8px; background: var(--carte); color: var(--texte); min-width: 0; }
-input[type=search] { flex: 1 1 180px; }
 .btn { font: inherit; font-size: 14px; padding: 8px 12px; border-radius: 8px; cursor: pointer;
   border: 1px solid var(--ligne); background: var(--carte); color: var(--texte); }
 .btn:hover { border-color: var(--accent); }
+.btn.principal { background: var(--accent); border-color: var(--accent); color: var(--carte); font-weight: 600; }
+.btn.danger { color: var(--manque); border-color: var(--manque-fond); }
+.btn.petit { font-size: 12px; padding: 3px 9px; }
 .carte { background: var(--carte); border: 1px solid var(--ligne); border-radius: 12px; padding: 4px 14px; margin-bottom: 14px; }
 h2 { font-size: 16px; margin: 22px 0 8px; }
 h2.univers { font-size: 19px; margin: 26px 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--texte); }
-section > div > h2.univers:first-child, #c-liste > h2.univers:first-child { margin-top: 6px; }
+h2.activite { font-size: 21px; margin: 8px 0 4px; }
 h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--doux); margin: 12px 0 4px; }
 .ligne { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-top: 1px solid var(--ligne); }
 .ligne:first-of-type { border-top: 0; }
 .ligne .corps { flex: 1; min-width: 0; }
+.ligne .droite { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
 .titre { font-weight: 600; }
 .sous { color: var(--doux); font-size: 13px; }
 .pastille { font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 99px; white-space: nowrap; }
@@ -63,33 +64,20 @@ h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: v
 .chaud { background: var(--chaud-fond); color: var(--chaud); }
 .froid { background: var(--froid-fond); color: var(--froid); }
 .toutes-saisons { background: var(--neutre-fond); color: var(--doux); }
-.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; align-items: center; }
-.chip { display: inline-flex; gap: 6px; align-items: center; padding: 6px 10px; border-radius: 99px;
-  border: 1px solid var(--ligne); background: var(--carte); cursor: pointer; font-size: 14px; }
-.chip input { margin: 0; accent-color: var(--accent); }
-.chip:has(input:checked) { border-color: var(--accent); background: var(--accent-fond); }
-.bascule { display: inline-flex; border: 1px solid var(--ligne); border-radius: 99px; overflow: hidden; margin-right: 4px; }
-.bascule label { padding: 6px 14px; cursor: pointer; font-size: 14px; font-weight: 600; color: var(--doux); }
-.bascule input { position: absolute; opacity: 0; pointer-events: none; }
-.bascule label:has(input[value=chaud]:checked) { background: var(--chaud-fond); color: var(--chaud); }
-.bascule label:has(input[value=froid]:checked) { background: var(--froid-fond); color: var(--froid); }
-.ligne input[type=checkbox] { width: 20px; height: 20px; margin-top: 1px; accent-color: var(--accent); flex: none; }
-.ligne.coche .titre { text-decoration: line-through; color: var(--doux); }
-.resume { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
 .vide { color: var(--doux); padding: 12px 0; }
-.saisie { padding: 14px; }
-.saisie input[type=text] { font: inherit; width: 100%; padding: 10px 12px; margin: 8px 0 4px; border: 1px solid var(--ligne);
-  border-radius: 8px; background: var(--fond); color: var(--texte); }
-.saisie .outils { margin: 10px 0 0; }
-.saisie .outils input[type=text] { flex: 1 1 160px; width: auto; margin: 0; }
-.aide { margin-bottom: 4px; }
-.btn.principal { background: var(--accent); border-color: var(--accent); color: var(--carte); font-weight: 600; }
 .erreur { color: var(--manque); padding: 8px 0; }
-.meteo { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; padding: 12px 0; }
-.meteo div { font-size: 13px; color: var(--doux); }
-.meteo strong { display: block; font-size: 17px; color: var(--texte); }
-.raisons { font-size: 13px; color: var(--doux); padding: 0 0 12px; }
-.raisons li { margin: 2px 0; }
+/* Mes sorties */
+.sortie-lien { display: block; width: 100%; text-align: left; font: inherit; color: inherit; cursor: pointer;
+  background: var(--carte); border: 1px solid var(--ligne); border-radius: 12px; padding: 12px 14px; margin-bottom: 10px; }
+.sortie-lien:hover { border-color: var(--accent); }
+.progression { height: 4px; border-radius: 4px; background: var(--neutre-fond); margin-top: 8px; overflow: hidden; }
+.progression span { display: block; height: 100%; background: var(--accent); }
+.md p { margin: 6px 0; color: var(--doux); font-size: 14px; }
+.md .ligne { cursor: pointer; }
+.md .ligne input[type=checkbox] { width: 20px; height: 20px; margin-top: 1px; accent-color: var(--accent); flex: none; }
+.md .ligne.coche .titre { text-decoration: line-through; color: var(--doux); }
+.md .puce { padding: 4px 0; font-size: 14px; }
+/* Édition */
 dialog { border: 1px solid var(--ligne); border-radius: 14px; padding: 0; width: min(720px, calc(100vw - 32px));
   max-height: calc(100vh - 32px); background: var(--carte); color: var(--texte); }
 dialog::backdrop { background: rgba(0, 0, 0, .35); }
@@ -110,10 +98,8 @@ dialog::backdrop { background: rgba(0, 0, 0, .35); }
 .liste-roles .cases { margin: 0; }
 .actions { margin: 14px 0 0; }
 .espace { flex: 1; }
-.btn.danger { color: var(--manque); border-color: var(--manque-fond); }
-.btn.petit { font-size: 12px; padding: 3px 9px; }
 @media print {
-  nav, .outils, .chips, .btn { display: none !important; }
+  nav, .outils, .btn { display: none !important; }
   body { background: #fff; color: #000; }
   .carte { border-color: #ccc; break-inside: avoid; }
 }
@@ -125,63 +111,23 @@ dialog::backdrop { background: rgba(0, 0, 0, .35); }
   <div class="meta" id="meta"></div>
 </header>
 <nav><div class="in">
-  <button data-onglet="preparer" class="actif">Préparer</button>
-  <button data-onglet="checklist">Checklist</button>
+  <button data-onglet="sorties" class="actif">Mes sorties</button>
   <button data-onglet="manques">Manques</button>
-  <button data-onglet="inventaire">Inventaire</button>
+  <button data-onglet="equipements">Mes équipements</button>
 </div></nav>
 <main>
-  <section id="preparer">
-    <div class="carte saisie">
-      <label for="p-texte" class="titre">Prépare ta sortie</label>
-      <input type="text" id="p-texte" placeholder="Gravel samedi 17 octobre toute la journée" autocomplete="off">
-      <div class="sous aide">Activité, jour (demain, samedi, 17 octobre, le we prochain, du 17 au 19…), lieu (à Tours), horaires (8h-14h, départ 7h30, 4h, matin), refuge ou bivouac.</div>
-      <div class="outils">
-        <input type="text" id="p-ville" placeholder="Ville par défaut" autocomplete="off">
-        <label class="btn">Trace GPX<input type="file" id="p-gpx" accept=".gpx" hidden></label>
-        <button class="btn principal" id="p-go">Préparer</button>
-      </div>
-      <div class="sous" id="p-gpx-info"></div>
-    </div>
-    <div id="p-message"></div>
-  </section>
-
-  <section id="checklist" hidden>
-    <div class="outils">
-      <button class="btn" id="c-export">Exporter (.md)</button>
-      <button class="btn" id="c-raz">Tout décocher</button>
-      <button class="btn" onclick="print()">Imprimer / PDF</button>
-    </div>
-    <div id="c-sortie"></div>
-    <div id="c-liste"></div>
+  <section id="sorties">
+    <div id="s-contenu"></div>
   </section>
 
   <section id="manques" hidden>
-    <div class="outils">
-      <select id="m-activite"></select>
-      <select id="m-perimetre">
-        <option value="vetements">Vêtements</option>
-        <option value="">Tout l'équipement</option>
-      </select>
-      <select id="m-saison">
-        <option value="">Toutes températures</option>
-        <option value="chaud">Chaud</option>
-        <option value="froid">Froid</option>
-      </select>
-      <button class="btn" id="m-export">Exporter (.md)</button>
-      <button class="btn" onclick="print()">Imprimer / PDF</button>
-    </div>
-    <div class="resume" id="m-resume"></div>
     <div id="m-liste"></div>
   </section>
 
-  <section id="inventaire" hidden>
+  <section id="equipements" hidden>
     <div class="outils">
-      <input type="search" id="i-recherche" placeholder="Rechercher un objet, une marque…">
-      <select id="i-statut"><option value="">Tous statuts</option></select>
-      <select id="i-saison"><option value="">Toutes saisons</option></select>
-      <button class="btn" id="i-export">Exporter (.csv)</button>
       <button class="btn principal" id="i-ajouter" hidden>Ajouter un objet</button>
+      <button class="btn" id="i-export">Exporter (.csv)</button>
     </div>
     <div id="i-liste"></div>
   </section>
@@ -229,42 +175,43 @@ try { D = JSON.parse(document.getElementById("donnees").textContent); }
 catch {
   document.querySelector("nav").remove();
   document.querySelector("main").innerHTML = `<p class="vide">Ce fichier est le gabarit, sans données.
-    Ouvre <strong>vue/index.html</strong> (ou lance <code>ruby vue/generer.rb</code> pour le créer).</p>`;
-  throw new Error("gabarit ouvert à la place de index.html");
+    Lance l'application (<code>ruby vue/serveur.rb</code>) ou génère <strong>vue/index.html</strong>.</p>`;
+  throw new Error("gabarit ouvert sans données");
 }
 // Mode édition : page servie par l'application locale (vue/serveur.rb), pas ouverte comme fichier.
 const EDITION = location.protocol.startsWith("http") && !!D.fichiers;
 let ROLE = Object.fromEntries(D.roles.map(r => [r.id, r]));
-const UNIVERS_NEUTRE = { "en-action": "En activité", "hors-action": "Hors activité" };
-const GROUPES = { haut: "Haut", bas: "Bas", accessoires: "Accessoires", reparation: "Réparation et outils",
-  "navigation-energie": "Navigation et énergie", ravitaillement: "Ravitaillement", securite: "Sécurité",
-  portage: "Portage", "nuit-refuge": "Nuit en refuge", bivouac: "Bivouac" };
-const VETEMENTS = ["haut", "bas", "accessoires"];
 let ORDRE = [...new Set(D.roles.map(r => `${r.univers}/${r.groupe}`))];
+const UNIVERS_NEUTRE = { "en-action": "En activité", "hors-action": "Hors activité" };
+const GROUPES = { haut: "Haut", bas: "Bas", accessoires: "Accessoires", portage: "Portage", reparation: "Réparation et outils",
+  "navigation-energie": "Navigation et énergie", ravitaillement: "Ravitaillement", securite: "Sécurité",
+  "nuit-refuge": "Nuit en refuge", bivouac: "Bivouac" };
 const SAISONS = { chaud: "Chaud", froid: "Froid", "toutes-saisons": "Toutes saisons" };
 const STATUTS = { possede: "Possédé", "a-confirmer": "À confirmer", "a-acheter": "À acheter", envisage: "Envisagé", reforme: "Réformé" };
+const POSSEDES = ["possede", "a-confirmer"];
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const tag = s => s ? `<span class="tag ${s}">${SAISONS[s] || s}</span>` : "";
+const norm = s => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/’/g, "'");
+const slug = s => norm(s).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 const stocker = {
   lire(k, defaut) { try { return JSON.parse(localStorage.getItem(k)) ?? defaut; } catch { return defaut; } },
   ecrire(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
 };
-const tag = s => s ? `<span class="tag ${s}">${SAISONS[s] || s}</span>` : "";
-// Outils de texte et d'heure, utilisés dès le premier affichage.
-const MOIS = ["janvier", "fevrier", "mars", "avril", "mai", "juin", "juillet", "aout", "septembre", "octobre", "novembre", "decembre"];
-const JOURS = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
-const norm = s => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/’/g, "'");
-const heure = (h, m) => +h + (m ? +m / 60 : 0);
-const fmtH = h => `${Math.floor(h)}h${String(Math.round((h % 1) * 60)).padStart(2, "0")}`;
-let trace = null;
+const carte = (g, contenu) => `<div class="carte"><h3>${GROUPES[g] || g}</h3>${contenu}</div>`;
+const plage = o => o.temp_min == null && o.temp_max == null ? "" : `${o.temp_min ?? "?"} à ${o.temp_max ?? "?"} °C`;
+const aujourdhui = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; };
+const majuscule = s => s ? s[0].toUpperCase() + s.slice(1) : s;
+function telecharger(nom, contenu, type) {
+  const url = URL.createObjectURL(new Blob([contenu], { type }));
+  const a = Object.assign(document.createElement("a"), { href: url, download: nom });
+  document.body.append(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+}
 
-$("#meta").textContent = `${D.objets.length} objets · généré le ${D.genere_le}`;
-
-// Range des éléments par univers (On bike / Off bike) puis par groupe (Haut, Bas…).
-// cle(x) renvoie le rôle qui sert à classer l'élément ; rendu(liste, groupe) produit le HTML d'un groupe.
+// Range des éléments par univers puis par groupe (Haut, Bas…). cle(x) donne le rôle de classement.
 function parUnivers(elements, cle, rendu, UNIVERS = UNIVERS_NEUTRE) {
   const paquets = {};
-  elements.forEach(x => { const r = ROLE[cle(x)]; (paquets[`${r.univers}/${r.groupe}`] ||= []).push(x); });
+  elements.forEach(x => { const r = ROLE[cle(x)]; if (r) (paquets[`${r.univers}/${r.groupe}`] ||= []).push(x); });
   let html = "", univers = null;
   for (const k of ORDRE.filter(k => paquets[k])) {
     const [u, g] = k.split("/");
@@ -273,95 +220,6 @@ function parUnivers(elements, cle, rendu, UNIVERS = UNIVERS_NEUTRE) {
   }
   return html;
 }
-function parUniversMd(elements, cle, ligne, UNIVERS = UNIVERS_NEUTRE) {
-  const paquets = {};
-  elements.forEach(x => { const r = ROLE[cle(x)]; (paquets[`${r.univers}/${r.groupe}`] ||= []).push(x); });
-  let md = "", univers = null;
-  for (const k of ORDRE.filter(k => paquets[k])) {
-    const [u, g] = k.split("/");
-    if (u !== univers) { md += `\n## ${UNIVERS[u] || u}\n`; univers = u; }
-    md += `\n### ${GROUPES[g] || g}\n\n` + paquets[k].map(ligne).join("");
-  }
-  return md;
-}
-
-/* Réglages de checklist par activité : mode chaud/froid, renfort, modules */
-const reglages = stocker.lire("reglages", {});
-function reglagesDe(a) { return reglages[a.activite] ||= { mode: "chaud", renfort: false, modules: [] }; }
-function rolesDe(a, r) {
-  const t = a.temperature?.[r.mode] || {}, renf = r.renfort ? (t.renfort || {}) : {};
-  const ajouter = [...a.base, ...(t.ajouter || []), ...(renf.ajouter || [])], retirer = new Set(renf.retirer || []);
-  r.modules.forEach(n => { const m = a.modules?.[n]; if (!m) return; ajouter.push(...(m.ajouter || [])); (m.retirer || []).forEach(x => retirer.add(x)); });
-  return [...new Set(ajouter)].filter(x => !retirer.has(x));
-}
-// Saison d'un rôle dans une activité : là où l'activité le réclame.
-function saisonRole(a, role) {
-  for (const mode of ["chaud", "froid"]) {
-    const t = a.temperature?.[mode];
-    if (t && [...(t.ajouter || []), ...(t.renfort?.ajouter || [])].includes(role)) return mode;
-  }
-  return "toutes-saisons";
-}
-
-// Sortie préparée (météo, horaires) : sert à choisir l'objet le plus adapté.
-let sortie = stocker.lire("sortie", null);
-let modeCourant = null;
-// Activité affichée : seuls ses objets (champ activites) comptent pour remplir un rôle.
-let activiteCourante = null;
-
-// Écart entre un objet et la sortie (0 = colle parfaitement) : plage de température, puis tag saison.
-function ecart(o) {
-  let e = 0;
-  if (modeCourant && o.saison && o.saison !== "toutes-saisons" && o.saison !== modeCourant) e += 5;
-  if (sortie && sortie.tmin != null) {
-    if (o.temp_min == null && o.temp_max == null) e += 0.5;
-    else e += Math.max(0, (o.temp_min ?? -99) - sortie.tmin) + Math.max(0, sortie.tmax - (o.temp_max ?? 99));
-  }
-  return e;
-}
-// Rôles d'un objet pour l'activité affichée (roles_par_activite prime sur roles).
-function rolesObjet(o) {
-  return (activiteCourante && o.roles_par_activite?.[activiteCourante]) || o.roles;
-}
-// Objets qui remplissent un rôle : possédés d'abord (le plus adapté puis le plus léger),
-// les autres comptent comme « prévus ».
-function objetsPour(role) {
-  const tous = D.objets.filter(o => rolesObjet(o).includes(role) && o.statut !== "reforme" &&
-      (!activiteCourante || (o.activites || []).includes(activiteCourante)))
-    .sort((a, b) => ecart(a) - ecart(b) || (a.poids_g ?? 9999) - (b.poids_g ?? 9999));
-  return { possedes: tous.filter(o => o.statut === "possede"), prevus: tous.filter(o => o.statut !== "possede") };
-}
-function etat(role) {
-  const { possedes, prevus } = objetsPour(role);
-  if (possedes.length) return { cls: "ok", txt: possedes.length > 1 ? `${possedes.length} objets` : "OK", possedes, prevus };
-  if (prevus.length) return { cls: "prevu", txt: STATUTS[prevus[0].statut], possedes, prevus };
-  return { cls: "manque", txt: "Manque", possedes, prevus };
-}
-function plage(o) {
-  if (o.temp_min == null && o.temp_max == null) return "";
-  return `${o.temp_min ?? "?"} à ${o.temp_max ?? "?"} °C`;
-}
-function ligneRole(role, { caseACocher = false, coche = false, note = "", saison = "" } = {}) {
-  const r = ROLE[role], e = etat(role);
-  const noms = (e.possedes.length ? e.possedes : e.prevus).map(o => [o.nom, plage(o)].filter(Boolean).join(" · "));
-  if (note) noms.push(note);
-  return `<div class="ligne${coche ? " coche" : ""}">
-    ${caseACocher ? `<input type="checkbox" data-role="${role}"${coche ? " checked" : ""} aria-label="${esc(r.libelle)}">` : ""}
-    <div class="corps"><div class="titre">${esc(r.libelle)}${tag(saison)}</div>
-      <div class="sous">${noms.length ? esc(noms.join(" / ")) : "Aucun objet dans l'inventaire"}</div></div>
-    <span class="pastille ${e.cls}">${esc(e.txt)}</span></div>`;
-}
-function remplirActivites(sel) {
-  sel.innerHTML = D.activites.map((a, i) => `<option value="${i}">${esc(a.activite)}</option>`).join("");
-}
-function telecharger(nom, contenu, type) {
-  const url = URL.createObjectURL(new Blob([contenu], { type }));
-  const a = Object.assign(document.createElement("a"), { href: url, download: nom });
-  document.body.append(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-}
-const isoLocal = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-const aujourdhui = () => isoLocal(new Date());
-const carte = (g, contenu) => `<div class="carte"><h3>${GROUPES[g] || g}</h3>${contenu}</div>`;
 
 /* Onglets */
 document.querySelectorAll("nav button").forEach(b => b.onclick = () => {
@@ -369,134 +227,147 @@ document.querySelectorAll("nav button").forEach(b => b.onclick = () => {
   document.querySelectorAll("main section").forEach(s => s.hidden = s.id !== b.dataset.onglet);
   stocker.ecrire("onglet", b.dataset.onglet);
 });
-const ongletInitial = stocker.lire("onglet", "preparer");
-(document.querySelector(`nav button[data-onglet="${ongletInitial}"]`) || document.querySelector("nav button")).click();
+(document.querySelector(`nav button[data-onglet="${stocker.lire("onglet", "sorties")}"]`) || document.querySelector("nav button")).click();
 
-/* Checklist */
-const cochees = stocker.lire("cochees", {});
-// La checklist découle de la dernière sortie préparée (onglet Préparer), sans réglage manuel.
-function activiteChecklist() { return sortie && D.activites.find(a => a.activite === sortie.activite); }
-// Un même objet qui remplit deux rôles n'est emporté qu'une fois : on le signale.
-function notesDoublons(roles) {
-  const vu = {}, notes = {};
-  for (const r of roles) {
-    const o = etat(r).possedes[0];
-    if (!o) continue;
-    if (vu[o.id]) notes[r] = `même objet que « ${ROLE[vu[o.id]].libelle} »`;
-    else vu[o.id] = r;
-  }
-  return notes;
+/* Mes sorties : les checklists écrites par Claude dans sorties/, cochables */
+let sortieOuverte = stocker.lire("sortie-ouverte", null);
+const enLigne = t => esc(t).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+// Rendu des checklists Markdown : titres, cases à cocher (avec numéro de ligne), puces, paragraphes.
+function rendreMarkdown(md) {
+  const lignes = md.split("\n"), blocs = [];
+  let liste = null;
+  const fermer = () => { if (liste) { blocs.push(`<div class="carte">${liste.join("")}</div>`); liste = null; } };
+  lignes.forEach((l, i) => {
+    const caseM = l.match(/^\s*- \[([ xX])\] (.*)$/), puce = l.match(/^\s*- (.*)$/);
+    if (/^# /.test(l)) return;
+    if (/^### /.test(l)) { fermer(); blocs.push(`<h3>${enLigne(l.slice(4))}</h3>`); return; }
+    if (/^## /.test(l)) { fermer(); blocs.push(`<h2 class="univers">${enLigne(l.slice(3))}</h2>`); return; }
+    if (caseM) {
+      liste ||= [];
+      const coche = caseM[1] !== " ", [nom, ...suite] = caseM[2].split(" – ");
+      liste.push(`<label class="ligne${coche ? " coche" : ""}"><input type="checkbox" data-ligne="${i}"${coche ? " checked" : ""}${EDITION ? "" : " disabled"}>
+        <span class="corps"><span class="titre">${enLigne(nom)}</span>${suite.length ? `<span class="sous"> – ${enLigne(suite.join(" – "))}</span>` : ""}</span></label>`);
+      return;
+    }
+    if (puce) { liste ||= []; liste.push(`<div class="puce">• ${enLigne(puce[1])}</div>`); return; }
+    if (/^\s{2,}\S/.test(l) && liste) {   // suite de la ligne précédente
+      liste[liste.length - 1] = liste[liste.length - 1].replace(/(<\/span><\/span><\/label>|<\/div>)$/, ` ${enLigne(l.trim())}$1`);
+      return;
+    }
+    if (!l.trim()) return;
+    fermer(); blocs.push(`<p>${enLigne(l)}</p>`);
+  });
+  fermer();
+  return blocs.join("");
 }
-function rendreChecklist() {
-  const a = activiteChecklist();
-  if (!a) {
-    $("#c-sortie").innerHTML = "";
-    $("#c-liste").innerHTML = `<p class="vide">Décris ta sortie dans l'onglet <strong>Préparer</strong> (par exemple « gravel le 5 décembre à Tours, 2 jours en gîte ») : la checklist adaptée s'affichera ici.</p>`;
+function progression(s) {
+  const cases = s.contenu.match(/^\s*- \[[ xX]\] /gm) || [];
+  return { total: cases.length, faites: cases.filter(c => /\[[xX]\]/.test(c)).length };
+}
+function rendreSorties() {
+  const s = D.sorties.find(x => x.fichier === sortieOuverte);
+  if (s) {
+    const p = progression(s);
+    $("#s-contenu").innerHTML = `<div class="outils"><button class="btn" id="s-retour">← Toutes les sorties</button>
+        <button class="btn" onclick="print()">Imprimer / PDF</button><span class="sous" id="s-compte">${p.faites} / ${p.total} cochés</span></div>
+      <h2 class="activite">${enLigne(s.titre)}</h2><div class="md" data-fichier="${esc(s.fichier)}">${rendreMarkdown(s.contenu)}</div>`;
+    $("#s-retour").onclick = () => { sortieOuverte = null; stocker.ecrire("sortie-ouverte", null); rendreSorties(); };
     return;
   }
-  const r = reglagesDe(a);
-  modeCourant = a.temperature ? r.mode : null; activiteCourante = a.activite;
-  const roles = rolesDe(a, r), deja = cochees[a.activite] || [], notes = notesDoublons(roles);
-  $("#c-sortie").innerHTML = carteSortie(sortie);
-  $("#c-liste").innerHTML = parUnivers(roles, x => x, (liste, g) => carte(g, liste.map(role =>
-    ligneRole(role, { caseACocher: true, coche: deja.includes(role), note: notes[role],
-      saison: VETEMENTS.includes(g) ? etat(role).possedes[0]?.saison : "" })).join("")), a.univers) || `<p class="vide">Aucun rôle.</p>`;
-  modeCourant = activiteCourante = null;
+  $("#s-contenu").innerHTML = D.sorties.length ? D.sorties.map(x => {
+    const p = progression(x), d = new Date(x.date + "T12:00");
+    return `<button class="sortie-lien" data-ouvrir="${esc(x.fichier)}">
+      <div class="titre">${enLigne(x.titre)}</div>
+      <div class="sous">${majuscule(x.activite)} · ${d.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric" })} · ${p.faites} / ${p.total} cochés</div>
+      <div class="progression"><span style="width:${p.total ? 100 * p.faites / p.total : 0}%"></span></div></button>`;
+  }).join("") : `<p class="vide">Aucune sortie pour l'instant. Demande à Claude de préparer ta prochaine sortie
+    (par exemple « gravel le we prochain depuis Tours, nuit en gîte ») : sa checklist apparaîtra ici.</p>`;
 }
-$("#c-liste").onchange = e => {
-  const a = activiteChecklist().activite, r = e.target.dataset.role, liste = new Set(cochees[a] || []);
-  e.target.checked ? liste.add(r) : liste.delete(r);
-  cochees[a] = [...liste]; stocker.ecrire("cochees", cochees);
-  e.target.closest(".ligne").classList.toggle("coche", e.target.checked);
-};
-$("#c-raz").onclick = () => { if (!activiteChecklist()) return; cochees[activiteChecklist().activite] = []; stocker.ecrire("cochees", cochees); rendreChecklist(); };
-$("#c-export").onclick = () => {
-  const a = activiteChecklist();
-  if (!a) return;
-  const r = reglagesDe(a);
-  modeCourant = a.temperature ? r.mode : null; activiteCourante = a.activite;
-  const s = sortie && sortie.activite === a.activite ? sortie : null, roles = rolesDe(a, r), notes = notesDoublons(roles);
-  const renfort = r.renfort ? a.temperature?.[r.mode]?.renfort?.nom : null;
-  let md = s ? `# ${s.titre}\n\n${s.resume}\n\nHypothèses : ${s.hypotheses.join(" ; ") || "aucune"}\n`
-             : `# Sortie ${a.activite} du ${aujourdhui()}\n`;
-  md += `\nTempérature : ${r.mode}${renfort ? ` + ${renfort}` : ""} · Modules : ${r.modules.join(", ") || "aucun"}\n`;
-  md += parUniversMd(roles, x => x, role => {
-    const e = etat(role), o = e.possedes[0];
-    return `- [ ] ${ROLE[role].libelle} : ${o ? o.nom : `**${e.txt.toLowerCase()}**`}${notes[role] ? ` (${notes[role]})` : ""}\n`;
-  }, a.univers);
-  md += `\n## Eau et nourriture\n\nEstimation à venir.\n`;
-  md += `\n## Retour\n\n- Ce qui a manqué :\n- Ce qui était en trop :\n`;
-  modeCourant = activiteCourante = null;
-  telecharger(`${s ? s.date : aujourdhui()}-${a.activite}.md`, md, "text/markdown");
-};
-rendreChecklist();
+$("#s-contenu").addEventListener("click", e => {
+  const b = e.target.closest("[data-ouvrir]");
+  if (b) { sortieOuverte = b.dataset.ouvrir; stocker.ecrire("sortie-ouverte", sortieOuverte); rendreSorties(); scrollTo(0, 0); }
+});
+$("#s-contenu").addEventListener("change", async e => {
+  const i = e.target, fichier = i.closest(".md")?.dataset.fichier;
+  if (!fichier || !i.dataset.ligne) return;
+  i.closest(".ligne").classList.toggle("coche", i.checked);
+  const s = D.sorties.find(x => x.fichier === fichier), lignes = s.contenu.split("\n"), n = +i.dataset.ligne;
+  lignes[n] = lignes[n].replace(/- \[[ xX]\] /, i.checked ? "- [x] " : "- [ ] ");
+  s.contenu = lignes.join("\n");
+  const p = progression(s); $("#s-compte").textContent = `${p.faites} / ${p.total} cochés`;
+  try {
+    const r = await fetch(`/api/sorties/${encodeURIComponent(fichier)}/cocher`, { method: "POST",
+      headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ligne: n, coche: i.checked }) });
+    if (r.ok) D.version = (await r.json()).version;
+  } catch {}
+});
 
-/* Manques : tous les rôles qu'une activité peut réclamer, rangés comme la checklist */
-remplirActivites($("#m-activite"));
-function rolesManques() {
-  const a = D.activites[$("#m-activite").value], per = $("#m-perimetre").value, sai = $("#m-saison").value;
+/* Rôles et objets */
+// Rôles d'un objet pour une activité (roles_par_activite prime sur roles).
+function rolesObjet(o, activite) { return (activite && o.roles_par_activite?.[activite]) || o.roles; }
+function objetsPour(role, activite) {
+  return D.objets.filter(o => rolesObjet(o, activite).includes(role) && o.statut !== "reforme" &&
+    (!activite || (o.activites || []).includes(activite)));
+}
+// Où une activité réclame un rôle : base, mode de température, renfort, modules.
+function contextes(a, role) {
+  const c = [];
+  if (a.base.includes(role)) c.push("toujours");
+  for (const mode of ["chaud", "froid"]) {
+    const t = a.temperature?.[mode];
+    if (!t) continue;
+    if ((t.ajouter || []).includes(role)) c.push(mode);
+    if ((t.renfort?.ajouter || []).includes(role)) c.push(t.renfort.nom || `${mode} (renfort)`);
+  }
+  for (const [nom, m] of Object.entries(a.modules || {})) if ((m.ajouter || []).includes(role)) c.push(nom);
+  return c;
+}
+function rolesActivite(a) {
   const t = a.temperature || {};
-  const tous = [...a.base, ...["chaud", "froid"].flatMap(m => [...(t[m]?.ajouter || []), ...(t[m]?.renfort?.ajouter || [])]),
-    ...Object.values(a.modules || {}).flatMap(m => m.ajouter || [])];
-  return [...new Set(tous)].filter(r => (!per || VETEMENTS.includes(ROLE[r].groupe)) &&
-    (!sai || [sai, "toutes-saisons"].includes(saisonRole(a, r))));
+  return [...new Set([...a.base, ...["chaud", "froid"].flatMap(m => [...(t[m]?.ajouter || []), ...(t[m]?.renfort?.ajouter || [])]),
+    ...Object.values(a.modules || {}).flatMap(m => m.ajouter || [])])];
+}
+
+/* Manques : uniquement les rôles qu'aucun objet possédé ne remplit, par activité */
+function manquesDe(a) {
+  return rolesActivite(a).filter(r => !objetsPour(r, a.activite).some(o => POSSEDES.includes(o.statut)));
 }
 function rendreManques() {
-  const a = D.activites[$("#m-activite").value], roles = rolesManques();
-  activiteCourante = a.activite;
-  const compte = { ok: 0, prevu: 0, manque: 0 };
-  roles.forEach(r => compte[etat(r).cls]++);
-  $("#m-resume").innerHTML = `<span class="pastille ok">${compte.ok} couverts</span>
-    <span class="pastille prevu">${compte.prevu} prévus</span><span class="pastille manque">${compte.manque} manquants</span>`;
-  $("#m-liste").innerHTML = parUnivers(roles, x => x, (liste, g) =>
-    carte(g, liste.map(r => ligneRole(r, { saison: VETEMENTS.includes(g) ? saisonRole(a, r) : "" })).join("")), a.univers) || `<p class="vide">Aucun rôle.</p>`;
-  activiteCourante = null;
+  $("#m-liste").innerHTML = D.activites.map(a => {
+    const roles = manquesDe(a);
+    const corps = roles.length ? parUnivers(roles, x => x, (liste, g) => carte(g, liste.map(r => {
+      const prevus = objetsPour(r, a.activite).filter(o => !POSSEDES.includes(o.statut));
+      return `<div class="ligne"><div class="corps"><div class="titre">${esc(ROLE[r].libelle)}</div>
+        <div class="sous">${prevus.map(o => `${esc(o.nom)} (${STATUTS[o.statut].toLowerCase()}) · `).join("")}sert : ${esc(contextes(a, r).join(", "))}</div></div>
+        <div class="droite"><span class="pastille ${prevus.length ? "prevu" : "manque"}">${prevus.length ? STATUTS[prevus[0].statut] : "Manque"}</span>
+        ${EDITION && prevus.length ? `<button class="btn petit" data-modifier="${esc(prevus[0].id)}">Modifier</button>` : ""}</div></div>`;
+    }).join("")), a.univers) : `<p class="vide">Rien ne manque.</p>`;
+    return `<h2 class="activite">${majuscule(a.activite)} <span class="sous">· ${roles.length} manque${roles.length > 1 ? "s" : ""}</span></h2>${corps}`;
+  }).join("");
 }
-$("#m-activite").onchange = $("#m-perimetre").onchange = $("#m-saison").onchange = rendreManques;
-$("#m-export").onclick = () => {
-  const a = D.activites[$("#m-activite").value];
-  activiteCourante = a.activite;
-  const md = `# Manques ${a.activite} (${aujourdhui()})\n` + parUniversMd(rolesManques(), x => x, r => {
-    const e = etat(r), noms = (e.possedes.length ? e.possedes : e.prevus).map(o => o.nom).join(", ");
-    const s = VETEMENTS.includes(ROLE[r].groupe) ? ` [${SAISONS[saisonRole(a, r)].toLowerCase()}]` : "";
-    return `- ${e.cls === "ok" ? "✅" : e.cls === "prevu" ? "🟡" : "❌"} ${ROLE[r].libelle}${s}${noms ? ` : ${noms}` : ""}${e.cls !== "ok" ? ` (${e.txt.toLowerCase()})` : ""}\n`;
-  }, a.univers);
-  activiteCourante = null;
-  telecharger(`manques-${a.activite}-${aujourdhui()}.md`, md, "text/markdown");
-};
-rendreManques();
 
-/* Inventaire : rangé selon le premier rôle de chaque objet */
-$("#i-statut").innerHTML += Object.entries(STATUTS).map(([k, v]) => `<option value="${k}">${v}</option>`).join("");
-$("#i-saison").innerHTML += Object.entries(SAISONS).map(([k, v]) => `<option value="${k}">${v}</option>`).join("");
-function objetsFiltres() {
-  const q = $("#i-recherche").value.trim().toLowerCase(), s = $("#i-statut").value, sai = $("#i-saison").value;
-  return D.objets.filter(o => (!s || o.statut === s) && (!sai || o.saison === sai) &&
-    (!q || [o.nom, o.marque, o.modele, o.notes, ...o.roles].join(" ").toLowerCase().includes(q)));
-}
-function rendreInventaire() {
-  $("#i-liste").innerHTML = parUnivers(objetsFiltres(), o => o.roles[0], (liste, g) => carte(g, liste.map(o => {
-    const details = [plage(o), o.poids_g != null ? `${o.poids_g} g` : "", o.roles.map(r => ROLE[r]?.libelle || r).join(", "),
+/* Mes équipements : ce que je possède, rangé selon le premier rôle de chaque objet */
+function mesEquipements() { return D.objets.filter(o => POSSEDES.includes(o.statut)); }
+function rendreEquipements() {
+  $("#i-liste").innerHTML = parUnivers(mesEquipements(), o => o.roles[0], (liste, g) => carte(g, liste.map(o => {
+    const details = [plage(o), o.poids_g != null ? `${o.poids_g} g` : "", (o.activites || []).join(", "),
+      o.roles.map(r => ROLE[r]?.libelle || r).join(", "),
       ...Object.entries(o.roles_par_activite || {}).map(([act, rs]) => `en ${act} : ${rs.map(r => ROLE[r]?.libelle || r).join(", ")}`)].filter(Boolean).join(" · ");
-    const cls = o.statut === "possede" ? "ok" : o.statut === "reforme" ? "manque" : "prevu";
     return `<div class="ligne"><div class="corps"><div class="titre">${o.lien ? `<a href="${esc(o.lien)}" target="_blank" rel="noopener" style="color:inherit">${esc(o.nom)}</a>` : esc(o.nom)}${tag(o.saison)}</div>
       <div class="sous">${esc(details)}</div>${o.notes ? `<div class="sous">${esc(o.notes)}</div>` : ""}</div>
-      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
-        <span class="pastille ${cls}">${STATUTS[o.statut] || o.statut}</span>
+      <div class="droite">${o.statut === "a-confirmer" ? `<span class="pastille prevu">À confirmer</span>` : ""}
         ${EDITION ? `<button class="btn petit" data-modifier="${esc(o.id)}">Modifier</button>` : ""}</div></div>`;
-  }).join(""))) || `<p class="vide">Aucun objet.</p>`;
+  }).join(""))) || `<p class="vide">Aucun équipement.</p>`;
 }
-$("#i-recherche").oninput = $("#i-statut").onchange = $("#i-saison").onchange = rendreInventaire;
 $("#i-export").onclick = () => {
   const cols = ["id", "nom", "marque", "modele", "univers", "groupe", "saison", "roles", "activites", "temp_min", "temp_max", "impermeable", "poids_g", "statut", "lien", "notes"];
-  const val = (o, c) => c === "univers" ? UNIVERS_NEUTRE[ROLE[o.roles[0]].univers] : c === "groupe" ? GROUPES[ROLE[o.roles[0]].groupe] : o[c];
+  const val = (o, c) => c === "univers" ? UNIVERS_NEUTRE[ROLE[o.roles[0]]?.univers] : c === "groupe" ? GROUPES[ROLE[o.roles[0]]?.groupe] : o[c];
   const cell = v => { v = Array.isArray(v) ? v.join(" ") : v ?? ""; v = String(v); return /[";\n]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v; };
-  const csv = [cols.join(";"), ...objetsFiltres().map(o => cols.map(c => cell(val(o, c))).join(";"))].join("\n");
-  telecharger(`inventaire-${aujourdhui()}.csv`, "﻿" + csv, "text/csv");
+  const csv = [cols.join(";"), ...D.objets.map(o => cols.map(c => cell(val(o, c))).join(";"))].join("\n");
+  telecharger(`equipements-${aujourdhui()}.csv`, "﻿" + csv, "text/csv");
 };
-rendreInventaire();
 
-/* Édition (application locale uniquement : ruby vue/serveur.rb) */
+/* Édition (application locale uniquement) */
 function editeurOuvrir(o) {
   const f = $("#e-form"), nouveau = !o;
   o = o || { statut: "possede", roles: [], activites: [] };
@@ -525,7 +396,6 @@ function editeurOuvrir(o) {
   f.roles_par_activite.value = Object.entries(o.roles_par_activite || {}).map(([a, rs]) => `${a}: ${rs.join(", ")}`).join("\n");
   $("#editeur").showModal();
 }
-const slug = s => norm(s).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 $("#e-form").nom.oninput = e => { const f = $("#e-form"); if (f.id.dataset.auto) f.id.value = slug(e.target.value); };
 $("#e-form").id.oninput = e => { e.target.dataset.auto = ""; };
 $("#e-filtre-roles").oninput = e => {
@@ -576,335 +446,38 @@ $("#e-form").onsubmit = e => {
 $("#e-annuler").onclick = () => $("#editeur").close();
 $("#e-supprimer").onclick = () => {
   const c = editeurOuvrir.courant;
-  if (c && confirm(`Supprimer définitivement « ${c.nom} » de l'inventaire ?\nPour le garder en historique, passe plutôt son statut à « Réformé ».`))
+  if (c && confirm(`Supprimer définitivement « ${c.nom} » ?\nPour le garder en historique, passe plutôt son statut à « Réformé ».`))
     editeurEnvoyer("DELETE", `/api/objets/${encodeURIComponent(c.id)}`);
 };
 $("#i-ajouter").onclick = () => editeurOuvrir(null);
-$("#i-liste").onclick = e => {
+document.querySelector("main").addEventListener("click", e => {
   const id = e.target.dataset?.modifier;
   if (id) editeurOuvrir(D.objets.find(o => o.id === id));
-};
+});
 
 // Recharge tout l'affichage avec de nouvelles données (après une édition ou un changement des fichiers).
 function appliquerDonnees(d) {
   D = d;
   ROLE = Object.fromEntries(D.roles.map(r => [r.id, r]));
   ORDRE = [...new Set(D.roles.map(r => `${r.univers}/${r.groupe}`))];
-  $("#meta").textContent = `${D.objets.length} objets · mis à jour le ${D.genere_le}`;
-  for (const sel of [$("#m-activite")]) { const v = sel.value; remplirActivites(sel); sel.value = v < D.activites.length ? v : 0; }
-  rendreChecklist(); rendreManques(); rendreInventaire();
+  rendreTout();
 }
+function rendreTout() {
+  $("#meta").textContent = `${mesEquipements().length} équipements · ${D.sorties.length} sortie${D.sorties.length > 1 ? "s" : ""} · mis à jour le ${D.genere_le}`;
+  rendreSorties(); rendreManques(); rendreEquipements();
+}
+rendreTout();
 if (EDITION) {
   $("#i-ajouter").hidden = false;
   // Surveille les fichiers : une modification faite ailleurs (par Claude, à la main) s'affiche toute seule.
   setInterval(async () => {
+    if ($("#editeur").open) return;
     try {
       const v = (await (await fetch("/api/version")).json()).version;
       if (v !== D.version) appliquerDonnees(await (await fetch("/api/donnees")).json());
     } catch {}
   }, 3000);
 }
-
-/* Préparer une sortie : texte libre + ville ou trace GPX → météo → réglages → checklist */
-
-function analyserTexte(texte) {
-  const t = norm(texte), hyp = [];
-  let activite = D.activites.find(a => t.includes(norm(a.activite)));
-  if (!activite) { activite = D.activites[0]; hyp.push(`activité non précisée : ${activite.activite}`); }
-
-  const auj = new Date(); auj.setHours(0, 0, 0, 0);
-  const dansJours = n => { const d = new Date(auj); d.setDate(d.getDate() + n); return d; };
-  let date = null, jours = 1, m;
-  const mois = MOIS.join("|");
-  if ((m = t.match(new RegExp(`du\\s+(\\d{1,2})(?:er)?(?:\\s+(${mois}))?\\s+au\\s+(\\d{1,2})(?:er)?\\s+(${mois})`)))) {
-    const finMois = MOIS.indexOf(m[4]), debutMois = m[2] ? MOIS.indexOf(m[2]) : finMois;
-    date = new Date(auj.getFullYear(), debutMois, +m[1]);
-    if (date < auj) date.setFullYear(date.getFullYear() + 1);
-    const fin = new Date(date.getFullYear() + (finMois < debutMois ? 1 : 0), finMois, +m[3]);
-    jours = Math.round((fin - date) / 864e5) + 1;
-  } else if (/\b(?:week-?end|we|w-e)\b/.test(t)) {
-    // Le samedi qui vient (aujourd'hui si on est samedi) ; le dimanche, « ce week-end » = aujourd'hui.
-    if (auj.getDay() === 0 && !/prochain/.test(t)) { date = auj; jours = 1; }
-    else { date = dansJours((6 - auj.getDay() + 7) % 7 || (auj.getDay() === 6 && /prochain/.test(t) ? 7 : 0)); jours = 2; }
-  } else if ((m = t.match(new RegExp(`(\\d{1,2})(?:er)?\\s+(${mois})`)))) {
-    date = new Date(auj.getFullYear(), MOIS.indexOf(m[2]), +m[1]);
-    if (date < auj) date.setFullYear(date.getFullYear() + 1);
-  } else if ((m = t.match(/\b(\d{1,2})\/(\d{1,2})\b/))) {
-    date = new Date(auj.getFullYear(), +m[2] - 1, +m[1]);
-    if (date < auj) date.setFullYear(date.getFullYear() + 1);
-  } else if (/apres[- ]demain/.test(t)) date = dansJours(2);
-  else if (/demain/.test(t)) date = dansJours(1);
-  else if (/aujourd/.test(t)) date = auj;
-  else {
-    const j = JOURS.findIndex(j => new RegExp(`\\b${j}\\b`).test(t));
-    if (j >= 0) date = dansJours((j - auj.getDay() + 7) % 7);
-  }
-  if (!date) { date = auj; hyp.push("date non précisée : aujourd'hui"); }
-  if (jours === 1 && (m = t.match(/(\d{1,2})\s*jours/))) jours = +m[1];
-  const hebergement = /refuge/.test(t) ? "refuge" : /bivouac/.test(t) ? "bivouac"
-    : /gite|airbnb|hotel|chambre d'hote|auberge/.test(t) ? "gîte" : null;
-  if (jours > 1 && !hebergement) hyp.push("hébergement non précisé : ni refuge ni bivouac, donc pas de couchage");
-
-  let debut = null, fin = null, duree = null;
-  if ((m = t.match(/(\d{1,2})\s*h\s*(\d{2})?\s*(?:-|a|jusqu'a)\s*(\d{1,2})\s*h\s*(\d{2})?/))) {
-    debut = heure(m[1], m[2]); fin = heure(m[3], m[4]);
-  } else {
-    if ((m = t.match(/(?:depart|a|des|vers)\s+(\d{1,2})\s*h\s*(\d{2})?/))) debut = heure(m[1], m[2]);
-    const reste = m ? t.replace(m[0], "") : t;
-    if ((m = reste.match(/(\d{1,2})\s*(?:h|heures?)\s*(\d{2})?/))) duree = heure(m[1], m[2]);
-  }
-  if (fin == null && duree == null) {
-    if (/journee/.test(t)) { debut ??= 9; duree = 8; }
-    else if (/apres[- ]midi/.test(t)) { debut ??= 13.5; duree = 4; }
-    else if (/matin/.test(t)) { debut ??= 8; duree = 4; }
-    else if (/soir/.test(t)) { debut ??= 18; duree = 3; }
-  }
-  if (fin == null && duree == null && trace) {
-    const est = dureeEstimee(activite, trace);
-    if (est) { duree = est.h; hyp.push(`durée estimée d'après la trace : ${fmtH(duree)} (${est.methode})`); }
-  }
-  if (fin == null && duree == null && jours > 1) { debut ??= 9; duree = 8; hyp.push("horaires non précisés : 9h – 17h chaque jour"); }
-  if (fin == null && duree == null) { duree = 3; hyp.push("durée non précisée : 3 h"); }
-  if (debut == null) { debut = 9; hyp.push("heure de départ non précisée : 9h"); }
-  fin ??= debut + duree;
-  // Ce que la phrase impose, prioritaire sur la météo.
-  const forcages = {};
-  if (/grand froid/.test(t)) { forcages.mode = "froid"; forcages.renfort = true; }
-  else if (/\bfroid\b/.test(t)) forcages.mode = "froid";
-  else if (/\bchaud\b|canicule/.test(t)) forcages.mode = "chaud";
-  if (/sans pluie|\bau sec\b|temps sec/.test(t)) forcages.pluie = false;
-  else if (/pluie|pluvieux|averse/.test(t)) forcages.pluie = true;
-  if (/de nuit|nocturne|a la frontale/.test(t)) forcages.nuit = true;
-  return { activite, date, jours, hebergement, debut, fin, lieu: lieuDuTexte(t), forcages, hypotheses: hyp };
-}
-
-// Lieu écrit dans la phrase : « à Tours », « depuis Le Mans », « au départ d'Annecy ».
-const PAS_UN_LIEU = new Set(["partir", "journee", "midi", "pied", "velo", "jeun", "fond", "la", "le", "les", ...JOURS, ...MOIS]);
-function lieuDuTexte(t) {
-  // Noms composés : traits d'union (Saint-Cyr-sur-Loire) ou « sur / sous » avec espaces.
-  const re = /(?:^|\s)(?:(?:a|depuis|vers)\s+|au depart d(?:e\s+|'))((?:le |la |les )?[a-z][a-z'-]*(?: (?:sur|sous) [a-z][a-z'-]*)?)/g;
-  for (const m of t.matchAll(re)) {
-    const mot = m[1].trim();
-    if (!PAS_UN_LIEU.has(mot.split(/[ -]/).pop()) && !PAS_UN_LIEU.has(mot) && !/^\d/.test(mot)) return mot;
-  }
-  return null;
-}
-
-function lireGpx(xml) {
-  const doc = new DOMParser().parseFromString(xml, "application/xml");
-  const pts = [...doc.querySelectorAll("trkpt, rtept")].map(p => ({
-    lat: +p.getAttribute("lat"), lon: +p.getAttribute("lon"), ele: parseFloat(p.querySelector("ele")?.textContent) }));
-  if (pts.length < 2) throw new Error("trace GPX vide ou illisible");
-  const rad = x => x * Math.PI / 180;
-  let km = 0, dplus = 0, eleRef = pts[0].ele;
-  for (let i = 1; i < pts.length; i++) {
-    const a = pts[i - 1], b = pts[i];
-    const h = Math.sin(rad(b.lat - a.lat) / 2) ** 2 + Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(rad(b.lon - a.lon) / 2) ** 2;
-    km += 12742 * Math.asin(Math.sqrt(h));
-    // Seuil de 5 m pour ne pas compter le bruit de l'altimètre.
-    if (!isNaN(b.ele) && !isNaN(eleRef)) {
-      if (b.ele - eleRef > 5) { dplus += b.ele - eleRef; eleRef = b.ele; }
-      else if (b.ele < eleRef) eleRef = b.ele;
-    }
-  }
-  const eles = pts.map(p => p.ele).filter(e => !isNaN(e));
-  return { nom: doc.querySelector("trk > name, rte > name, metadata > name")?.textContent?.trim() || "",
-    lat: pts[0].lat, lon: pts[0].lon, km, dplus,
-    altMax: eles.length ? Math.max(...eles) : null, altMin: eles.length ? Math.min(...eles) : null };
-}
-// Durée estimée selon la méthode de l'activité (parametres.vitesse), arrondie au quart d'heure.
-function dureeEstimee(activite, t) {
-  const v = activite.parametres?.vitesse, q = h => Math.round(h * 4) / 4;
-  if (v?.methode === "velo" && v.plat_kmh && v.montee_m_h)
-    return { h: q(t.km / v.plat_kmh + t.dplus / v.montee_m_h), methode: `${v.plat_kmh} km/h et 1 h par ${v.montee_m_h} m de D+` };
-  if (v?.methode === "km-effort" && v.km_effort_h)
-    return { h: q((t.km + t.dplus / 100) / v.km_effort_h), methode: `${v.km_effort_h} km-effort/h` };
-  return null;
-}
-
-async function geocoder(ville) {
-  const r = await fetch(`https://geocoding-api.open-meteo.com/v1/search?count=1&language=fr&name=${encodeURIComponent(ville)}`);
-  const j = await r.json();
-  if (!j.results?.length) throw new Error(`ville introuvable : ${ville}`);
-  return { lat: j.results[0].latitude, lon: j.results[0].longitude, nom: j.results[0].name };
-}
-
-// Météo sur le créneau horaire de chaque jour de la sortie, résumée sur l'ensemble des jours.
-async function meteo(lieu, date, jours, debut, fin) {
-  const jour = isoLocal(date), dernier = new Date(date); dernier.setDate(dernier.getDate() + jours - 1);
-  const auj = new Date(); auj.setHours(0, 0, 0, 0);
-  if ((dernier - auj) / 864e5 > 15) return normales(lieu, date, jours);
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lieu.lat}&longitude=${lieu.lon}&timezone=auto` +
-    `&hourly=temperature_2m,apparent_temperature,precipitation_probability,precipitation,wind_speed_10m,wind_gusts_10m` +
-    `&daily=sunrise,sunset&start_date=${jour}&end_date=${isoLocal(dernier)}`;
-  const r = await fetch(url), j = await r.json();
-  if (j.error) throw new Error(/range/.test(j.reason) ? "date hors des prévisions (16 jours maximum)" : j.reason);
-  const H = j.hourly, idx = H.time.map((t, i) => [+t.slice(11, 13), i])
-    .filter(([h]) => h >= Math.floor(debut) && h <= Math.min(23, Math.ceil(fin))).map(([, i]) => i);
-  const val = k => idx.map(i => H[k][i]).filter(v => v != null);
-  const hDec = s => heure(s.slice(11, 13), s.slice(14, 16));
-  return { tminRessentie: Math.min(...val("apparent_temperature")), tmax: Math.max(...val("temperature_2m")),
-    pluieProba: Math.max(0, ...val("precipitation_probability")), pluieMm: val("precipitation").reduce((a, b) => a + b, 0),
-    vent: Math.max(...val("wind_speed_10m")), rafales: Math.max(...val("wind_gusts_10m")),
-    lever: Math.max(...j.daily.sunrise.map(hDec)), coucher: Math.min(...j.daily.sunset.map(hDec)), altitudeMeteo: j.elevation };
-}
-
-// Lever et coucher du soleil (formule NOAA simplifiée), en heures locales.
-function soleil(lat, lon, date) {
-  const n = Math.round((date - new Date(date.getFullYear(), 0, 0)) / 864e5), g = 2 * Math.PI / 365 * (n - 1), r = Math.PI / 180;
-  const eqt = 229.18 * (0.000075 + 0.001868 * Math.cos(g) - 0.032077 * Math.sin(g) - 0.014615 * Math.cos(2 * g) - 0.040849 * Math.sin(2 * g));
-  const decl = 0.006918 - 0.399912 * Math.cos(g) + 0.070257 * Math.sin(g) - 0.006758 * Math.cos(2 * g) + 0.000907 * Math.sin(2 * g)
-    - 0.002697 * Math.cos(3 * g) + 0.00148 * Math.sin(3 * g);
-  const ha = Math.acos(Math.cos(90.833 * r) / (Math.cos(lat * r) * Math.cos(decl)) - Math.tan(lat * r) * Math.tan(decl)) / r;
-  const decalage = -date.getTimezoneOffset();
-  return { lever: (720 - 4 * (lon + ha) - eqt + decalage) / 60, coucher: (720 - 4 * (lon - ha) - eqt + decalage) / 60 };
-}
-
-// Normales de saison : moyennes des 10 dernières années autour des dates de la sortie (± 3 jours).
-async function normales(lieu, date, jours) {
-  const an = new Date().getFullYear();
-  const url = `https://archive-api.open-meteo.com/v1/archive?latitude=${lieu.lat}&longitude=${lieu.lon}&timezone=auto` +
-    `&daily=apparent_temperature_min,temperature_2m_max,precipitation_sum,wind_speed_10m_max,wind_gusts_10m_max` +
-    `&start_date=${an - 10}-01-01&end_date=${an - 1}-12-31`;
-  const j = await (await fetch(url)).json();
-  if (j.error) throw new Error(`normales indisponibles : ${j.reason}`);
-  const J = j.daily;
-  const idx = J.time.map((t, i) => {
-    const d = new Date(t), ref = new Date(d.getFullYear(), date.getMonth(), date.getDate());
-    const ecart = Math.round((d - ref) / 864e5);
-    return ecart >= -3 && ecart <= jours - 1 + 3 ? i : -1;
-  }).filter(i => i >= 0);
-  const moy = k => { const v = idx.map(i => J[k][i]).filter(x => x != null); return v.reduce((a, b) => a + b, 0) / v.length; };
-  const pluie = idx.map(i => J.precipitation_sum[i]).filter(x => x != null);
-  const sol = soleil(lieu.lat, lieu.lon, date);
-  return { tminRessentie: moy("apparent_temperature_min"), tmax: moy("temperature_2m_max"),
-    pluieProba: Math.round(100 * pluie.filter(x => x >= 1).length / pluie.length), pluieMm: moy("precipitation_sum"),
-    vent: moy("wind_speed_10m_max"), rafales: moy("wind_gusts_10m_max"), lever: sol.lever, coucher: sol.coucher,
-    altitudeMeteo: j.elevation,
-    normales: `date au-delà des 16 jours de prévision : normales ${an - 10}-${an - 1} autour de ces dates (ressenti = minimum du jour, nuit comprise) ; à refaire à moins de 16 jours` };
-}
-
-// Évalue une condition du type « 12 < temp_min <= 18 » ou « temp_min <= 5 ».
-function conditionTemperature(cond, t) {
-  const ops = { "<": (a, b) => a < b, "<=": (a, b) => a <= b, ">": (a, b) => a > b, ">=": (a, b) => a >= b };
-  let m = cond.match(/^\s*(-?[\d.]+)\s*(<=?)\s*temp_min\s*(<=?)\s*(-?[\d.]+)\s*$/);
-  if (m) return ops[m[2]](+m[1], t) && ops[m[3]](t, +m[4]);
-  m = cond.match(/^\s*temp_min\s*(<=?|>=?)\s*(-?[\d.]+)\s*$/);
-  return m ? ops[m[1]](t, +m[2]) : null;
-}
-
-function choisirReglages(activite, s) {
-  const r = { mode: "chaud", renfort: false, modules: [] }, raisons = [];
-  if (activite.temperature) {
-    const seuil = activite.temperature.seuil;
-    r.mode = s.tmin > seuil ? "chaud" : "froid";
-    raisons.push(`${r.mode} : ressenti le plus bas ${Math.round(s.tmin)} °C (seuil ${seuil} °C)`);
-    const renf = activite.temperature[r.mode]?.renfort;
-    if (renf && conditionTemperature(renf.condition, s.tmin)) {
-      r.renfort = true; raisons.push(`${renf.nom || "renfort"} : ${renf.condition.replace("temp_min", "ressenti mini")}`);
-    }
-  }
-  const P = activite.parametres || {}, proba = P.pluie_proba_min ?? 40, mm = P.pluie_mm_min ?? 1;
-  // Chaque module dit quand il s'active (declencheur) ; un seul critère rempli suffit.
-  const tests = {
-    pluie: () => (s.pluieProba >= proba || s.pluieMm >= mm) && `risque ${s.pluieProba} %, ${s.pluieMm.toFixed(1)} mm prévus`,
-    nuit: () => (s.debut < s.lever || s.fin > s.coucher - 0.5) && `soleil ${fmtH(s.lever)} – ${fmtH(s.coucher)}, sortie ${fmtH(s.debut)} – ${fmtH(s.fin)}`,
-    duree_h: x => s.fin - s.debut > x && `${fmtH(s.fin - s.debut)} prévues`,
-    altitude_m: x => s.trace?.altMax > x && `point haut à ${Math.round(s.trace.altMax)} m`,
-    denivele_m: x => s.trace?.dplus > x && `${Math.round(s.trace.dplus)} m de D+`,
-    jours: x => (s.jours || 1) >= x && `${s.jours} jours`,
-    hebergement: x => s.hebergement === x && `nuit en ${x}`
-  };
-  for (const [nom, mod] of Object.entries(activite.modules || {})) {
-    const raison = Object.entries(mod.declencheur || {}).map(([k, x]) => tests[k]?.(x)).find(Boolean);
-    if (raison) { r.modules.push(nom); raisons.push(`${nom} : ${raison}`); }
-  }
-  // Ce que la phrase impose l'emporte sur la météo.
-  const f = s.forcages || {};
-  if (f.mode && activite.temperature && f.mode !== r.mode) {
-    r.mode = f.mode; r.renfort = false;
-    raisons[0] = `${f.mode} : imposé par ta phrase (la météo donnait un ressenti mini de ${Math.round(s.tmin)} °C)`;
-  }
-  if (f.renfort && activite.temperature?.[r.mode]?.renfort && !r.renfort) {
-    r.renfort = true; raisons.push(`${activite.temperature[r.mode].renfort.nom} : imposé par ta phrase`);
-  }
-  for (const [cle, nom] of [["pluie", "pluie"], ["nuit", "nuit"]]) {
-    if (f[cle] === undefined || !activite.modules?.[nom]) continue;
-    const actif = r.modules.includes(nom);
-    if (f[cle] && !actif) { r.modules.push(nom); raisons.push(`${nom} : imposé par ta phrase`); }
-    if (!f[cle] && actif) {
-      r.modules = r.modules.filter(x => x !== nom);
-      raisons.splice(raisons.findIndex(x => x.startsWith(`${nom} :`)), 1, `${nom} : retiré, d'après ta phrase`);
-    }
-  }
-  return { r, raisons };
-}
-
-function carteSortie(s) {
-  const alerte = s.rafales >= 40 ? `<li>Rafales à ${Math.round(s.rafales)} km/h : prévoir le coupe-vent même s'il fait doux.</li>` : "";
-  return `<div class="carte"><h2 style="margin-top:12px">${esc(s.titre)}</h2>
-    <div class="meteo">
-      <div>Ressenti mini<strong>${Math.round(s.tmin)} °C</strong></div>
-      <div>Maxi<strong>${Math.round(s.tmax)} °C</strong></div>
-      <div>Pluie<strong>${s.pluieProba} % · ${s.pluieMm.toFixed(1)} mm</strong></div>
-      <div>Vent<strong>${Math.round(s.vent)} km/h</strong>rafales ${Math.round(s.rafales)}</div>
-      <div>Soleil<strong>${fmtH(s.lever)} – ${fmtH(s.coucher)}</strong></div>
-      ${s.trace ? `<div>Trace<strong>${Math.round(s.trace.km)} km · ${Math.round(s.trace.dplus)} m D+</strong>${s.trace.altMax != null ? `alt. max ${Math.round(s.trace.altMax)} m` : ""}</div>` : ""}
-    </div>
-    <ul class="raisons">${s.raisons.map(r => `<li>${esc(r)}</li>`).join("")}${alerte}
-      ${s.hypotheses.map(h => `<li>Hypothèse : ${esc(h)}</li>`).join("")}</ul></div>`;
-}
-
-$("#p-ville").value = stocker.lire("ville", "");
-$("#p-gpx").onchange = async e => {
-  const f = e.target.files[0];
-  if (!f) return;
-  try {
-    trace = lireGpx(await f.text());
-    $("#p-gpx-info").textContent = `${f.name} : ${Math.round(trace.km)} km, ${Math.round(trace.dplus)} m D+ (départ de la trace utilisé pour la météo)`;
-  } catch (err) { trace = null; $("#p-gpx-info").innerHTML = `<span class="erreur">${esc(err.message)}</span>`; }
-};
-$("#p-texte").onkeydown = e => { if (e.key === "Enter") $("#p-go").click(); };
-$("#p-go").onclick = async () => {
-  const texte = $("#p-texte").value.trim(), ville = $("#p-ville").value.trim(), msg = $("#p-message");
-  if (!texte) { msg.innerHTML = `<p class="erreur">Décris ta sortie, par exemple « Gravel samedi toute la journée ».</p>`; return; }
-  const lieuTexte = lieuDuTexte(norm(texte));
-  if (!trace && !ville && !lieuTexte) { msg.innerHTML = `<p class="erreur">Indique un lieu (« à Tours »), une ville de départ ou une trace GPX pour la météo.</p>`; return; }
-  if (ville) stocker.ecrire("ville", ville);
-  msg.innerHTML = `<p class="vide">Récupération de la météo…</p>`;
-  try {
-    const p = analyserTexte(texte);
-    // Priorité : trace GPX, puis lieu écrit dans la phrase, puis ville par défaut du champ.
-    const lieu = trace ? { lat: trace.lat, lon: trace.lon, nom: trace.nom || "départ de la trace" } : await geocoder(lieuTexte || ville);
-    const w = await meteo(lieu, p.date, p.jours, p.debut, p.fin);
-    let tmin = w.tminRessentie;
-    // Au-dessus du point de prévision, on retire 0,65 °C par 100 m de montée.
-    if (trace?.altMax != null && trace.altMax > w.altitudeMeteo + 100) {
-      const baisse = (trace.altMax - w.altitudeMeteo) * 0.0065;
-      tmin -= baisse;
-      p.hypotheses.push(`ressenti abaissé de ${baisse.toFixed(1)} °C pour le point haut à ${Math.round(trace.altMax)} m`);
-    }
-    const fmtD = d => d.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
-    const finSortie = new Date(p.date); finSortie.setDate(finSortie.getDate() + p.jours - 1);
-    const dateTxt = p.jours > 1 ? `du ${fmtD(p.date)} au ${fmtD(finSortie)} (${p.jours} jours${p.hebergement ? `, ${p.hebergement}` : ""})` : fmtD(p.date);
-    if (w.normales) p.hypotheses.push(w.normales);
-    const s = { ...w, tmin, forcages: p.forcages, activite: p.activite.activite, date: isoLocal(p.date), jours: p.jours, hebergement: p.hebergement, debut: p.debut, fin: p.fin,
-      hypotheses: p.hypotheses, trace: trace && { km: trace.km, dplus: trace.dplus, altMax: trace.altMax },
-      titre: `${p.activite.activite[0].toUpperCase()}${p.activite.activite.slice(1)} · ${dateTxt} · ${fmtH(p.debut)} – ${fmtH(p.fin)} · ${lieu.nom}` };
-    const { r, raisons } = choisirReglages(p.activite, s);
-    s.raisons = raisons;
-    s.resume = `${Math.round(tmin)} à ${Math.round(w.tmax)} °C ressentis, pluie ${w.pluieProba} %, vent ${Math.round(w.vent)} km/h (rafales ${Math.round(w.rafales)})`;
-    sortie = s; stocker.ecrire("sortie", s);
-    reglages[s.activite] = r; stocker.ecrire("reglages", reglages);
-    cochees[s.activite] = []; stocker.ecrire("cochees", cochees);
-    msg.innerHTML = "";
-    rendreChecklist(); rendreManques(); rendreInventaire();
-    document.querySelector('nav button[data-onglet="checklist"]').click();
-    scrollTo(0, 0);
-  } catch (err) {
-    msg.innerHTML = `<p class="erreur">${esc(err.message)}. Tu peux préciser dans ta phrase « par temps froid », « avec pluie », « retour de nuit ».</p>`;
-  }
-};
 </script>
 </body>
 </html>

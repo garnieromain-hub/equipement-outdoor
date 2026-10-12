@@ -111,6 +111,11 @@ Estimation à venir.
 - Ce qui était en trop :
 ```
 
+La checklist apparaît aussitôt dans l'application (onglet Mes sorties), où Romain la coche ;
+les cases cochées sont écrites dans le fichier (`- [x]`). Garder ce format : cases `- [ ] `
+pour les objets à emporter, puces simples `- ` pour les manques et le retour, texte complémentaire
+après « – » sur la même ligne.
+
 Terminer par une
 phrase sur les manques et les objets `a-confirmer`, sans plus.
 
@@ -118,7 +123,8 @@ phrase sur les manques et les objets `a-confirmer`, sans plus.
 
 Quand Romain raconte une sortie passée (« j'ai eu froid aux mains », « les bâtons ne
 m'ont pas servi ») :
-1. Remplir la section **Retour** du fichier `sorties/` correspondant.
+1. Remplir la section **Retour** du fichier `sorties/` correspondant, en s'aidant des cases
+   cochées (`- [x]`) : un objet non coché a peut-être été laissé, à confirmer avec Romain.
 2. Proposer l'ajustement précis du YAML de l'activité (déplacer un rôle, changer un seuil,
    modifier un renfort), sans l'appliquer avant son accord.
 
