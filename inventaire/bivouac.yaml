@@ -1,4 +1,16 @@
 # Même modèle d'objet que vetements.yaml, champs utiles en plus :
 # temp_confort, volume_compresse_l.
 
-[]
+- id: drap-sac-sea-to-summit-reactor-midweight
+  nom: Drap de sac Sea to Summit Reactor Midweight
+  marque: Sea to Summit
+  modele: Reactor Midweight Liner
+  roles: [drap-sac]
+  activites: [trail, rando, bikepacking]
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: null
+  statut: possede
+  lien: https://seatosummit.eu/fr-fr/products/reactor-midweight-liner
+  notes: "Polyester recyclé Thermolite Pro, forme sarcophage avec capuche. Jusqu’à +6 °C selon le duvet et le matelas. 330 à 365 g selon la taille (Short, Regular, Long) ; taille à préciser. Emballé 19 × 11,5 × 11,5 cm. 64,95 € (au 2026-10-12)."

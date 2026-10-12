@@ -212,3 +212,18 @@
   statut: possede
   lien: null
   notes: "Manchettes classiques pour les bras."
+
+- id: chaussettes-merinos-epaisses
+  nom: Chaussettes mérinos épaisses
+  marque: null
+  modele: DEEP WINTER MERINO Iron - Chaussettes - Unisex
+  roles: [chaussettes-hiver]
+  activites: [gravel, trail]
+  saison: froid
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: null
+  statut: a-acheter
+  lien: https://gobik.com/fr/products/socks-deep-winter-merino-unisex-iron?_pos=1&_fid=291df940a&_ss=c&_gl=1*19asq1t*_up*MQ..*_ga*NjM1MzgzNTAuMTc5MTgzNDcwNQ..*_ga_QD7SEEVSC6*czE3OTE4MzQ3MDQkbzEkZzAkdDE3OTE4MzQ3MDQkajYwJGwwJGgxMzgwMjE1MzY3
+  notes: ""
