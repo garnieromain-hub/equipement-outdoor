@@ -20,8 +20,9 @@ description: Ajoute ou met à jour un objet dans l'inventaire à partir d'un doc
    d'après-sortie en gravel), utiliser `roles_par_activite`.
 4. Renseigner uniquement les caractéristiques présentes dans la source.
    Laisser `null` le reste et lister ces champs dans la réponse.
-5. Déplacer le document traité dans `documents/traites/`, puis régénérer la vue :
-   `ruby vue/generer.rb`.
+5. Déplacer le document traité dans `documents/traites/`, puis contrôler la cohérence :
+   `ruby -e 'require "./vue/donnees"; puts Donnees.erreurs_globales'` (rien ne doit s'afficher).
+   L'application locale se met à jour toute seule.
 6. Signaler si l'ajout comble un manque d'une activité, ou crée un doublon
    (deux objets pour le même rôle et la même plage de température).
 

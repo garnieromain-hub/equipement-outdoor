@@ -111,7 +111,7 @@ Estimation à venir.
 - Ce qui était en trop :
 ```
 
-Ensuite, regénérer la vue si un fichier a changé (`ruby vue/generer.rb`) et terminer par une
+Terminer par une
 phrase sur les manques et les objets `a-confirmer`, sans plus.
 
 ## 6. Retour après la sortie

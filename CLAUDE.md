@@ -34,7 +34,8 @@ On n'édite donc jamais une checklist quand on ajoute un objet : on lui donne se
 - `sorties/` : checklists générées, `AAAA-MM-JJ-activite.md`
 - `documents/a-traiter/` : je dépose factures, fiches produits, photos, liens
 - `documents/traites/` : documents déjà intégrés à l'inventaire
-- `vue/` : page HTML générée (`ruby vue/generer.rb`), à régénérer après chaque modification
+- `vue/` : application locale `ruby vue/serveur.rb` → http://localhost:4567
+  (consultation, checklist, édition de l'inventaire, mise à jour en direct)
 
 ## Règles
 
@@ -44,7 +45,10 @@ On n'édite donc jamais une checklist quand on ajoute un objet : on lui donne se
 - Les `id` sont en kebab-case et stables (ils servent de références).
 - Statuts possibles : `possede`, `a-confirmer`, `a-acheter`, `envisage`, `reforme`.
 - Après toute modification, vérifier la cohérence : chaque rôle utilisé dans
-  `activites/` existe dans `roles.yaml`, chaque rôle d'objet aussi.
+  `activites/` existe dans `roles.yaml`, chaque rôle d'objet aussi
+  (`ruby -e 'require "./vue/donnees"; puts Donnees.erreurs_globales'` doit ne rien afficher).
+- Le projet est versionné avec git (dépôt GitHub privé garnieromain-hub/equipement-outdoor) :
+  enregistrer chaque lot de modifications avec un message clair.
 
 ## Skills du projet
 

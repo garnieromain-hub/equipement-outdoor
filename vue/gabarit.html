@@ -90,6 +90,28 @@ h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: v
 .meteo strong { display: block; font-size: 17px; color: var(--texte); }
 .raisons { font-size: 13px; color: var(--doux); padding: 0 0 12px; }
 .raisons li { margin: 2px 0; }
+dialog { border: 1px solid var(--ligne); border-radius: 14px; padding: 0; width: min(720px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px); background: var(--carte); color: var(--texte); }
+dialog::backdrop { background: rgba(0, 0, 0, .35); }
+#e-form { padding: 16px 18px; }
+#e-form h2 { margin-top: 0; }
+.champs { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+#e-form label { display: flex; flex-direction: column; gap: 3px; font-size: 13px; color: var(--doux); }
+#e-form label.large { grid-column: 1 / -1; }
+#e-form label.case { flex-direction: row; align-items: center; gap: 6px; padding-top: 18px; }
+#e-form input:not([type=checkbox]), #e-form select, #e-form textarea { font: inherit; font-size: 14px; color: var(--texte);
+  padding: 7px 9px; border: 1px solid var(--ligne); border-radius: 8px; background: var(--fond); width: 100%; }
+#e-form fieldset { border: 1px solid var(--ligne); border-radius: 10px; margin: 12px 0; padding: 8px 12px 12px; }
+#e-form legend { font-size: 13px; font-weight: 600; padding: 0 4px; }
+.cases { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-bottom: 8px; }
+.cases label, .liste-roles label { flex-direction: row !important; align-items: center; gap: 5px !important; color: var(--texte) !important; font-size: 14px !important; }
+.liste-roles { max-height: 220px; overflow-y: auto; margin-top: 8px; }
+.liste-roles h4 { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--doux); margin: 10px 0 4px; }
+.liste-roles .cases { margin: 0; }
+.actions { margin: 14px 0 0; }
+.espace { flex: 1; }
+.btn.danger { color: var(--manque); border-color: var(--manque-fond); }
+.btn.petit { font-size: 12px; padding: 3px 9px; }
 @media print {
   nav, .outils, .chips, .btn { display: none !important; }
   body { background: #fff; color: #000; }
@@ -161,10 +183,46 @@ h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: v
       <select id="i-statut"><option value="">Tous statuts</option></select>
       <select id="i-saison"><option value="">Toutes saisons</option></select>
       <button class="btn" id="i-export">Exporter (.csv)</button>
+      <button class="btn principal" id="i-ajouter" hidden>Ajouter un objet</button>
     </div>
     <div id="i-liste"></div>
   </section>
 </main>
+
+<dialog id="editeur">
+  <form method="dialog" id="e-form">
+    <h2 id="e-titre">Objet</h2>
+    <div class="champs">
+      <label class="large">Nom<input name="nom" required></label>
+      <label>Identifiant<input name="id" pattern="[a-z0-9]+(-[a-z0-9]+)*" title="kebab-case : minuscules, chiffres et tirets"></label>
+      <label>Fichier<select name="fichier"></select></label>
+      <label>Marque<input name="marque"></label>
+      <label>Modèle<input name="modele"></label>
+      <label>Statut<select name="statut"></select></label>
+      <label>Saison<select name="saison"><option value="">—</option></select></label>
+      <label>Temp. mini (°C)<input name="temp_min" type="number" step="any"></label>
+      <label>Temp. maxi (°C)<input name="temp_max" type="number" step="any"></label>
+      <label>Poids (g)<input name="poids_g" type="number" step="any"></label>
+      <label class="case"><input name="impermeable" type="checkbox">Imperméable</label>
+      <label class="large">Lien<input name="lien" type="url"></label>
+    </div>
+    <fieldset><legend>Activités</legend><div id="e-activites" class="cases"></div>
+      <input name="autres_activites" placeholder="Autres activités, séparées par des virgules"></fieldset>
+    <fieldset><legend>Rôles</legend><input type="search" id="e-filtre-roles" placeholder="Filtrer les rôles…">
+      <div id="e-roles" class="liste-roles"></div></fieldset>
+    <fieldset><legend>Rôles différents selon l'activité (facultatif)</legend>
+      <textarea name="roles_par_activite" rows="2" placeholder="gravel: haut-rechange"></textarea>
+      <div class="sous">Une ligne par activité : « activité: rôle1, rôle2 ». Ces rôles remplacent les rôles ci-dessus pour cette activité.</div></fieldset>
+    <label class="large">Notes<textarea name="notes" rows="3"></textarea></label>
+    <div class="erreur" id="e-erreurs"></div>
+    <div class="outils actions">
+      <button type="button" class="btn danger" id="e-supprimer">Supprimer</button>
+      <span class="espace"></span>
+      <button type="button" class="btn" id="e-annuler">Annuler</button>
+      <button type="submit" class="btn principal">Enregistrer</button>
+    </div>
+  </form>
+</dialog>
 
 <script id="donnees" type="application/json">/*DONNEES*/</script>
 <script>
@@ -176,13 +234,15 @@ catch {
     Ouvre <strong>vue/index.html</strong> (ou lance <code>ruby vue/generer.rb</code> pour le créer).</p>`;
   throw new Error("gabarit ouvert à la place de index.html");
 }
-const ROLE = Object.fromEntries(D.roles.map(r => [r.id, r]));
+// Mode édition : page servie par l'application locale (vue/serveur.rb), pas ouverte comme fichier.
+const EDITION = location.protocol.startsWith("http") && !!D.fichiers;
+let ROLE = Object.fromEntries(D.roles.map(r => [r.id, r]));
 const UNIVERS_NEUTRE = { "en-action": "En activité", "hors-action": "Hors activité" };
 const GROUPES = { haut: "Haut", bas: "Bas", accessoires: "Accessoires", reparation: "Réparation",
   "navigation-energie": "Navigation et énergie", ravitaillement: "Ravitaillement", securite: "Sécurité",
   portage: "Portage", "nuit-refuge": "Nuit en refuge", bivouac: "Bivouac" };
 const VETEMENTS = ["haut", "bas", "accessoires"];
-const ORDRE = [...new Set(D.roles.map(r => `${r.univers}/${r.groupe}`))];
+let ORDRE = [...new Set(D.roles.map(r => `${r.univers}/${r.groupe}`))];
 const SAISONS = { chaud: "Chaud", froid: "Froid", "toutes-saisons": "Toutes saisons" };
 const STATUTS = { possede: "Possédé", "a-confirmer": "À confirmer", "a-acheter": "À acheter", envisage: "Envisagé", reforme: "Réformé" };
 const $ = s => document.querySelector(s);
@@ -423,7 +483,9 @@ function rendreInventaire() {
     const cls = o.statut === "possede" ? "ok" : o.statut === "reforme" ? "manque" : "prevu";
     return `<div class="ligne"><div class="corps"><div class="titre">${o.lien ? `<a href="${esc(o.lien)}" target="_blank" rel="noopener" style="color:inherit">${esc(o.nom)}</a>` : esc(o.nom)}${tag(o.saison)}</div>
       <div class="sous">${esc(details)}</div>${o.notes ? `<div class="sous">${esc(o.notes)}</div>` : ""}</div>
-      <span class="pastille ${cls}">${STATUTS[o.statut] || o.statut}</span></div>`;
+      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+        <span class="pastille ${cls}">${STATUTS[o.statut] || o.statut}</span>
+        ${EDITION ? `<button class="btn petit" data-modifier="${esc(o.id)}">Modifier</button>` : ""}</div></div>`;
   }).join(""))) || `<p class="vide">Aucun objet.</p>`;
 }
 $("#i-recherche").oninput = $("#i-statut").onchange = $("#i-saison").onchange = rendreInventaire;
@@ -435,6 +497,115 @@ $("#i-export").onclick = () => {
   telecharger(`inventaire-${aujourdhui()}.csv`, "﻿" + csv, "text/csv");
 };
 rendreInventaire();
+
+/* Édition (application locale uniquement : ruby vue/serveur.rb) */
+function editeurOuvrir(o) {
+  const f = $("#e-form"), nouveau = !o;
+  o = o || { statut: "possede", roles: [], activites: [] };
+  editeurOuvrir.courant = nouveau ? null : o;
+  $("#e-titre").textContent = nouveau ? "Ajouter un objet" : `Modifier : ${o.nom}`;
+  $("#e-erreurs").textContent = "";
+  $("#e-supprimer").hidden = nouveau;
+  f.fichier.innerHTML = D.fichiers.map(x => `<option>${esc(x)}</option>`).join("");
+  f.statut.innerHTML = Object.entries(STATUTS).map(([k, v]) => `<option value="${k}">${v}</option>`).join("");
+  f.saison.innerHTML = `<option value="">—</option>` + Object.entries(SAISONS).map(([k, v]) => `<option value="${k}">${v}</option>`).join("");
+  for (const k of ["nom", "id", "marque", "modele", "temp_min", "temp_max", "poids_g", "lien", "notes"]) f[k].value = o[k] ?? "";
+  f.statut.value = o.statut; f.saison.value = o.saison || ""; f.impermeable.checked = !!o.impermeable;
+  f.fichier.value = o.fichier || "vetements";
+  f.id.readOnly = !nouveau; f.id.dataset.auto = nouveau ? "1" : "";
+  const connues = [...new Set([...D.activites.map(a => a.activite), ...D.objets.flatMap(x => x.activites || [])])];
+  $("#e-activites").innerHTML = connues.map(a => `<label><input type="checkbox" value="${esc(a)}"${(o.activites || []).includes(a) ? " checked" : ""}>${esc(a)}</label>`).join("");
+  f.autres_activites.value = "";
+  let html = "", u = null;
+  for (const k of ORDRE) {
+    const [uu, g] = k.split("/");
+    if (uu !== u) { html += `<h4 style="color:var(--texte)">${UNIVERS_NEUTRE[uu] || uu}</h4>`; u = uu; }
+    html += `<h4>${GROUPES[g] || g}</h4><div class="cases">` + D.roles.filter(r => r.univers === uu && r.groupe === g).map(r =>
+      `<label data-texte="${esc(norm(r.libelle + " " + r.id))}"><input type="checkbox" value="${r.id}"${o.roles.includes(r.id) ? " checked" : ""}>${esc(r.libelle)}</label>`).join("") + `</div>`;
+  }
+  $("#e-roles").innerHTML = html; $("#e-filtre-roles").value = "";
+  f.roles_par_activite.value = Object.entries(o.roles_par_activite || {}).map(([a, rs]) => `${a}: ${rs.join(", ")}`).join("\n");
+  $("#editeur").showModal();
+}
+const slug = s => norm(s).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+$("#e-form").nom.oninput = e => { const f = $("#e-form"); if (f.id.dataset.auto) f.id.value = slug(e.target.value); };
+$("#e-form").id.oninput = e => { e.target.dataset.auto = ""; };
+$("#e-filtre-roles").oninput = e => {
+  const q = norm(e.target.value);
+  document.querySelectorAll("#e-roles label").forEach(l => l.hidden = q && !l.dataset.texte.includes(q));
+};
+// Fichier proposé d'après le groupe du premier rôle coché, pour un nouvel objet.
+$("#e-roles").onchange = () => {
+  if (editeurOuvrir.courant) return;
+  const r = ROLE[document.querySelector("#e-roles input:checked")?.value];
+  const parGroupe = { haut: "vetements", bas: "vetements", accessoires: "extremites", "nuit-refuge": "bivouac" };
+  const f = r && (parGroupe[r.groupe] || r.groupe);
+  if (f && D.fichiers.includes(f)) $("#e-form").fichier.value = f;
+};
+function editeurLire() {
+  const f = $("#e-form"), base = editeurOuvrir.courant ? { ...editeurOuvrir.courant } : {};
+  const nombre = v => v === "" ? null : Number(v), texte = v => v.trim() === "" ? null : v.trim();
+  const rpa = {};
+  f.roles_par_activite.value.split("\n").forEach(l => {
+    const [a, rs] = l.split(":"); if (!a?.trim() || !rs) return;
+    rpa[a.trim()] = rs.split(",").map(x => x.trim()).filter(Boolean);
+  });
+  const o = Object.assign(base, {
+    id: f.id.value.trim(), nom: f.nom.value.trim(), marque: texte(f.marque.value), modele: texte(f.modele.value),
+    roles: [...document.querySelectorAll("#e-roles input:checked")].map(i => i.value),
+    roles_par_activite: rpa,
+    activites: [...new Set([...document.querySelectorAll("#e-activites input:checked")].map(i => i.value),
+      ...f.autres_activites.value.split(",").map(x => slug(x)).filter(Boolean))],
+    saison: f.saison.value || null, temp_min: nombre(f.temp_min.value), temp_max: nombre(f.temp_max.value),
+    impermeable: f.impermeable.checked, poids_g: nombre(f.poids_g.value), statut: f.statut.value,
+    lien: texte(f.lien.value), notes: f.notes.value.trim()
+  });
+  if (!o.saison) delete o.saison;
+  delete o.fichier;
+  return { objet: o, fichier: f.fichier.value };
+}
+async function editeurEnvoyer(methode, url, corps) {
+  const r = await fetch(url, { method: methode, headers: { "Content-Type": "application/json" }, body: corps && JSON.stringify(corps) });
+  const j = await r.json();
+  if (!r.ok) { $("#e-erreurs").innerHTML = (j.erreurs || ["erreur inconnue"]).map(esc).join("<br>"); return false; }
+  appliquerDonnees(j); $("#editeur").close(); return true;
+}
+$("#e-form").onsubmit = e => {
+  e.preventDefault();
+  const c = editeurOuvrir.courant;
+  editeurEnvoyer(c ? "PUT" : "POST", c ? `/api/objets/${encodeURIComponent(c.id)}` : "/api/objets", editeurLire());
+};
+$("#e-annuler").onclick = () => $("#editeur").close();
+$("#e-supprimer").onclick = () => {
+  const c = editeurOuvrir.courant;
+  if (c && confirm(`Supprimer définitivement « ${c.nom} » de l'inventaire ?\nPour le garder en historique, passe plutôt son statut à « Réformé ».`))
+    editeurEnvoyer("DELETE", `/api/objets/${encodeURIComponent(c.id)}`);
+};
+$("#i-ajouter").onclick = () => editeurOuvrir(null);
+$("#i-liste").onclick = e => {
+  const id = e.target.dataset?.modifier;
+  if (id) editeurOuvrir(D.objets.find(o => o.id === id));
+};
+
+// Recharge tout l'affichage avec de nouvelles données (après une édition ou un changement des fichiers).
+function appliquerDonnees(d) {
+  D = d;
+  ROLE = Object.fromEntries(D.roles.map(r => [r.id, r]));
+  ORDRE = [...new Set(D.roles.map(r => `${r.univers}/${r.groupe}`))];
+  $("#meta").textContent = `${D.objets.length} objets · mis à jour le ${D.genere_le}`;
+  for (const sel of [$("#c-activite"), $("#m-activite")]) { const v = sel.value; remplirActivites(sel); sel.value = v < D.activites.length ? v : 0; }
+  rendreChecklist(); rendreManques(); rendreInventaire();
+}
+if (EDITION) {
+  $("#i-ajouter").hidden = false;
+  // Surveille les fichiers : une modification faite ailleurs (par Claude, à la main) s'affiche toute seule.
+  setInterval(async () => {
+    try {
+      const v = (await (await fetch("/api/version")).json()).version;
+      if (v !== D.version) appliquerDonnees(await (await fetch("/api/donnees")).json());
+    } catch {}
+  }, 3000);
+}
 
 /* Préparer une sortie : texte libre + ville ou trace GPX → météo → réglages → checklist */
 const MOIS = ["janvier", "fevrier", "mars", "avril", "mai", "juin", "juillet", "aout", "septembre", "octobre", "novembre", "decembre"];
