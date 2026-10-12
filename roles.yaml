@@ -49,7 +49,6 @@ en-action:
     sacoche-tube: Sacoche de tube supérieur
     sacoche-cadre: Sacoche de cadre
     sacoche-selle: Sacoche de selle (bikepacking)
-    antivol: Antivol
 
   reparation:            # affiché « Réparation et outils »
     reparation-tubeless: Mèches et outil tubeless
@@ -81,6 +80,7 @@ en-action:
     papiers-argent: Papiers, carte bancaire, liquide
     sac-etanche: Pochette étanche (téléphone, papiers)
     sifflet: Sifflet
+    antivol: Antivol
 
 hors-action:
   haut:
