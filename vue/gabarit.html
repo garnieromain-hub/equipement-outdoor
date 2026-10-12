@@ -148,13 +148,11 @@ dialog::backdrop { background: rgba(0, 0, 0, .35); }
 
   <section id="checklist" hidden>
     <div class="outils">
-      <select id="c-activite"></select>
       <button class="btn" id="c-export">Exporter (.md)</button>
       <button class="btn" id="c-raz">Tout décocher</button>
       <button class="btn" onclick="print()">Imprimer / PDF</button>
     </div>
     <div id="c-sortie"></div>
-    <div class="chips" id="c-reglages"></div>
     <div id="c-liste"></div>
   </section>
 
@@ -252,6 +250,13 @@ const stocker = {
   ecrire(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
 };
 const tag = s => s ? `<span class="tag ${s}">${SAISONS[s] || s}</span>` : "";
+// Outils de texte et d'heure, utilisés dès le premier affichage.
+const MOIS = ["janvier", "fevrier", "mars", "avril", "mai", "juin", "juillet", "aout", "septembre", "octobre", "novembre", "decembre"];
+const JOURS = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
+const norm = s => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/’/g, "'");
+const heure = (h, m) => +h + (m ? +m / 60 : 0);
+const fmtH = h => `${Math.floor(h)}h${String(Math.round((h % 1) * 60)).padStart(2, "0")}`;
+let trace = null;
 
 $("#meta").textContent = `${D.objets.length} objets · généré le ${D.genere_le}`;
 
@@ -368,9 +373,9 @@ const ongletInitial = stocker.lire("onglet", "preparer");
 (document.querySelector(`nav button[data-onglet="${ongletInitial}"]`) || document.querySelector("nav button")).click();
 
 /* Checklist */
-remplirActivites($("#c-activite"));
 const cochees = stocker.lire("cochees", {});
-function activiteChecklist() { return D.activites[$("#c-activite").value]; }
+// La checklist découle de la dernière sortie préparée (onglet Préparer), sans réglage manuel.
+function activiteChecklist() { return sortie && D.activites.find(a => a.activite === sortie.activite); }
 // Un même objet qui remplit deux rôles n'est emporté qu'une fois : on le signale.
 function notesDoublons(roles) {
   const vu = {}, notes = {};
@@ -383,39 +388,32 @@ function notesDoublons(roles) {
   return notes;
 }
 function rendreChecklist() {
-  const a = activiteChecklist(), r = reglagesDe(a);
+  const a = activiteChecklist();
+  if (!a) {
+    $("#c-sortie").innerHTML = "";
+    $("#c-liste").innerHTML = `<p class="vide">Décris ta sortie dans l'onglet <strong>Préparer</strong> (par exemple « gravel le 5 décembre à Tours, 2 jours en gîte ») : la checklist adaptée s'affichera ici.</p>`;
+    return;
+  }
+  const r = reglagesDe(a);
   modeCourant = a.temperature ? r.mode : null; activiteCourante = a.activite;
-  const renfort = a.temperature?.[r.mode]?.renfort;
-  $("#c-reglages").innerHTML = (a.temperature ? `<span class="bascule">
-      <label><input type="radio" name="mode" value="chaud"${r.mode === "chaud" ? " checked" : ""}>Chaud</label>
-      <label><input type="radio" name="mode" value="froid"${r.mode === "froid" ? " checked" : ""}>Froid</label></span>
-      ${renfort ? `<label class="chip" title="${esc(renfort.condition)}"><input type="checkbox" data-renfort${r.renfort ? " checked" : ""}>${esc(renfort.nom || "renfort")}</label>` : ""}` : "")
-    + Object.entries(a.modules || {}).map(([n, m]) =>
-      `<label class="chip" title="${esc(m.condition)}"><input type="checkbox" value="${n}"${r.modules.includes(n) ? " checked" : ""}>${esc(n)}</label>`).join("");
   const roles = rolesDe(a, r), deja = cochees[a.activite] || [], notes = notesDoublons(roles);
-  $("#c-sortie").innerHTML = sortie && sortie.activite === a.activite ? carteSortie(sortie) : "";
+  $("#c-sortie").innerHTML = carteSortie(sortie);
   $("#c-liste").innerHTML = parUnivers(roles, x => x, (liste, g) => carte(g, liste.map(role =>
     ligneRole(role, { caseACocher: true, coche: deja.includes(role), note: notes[role],
       saison: VETEMENTS.includes(g) ? etat(role).possedes[0]?.saison : "" })).join("")), a.univers) || `<p class="vide">Aucun rôle.</p>`;
   modeCourant = activiteCourante = null;
 }
-$("#c-activite").onchange = rendreChecklist;
-$("#c-reglages").onchange = e => {
-  const a = activiteChecklist(), r = reglagesDe(a), i = e.target;
-  if (i.name === "mode") { r.mode = i.value; r.renfort = false; }
-  else if (i.hasAttribute("data-renfort")) r.renfort = i.checked;
-  else r.modules = [...document.querySelectorAll("#c-reglages input[value]:not([name]):checked")].map(x => x.value);
-  stocker.ecrire("reglages", reglages); rendreChecklist();
-};
 $("#c-liste").onchange = e => {
   const a = activiteChecklist().activite, r = e.target.dataset.role, liste = new Set(cochees[a] || []);
   e.target.checked ? liste.add(r) : liste.delete(r);
   cochees[a] = [...liste]; stocker.ecrire("cochees", cochees);
   e.target.closest(".ligne").classList.toggle("coche", e.target.checked);
 };
-$("#c-raz").onclick = () => { cochees[activiteChecklist().activite] = []; stocker.ecrire("cochees", cochees); rendreChecklist(); };
+$("#c-raz").onclick = () => { if (!activiteChecklist()) return; cochees[activiteChecklist().activite] = []; stocker.ecrire("cochees", cochees); rendreChecklist(); };
 $("#c-export").onclick = () => {
-  const a = activiteChecklist(), r = reglagesDe(a);
+  const a = activiteChecklist();
+  if (!a) return;
+  const r = reglagesDe(a);
   modeCourant = a.temperature ? r.mode : null; activiteCourante = a.activite;
   const s = sortie && sortie.activite === a.activite ? sortie : null, roles = rolesDe(a, r), notes = notesDoublons(roles);
   const renfort = r.renfort ? a.temperature?.[r.mode]?.renfort?.nom : null;
@@ -593,7 +591,7 @@ function appliquerDonnees(d) {
   ROLE = Object.fromEntries(D.roles.map(r => [r.id, r]));
   ORDRE = [...new Set(D.roles.map(r => `${r.univers}/${r.groupe}`))];
   $("#meta").textContent = `${D.objets.length} objets · mis à jour le ${D.genere_le}`;
-  for (const sel of [$("#c-activite"), $("#m-activite")]) { const v = sel.value; remplirActivites(sel); sel.value = v < D.activites.length ? v : 0; }
+  for (const sel of [$("#m-activite")]) { const v = sel.value; remplirActivites(sel); sel.value = v < D.activites.length ? v : 0; }
   rendreChecklist(); rendreManques(); rendreInventaire();
 }
 if (EDITION) {
@@ -608,12 +606,6 @@ if (EDITION) {
 }
 
 /* Préparer une sortie : texte libre + ville ou trace GPX → météo → réglages → checklist */
-const MOIS = ["janvier", "fevrier", "mars", "avril", "mai", "juin", "juillet", "aout", "septembre", "octobre", "novembre", "decembre"];
-const JOURS = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
-const norm = s => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/’/g, "'");
-const heure = (h, m) => +h + (m ? +m / 60 : 0);
-const fmtH = h => `${Math.floor(h)}h${String(Math.round((h % 1) * 60)).padStart(2, "0")}`;
-let trace = null;
 
 function analyserTexte(texte) {
   const t = norm(texte), hyp = [];
@@ -649,8 +641,9 @@ function analyserTexte(texte) {
   }
   if (!date) { date = auj; hyp.push("date non précisée : aujourd'hui"); }
   if (jours === 1 && (m = t.match(/(\d{1,2})\s*jours/))) jours = +m[1];
-  const hebergement = /refuge/.test(t) ? "refuge" : /bivouac/.test(t) ? "bivouac" : null;
-  if (jours > 1 && !hebergement) hyp.push("hébergement non précisé : ni refuge ni bivouac");
+  const hebergement = /refuge/.test(t) ? "refuge" : /bivouac/.test(t) ? "bivouac"
+    : /gite|airbnb|hotel|chambre d'hote|auberge/.test(t) ? "gîte" : null;
+  if (jours > 1 && !hebergement) hyp.push("hébergement non précisé : ni refuge ni bivouac, donc pas de couchage");
 
   let debut = null, fin = null, duree = null;
   if ((m = t.match(/(\d{1,2})\s*h\s*(\d{2})?\s*(?:-|a|jusqu'a)\s*(\d{1,2})\s*h\s*(\d{2})?/))) {
@@ -674,7 +667,15 @@ function analyserTexte(texte) {
   if (fin == null && duree == null) { duree = 3; hyp.push("durée non précisée : 3 h"); }
   if (debut == null) { debut = 9; hyp.push("heure de départ non précisée : 9h"); }
   fin ??= debut + duree;
-  return { activite, date, jours, hebergement, debut, fin, lieu: lieuDuTexte(t), hypotheses: hyp };
+  // Ce que la phrase impose, prioritaire sur la météo.
+  const forcages = {};
+  if (/grand froid/.test(t)) { forcages.mode = "froid"; forcages.renfort = true; }
+  else if (/\bfroid\b/.test(t)) forcages.mode = "froid";
+  else if (/\bchaud\b|canicule/.test(t)) forcages.mode = "chaud";
+  if (/sans pluie|\bau sec\b|temps sec/.test(t)) forcages.pluie = false;
+  else if (/pluie|pluvieux|averse/.test(t)) forcages.pluie = true;
+  if (/de nuit|nocturne|a la frontale/.test(t)) forcages.nuit = true;
+  return { activite, date, jours, hebergement, debut, fin, lieu: lieuDuTexte(t), forcages, hypotheses: hyp };
 }
 
 // Lieu écrit dans la phrase : « à Tours », « depuis Le Mans », « au départ d'Annecy ».
@@ -731,6 +732,8 @@ async function geocoder(ville) {
 // Météo sur le créneau horaire de chaque jour de la sortie, résumée sur l'ensemble des jours.
 async function meteo(lieu, date, jours, debut, fin) {
   const jour = isoLocal(date), dernier = new Date(date); dernier.setDate(dernier.getDate() + jours - 1);
+  const auj = new Date(); auj.setHours(0, 0, 0, 0);
+  if ((dernier - auj) / 864e5 > 15) return normales(lieu, date, jours);
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${lieu.lat}&longitude=${lieu.lon}&timezone=auto` +
     `&hourly=temperature_2m,apparent_temperature,precipitation_probability,precipitation,wind_speed_10m,wind_gusts_10m` +
     `&daily=sunrise,sunset&start_date=${jour}&end_date=${isoLocal(dernier)}`;
@@ -744,6 +747,41 @@ async function meteo(lieu, date, jours, debut, fin) {
     pluieProba: Math.max(0, ...val("precipitation_probability")), pluieMm: val("precipitation").reduce((a, b) => a + b, 0),
     vent: Math.max(...val("wind_speed_10m")), rafales: Math.max(...val("wind_gusts_10m")),
     lever: Math.max(...j.daily.sunrise.map(hDec)), coucher: Math.min(...j.daily.sunset.map(hDec)), altitudeMeteo: j.elevation };
+}
+
+// Lever et coucher du soleil (formule NOAA simplifiée), en heures locales.
+function soleil(lat, lon, date) {
+  const n = Math.round((date - new Date(date.getFullYear(), 0, 0)) / 864e5), g = 2 * Math.PI / 365 * (n - 1), r = Math.PI / 180;
+  const eqt = 229.18 * (0.000075 + 0.001868 * Math.cos(g) - 0.032077 * Math.sin(g) - 0.014615 * Math.cos(2 * g) - 0.040849 * Math.sin(2 * g));
+  const decl = 0.006918 - 0.399912 * Math.cos(g) + 0.070257 * Math.sin(g) - 0.006758 * Math.cos(2 * g) + 0.000907 * Math.sin(2 * g)
+    - 0.002697 * Math.cos(3 * g) + 0.00148 * Math.sin(3 * g);
+  const ha = Math.acos(Math.cos(90.833 * r) / (Math.cos(lat * r) * Math.cos(decl)) - Math.tan(lat * r) * Math.tan(decl)) / r;
+  const decalage = -date.getTimezoneOffset();
+  return { lever: (720 - 4 * (lon + ha) - eqt + decalage) / 60, coucher: (720 - 4 * (lon - ha) - eqt + decalage) / 60 };
+}
+
+// Normales de saison : moyennes des 10 dernières années autour des dates de la sortie (± 3 jours).
+async function normales(lieu, date, jours) {
+  const an = new Date().getFullYear();
+  const url = `https://archive-api.open-meteo.com/v1/archive?latitude=${lieu.lat}&longitude=${lieu.lon}&timezone=auto` +
+    `&daily=apparent_temperature_min,temperature_2m_max,precipitation_sum,wind_speed_10m_max,wind_gusts_10m_max` +
+    `&start_date=${an - 10}-01-01&end_date=${an - 1}-12-31`;
+  const j = await (await fetch(url)).json();
+  if (j.error) throw new Error(`normales indisponibles : ${j.reason}`);
+  const J = j.daily;
+  const idx = J.time.map((t, i) => {
+    const d = new Date(t), ref = new Date(d.getFullYear(), date.getMonth(), date.getDate());
+    const ecart = Math.round((d - ref) / 864e5);
+    return ecart >= -3 && ecart <= jours - 1 + 3 ? i : -1;
+  }).filter(i => i >= 0);
+  const moy = k => { const v = idx.map(i => J[k][i]).filter(x => x != null); return v.reduce((a, b) => a + b, 0) / v.length; };
+  const pluie = idx.map(i => J.precipitation_sum[i]).filter(x => x != null);
+  const sol = soleil(lieu.lat, lieu.lon, date);
+  return { tminRessentie: moy("apparent_temperature_min"), tmax: moy("temperature_2m_max"),
+    pluieProba: Math.round(100 * pluie.filter(x => x >= 1).length / pluie.length), pluieMm: moy("precipitation_sum"),
+    vent: moy("wind_speed_10m_max"), rafales: moy("wind_gusts_10m_max"), lever: sol.lever, coucher: sol.coucher,
+    altitudeMeteo: j.elevation,
+    normales: `date au-delà des 16 jours de prévision : normales ${an - 10}-${an - 1} autour de ces dates (ressenti = minimum du jour, nuit comprise) ; à refaire à moins de 16 jours` };
 }
 
 // Évalue une condition du type « 12 < temp_min <= 18 » ou « temp_min <= 5 ».
@@ -780,6 +818,24 @@ function choisirReglages(activite, s) {
   for (const [nom, mod] of Object.entries(activite.modules || {})) {
     const raison = Object.entries(mod.declencheur || {}).map(([k, x]) => tests[k]?.(x)).find(Boolean);
     if (raison) { r.modules.push(nom); raisons.push(`${nom} : ${raison}`); }
+  }
+  // Ce que la phrase impose l'emporte sur la météo.
+  const f = s.forcages || {};
+  if (f.mode && activite.temperature && f.mode !== r.mode) {
+    r.mode = f.mode; r.renfort = false;
+    raisons[0] = `${f.mode} : imposé par ta phrase (la météo donnait un ressenti mini de ${Math.round(s.tmin)} °C)`;
+  }
+  if (f.renfort && activite.temperature?.[r.mode]?.renfort && !r.renfort) {
+    r.renfort = true; raisons.push(`${activite.temperature[r.mode].renfort.nom} : imposé par ta phrase`);
+  }
+  for (const [cle, nom] of [["pluie", "pluie"], ["nuit", "nuit"]]) {
+    if (f[cle] === undefined || !activite.modules?.[nom]) continue;
+    const actif = r.modules.includes(nom);
+    if (f[cle] && !actif) { r.modules.push(nom); raisons.push(`${nom} : imposé par ta phrase`); }
+    if (!f[cle] && actif) {
+      r.modules = r.modules.filter(x => x !== nom);
+      raisons.splice(raisons.findIndex(x => x.startsWith(`${nom} :`)), 1, `${nom} : retiré, d'après ta phrase`);
+    }
   }
   return { r, raisons };
 }
@@ -831,7 +887,8 @@ $("#p-go").onclick = async () => {
     const fmtD = d => d.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
     const finSortie = new Date(p.date); finSortie.setDate(finSortie.getDate() + p.jours - 1);
     const dateTxt = p.jours > 1 ? `du ${fmtD(p.date)} au ${fmtD(finSortie)} (${p.jours} jours${p.hebergement ? `, ${p.hebergement}` : ""})` : fmtD(p.date);
-    const s = { ...w, tmin, activite: p.activite.activite, date: isoLocal(p.date), jours: p.jours, hebergement: p.hebergement, debut: p.debut, fin: p.fin,
+    if (w.normales) p.hypotheses.push(w.normales);
+    const s = { ...w, tmin, forcages: p.forcages, activite: p.activite.activite, date: isoLocal(p.date), jours: p.jours, hebergement: p.hebergement, debut: p.debut, fin: p.fin,
       hypotheses: p.hypotheses, trace: trace && { km: trace.km, dplus: trace.dplus, altMax: trace.altMax },
       titre: `${p.activite.activite[0].toUpperCase()}${p.activite.activite.slice(1)} · ${dateTxt} · ${fmtH(p.debut)} – ${fmtH(p.fin)} · ${lieu.nom}` };
     const { r, raisons } = choisirReglages(p.activite, s);
@@ -840,13 +897,12 @@ $("#p-go").onclick = async () => {
     sortie = s; stocker.ecrire("sortie", s);
     reglages[s.activite] = r; stocker.ecrire("reglages", reglages);
     cochees[s.activite] = []; stocker.ecrire("cochees", cochees);
-    $("#c-activite").value = D.activites.indexOf(p.activite);
     msg.innerHTML = "";
     rendreChecklist(); rendreManques(); rendreInventaire();
     document.querySelector('nav button[data-onglet="checklist"]').click();
     scrollTo(0, 0);
   } catch (err) {
-    msg.innerHTML = `<p class="erreur">${esc(err.message)}. Tu peux toujours régler chaud / froid à la main dans l'onglet Checklist.</p>`;
+    msg.innerHTML = `<p class="erreur">${esc(err.message)}. Tu peux préciser dans ta phrase « par temps froid », « avec pluie », « retour de nuit ».</p>`;
   }
 };
 </script>

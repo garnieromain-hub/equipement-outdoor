@@ -176,9 +176,9 @@
   temp_max: null
   impermeable: false
   poids_g: null
-  statut: a-confirmer
+  statut: possede
   lien: https://www.thenorthface.com/fr-fr/p/sacs-and-equipement-211747/gants-tnf-rino-NF0A55KZ?color=JK3
-  notes: "Modèle indiqué par Romain (« ce type de modèle ») : confirmer s'il est possédé. Polaire extensible fine, 93 % polyester recyclé, 7 % élasthanne, paumes silicone. Léger : en hiver, porter les surmoufles Compressport par-dessus."
+  notes: "Polaire extensible fine, 93 % polyester recyclé, 7 % élasthanne, paumes silicone. Léger : en hiver, porter les surmoufles Compressport par-dessus."
 
 - id: tongs
   nom: Tongs

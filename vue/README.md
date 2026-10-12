@@ -26,9 +26,11 @@ puis ouvrir http://localhost:4567 (Ctrl+C dans le terminal pour arrêter).
 ## Onglets
 
 - Préparer : phrase libre (« gravel le we prochain à Tours ») + trace GPX facultative.
-  Météo Open-Meteo (16 jours max), plusieurs jours, refuge / bivouac, correction d'altitude.
-- Checklist : bascule chaud / froid, renfort, modules de l'activité ; rangée par univers
-  (libellés de l'activité) puis Haut, Bas, Accessoires…
+  Météo Open-Meteo à moins de 16 jours, normales de saison au-delà, plusieurs jours,
+  gîte / refuge / bivouac, correction d'altitude. La phrase peut imposer : « par temps froid »,
+  « grand froid », « chaud », « avec pluie », « sans pluie », « de nuit ».
+- Checklist : découle de la sortie préparée, sans réglage manuel ; rangée par univers puis
+  Haut, Bas, Accessoires…
 - Manques : par activité, filtrable vêtements / tout et chaud / froid.
 - Inventaire : recherche, filtres statut et saison, édition.
 
