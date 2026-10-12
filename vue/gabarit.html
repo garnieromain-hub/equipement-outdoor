@@ -47,6 +47,9 @@ section[hidden] { display: none; }
 .btn.petit { font-size: 12px; padding: 3px 9px; }
 .droite .btn.petit { min-width: 76px; }
 .boutons { display: flex; gap: 6px; flex: none; }
+.lien-nom { border: 0; background: none; padding: 0; font: inherit; font-weight: 600; color: inherit; cursor: pointer;
+  text-decoration: underline; text-decoration-color: var(--ligne); text-underline-offset: 3px; }
+.lien-nom:hover { text-decoration-color: var(--accent); }
 .prevu-objet { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 8px;
   padding: 6px 0 0; border-top: 1px dashed var(--ligne); font-size: 14px; }
 .carte { background: var(--carte); border: 1px solid var(--ligne); border-radius: 12px; padding: 4px 14px; margin-bottom: 14px; }
@@ -185,13 +188,13 @@ dialog::backdrop { background: rgba(0, 0, 0, .35); }
 
 <dialog id="nouvel-achat">
   <form method="dialog" id="n-form">
-    <h2>Ajouter à ma liste</h2>
+    <h2 id="n-titre">Ajouter à ma liste</h2>
     <label>Nom<input name="nom" required autocomplete="off" placeholder="Gants hiver"></label>
     <label style="margin-top:10px">Modèle envisagé (facultatif)<input name="modele" autocomplete="off" placeholder="Nom du modèle ou lien internet"></label>
     <div class="erreur" id="n-erreurs"></div>
     <div class="outils actions"><span class="espace"></span>
       <button type="button" class="btn" id="n-annuler">Annuler</button>
-      <button type="submit" class="btn principal">Ajouter</button></div>
+      <button type="submit" class="btn principal" id="n-valider">Ajouter</button></div>
   </form>
 </dialog>
 
@@ -381,15 +384,17 @@ const domaine = u => { try { return new URL(u).hostname.replace(/^www\./, ""); }
 function rendreManques() {
   const liste = maListe();
   const lignes = liste.map(o => `<div class="ligne"><div class="corps">
-      <div class="titre">${esc(o.nom)}</div>
+      <div class="titre">${EDITION ? `<button class="lien-nom" data-modele="${esc(o.id)}">${esc(o.nom)}</button>` : esc(o.nom)}</div>
       <div class="sous">${[o.modele ? esc(o.modele) : "", o.lien ? `<a href="${esc(o.lien)}" target="_blank" rel="noopener">${esc(domaine(o.lien))}</a>` : ""].filter(Boolean).join(" · ") || "modèle à choisir"}</div></div>
     ${EDITION ? `<div class="boutons"><button class="btn petit principal" data-achete-objet="${esc(o.id)}">Acheté</button>
       <button class="btn petit danger" data-supprimer="${esc(o.id)}">Supprimer</button></div>` : ""}</div>`).join("");
   if (!D.activites.some(a => a.activite === activiteManques)) activiteManques = D.activites[0]?.activite;
   const a = D.activites.find(x => x.activite === activiteManques), manques = a ? manquesDe(a) : [];
-  const suggestions = manques.length ? parUnivers(manques, x => x, (l, g) => carte(g, l.map(r => `<div class="ligne"><div class="corps">
+  const parG = {};
+  manques.forEach(r => (parG[ROLE[r].groupe] ||= []).push(r));
+  const suggestions = manques.length ? [...new Set(D.roles.map(r => r.groupe))].filter(g => parG[g]).map(g => carte(g, parG[g].map(r => `<div class="ligne"><div class="corps">
       <div class="titre">${esc(ROLE[r].libelle)}</div><div class="sous">sert : ${esc(contextes(a, r).join(", "))}</div></div>
-      ${EDITION ? `<button class="btn petit" data-ajouter-liste="${r}">Ajouter à ma liste</button>` : ""}</div>`).join("")), a.univers)
+      ${EDITION ? `<button class="btn petit" data-ajouter-liste="${r}">Ajouter à ma liste</button>` : ""}</div>`).join(""))).join("")
     : `<p class="vide">Rien ne manque en ${esc(activiteManques)}.</p>`;
   $("#m-liste").innerHTML = `<h2 class="univers">Ma liste <span class="sous">· ${liste.length}</span></h2>
     ${liste.length ? `<div class="carte">${lignes}</div>` : `<p class="vide">Liste vide.</p>`}
@@ -546,7 +551,16 @@ async function envoyer(methode, url, corps, zoneErreurs) {
 const idLibre = nom => { let id = slug(nom) || "objet", n = 2; const base = id; while (D.objets.some(o => o.id === id)) id = `${base}-${n++}`; return id; };
 
 // Ajouter à ma liste : un nom, un modèle envisagé facultatif (texte ou lien dont on lit le titre).
-$("#m-ajouter").onclick = () => { const f = $("#n-form"); f.reset(); $("#n-erreurs").textContent = ""; $("#nouvel-achat").showModal(); f.nom.focus(); };
+function listeOuvrir(id) {
+  const f = $("#n-form"), o = D.objets.find(x => x.id === id);
+  listeOuvrir.id = o ? id : null;
+  f.reset(); $("#n-erreurs").textContent = "";
+  $("#n-titre").textContent = o ? `Modèle envisagé : ${o.nom}` : "Ajouter à ma liste";
+  $("#n-valider").textContent = o ? "Enregistrer" : "Ajouter";
+  if (o) { f.nom.value = o.nom; f.modele.value = o.lien || o.modele || ""; }
+  $("#nouvel-achat").showModal(); (o ? f.modele : f.nom).focus();
+}
+$("#m-ajouter").onclick = () => listeOuvrir(null);
 $("#n-annuler").onclick = () => $("#nouvel-achat").close();
 $("#n-form").onsubmit = async e => {
   e.preventDefault();
@@ -557,6 +571,15 @@ $("#n-form").onsubmit = async e => {
   if (lien) {
     $("#n-erreurs").textContent = "Lecture du lien…";
     try { modele = (await (await fetch("/api/titre", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ url: lien }) })).json()).titre; } catch {}
+  }
+  const existant = D.objets.find(x => x.id === listeOuvrir.id);
+  if (existant) {
+    // Garde le titre déjà lu si le lien n'a pas changé.
+    if (lien && lien === existant.lien && !modele) modele = existant.modele;
+    const objet = { ...existant, nom, modele, lien }, fichier = objet.fichier;
+    delete objet.fichier;
+    if (await envoyer("PUT", `/api/objets/${encodeURIComponent(existant.id)}`, { objet, fichier }, $("#n-erreurs"))) $("#nouvel-achat").close();
+    return;
   }
   const objet = { id: idLibre(nom), nom, marque: null, modele, roles: [], activites: [], temp_min: null, temp_max: null,
     impermeable: false, poids_g: null, statut: "a-acheter", lien, notes: "" };
@@ -593,6 +616,7 @@ $("#a-form").onsubmit = async e => {
 document.querySelector("main").addEventListener("click", e => {
   const d = e.target.dataset || {};
   if (d.acheteObjet) acheteOuvrir(d.acheteObjet);
+  if (d.modele) listeOuvrir(d.modele);
   if (d.ajouterListe) ajouterAListe(d.ajouterListe);
   if (d.activiteManques) { activiteManques = d.activiteManques; stocker.ecrire("activite-manques", activiteManques); rendreManques(); }
   if (d.supprimer) {
