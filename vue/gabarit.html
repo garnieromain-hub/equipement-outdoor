@@ -46,6 +46,9 @@ section[hidden] { display: none; }
 .btn.danger { color: var(--manque); border-color: var(--manque-fond); }
 .btn.petit { font-size: 12px; padding: 3px 9px; }
 .droite .btn.petit { min-width: 76px; }
+.boutons { display: flex; gap: 6px; flex: none; }
+.prevu-objet { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 8px;
+  padding: 6px 0 0; border-top: 1px dashed var(--ligne); font-size: 14px; }
 .carte { background: var(--carte); border: 1px solid var(--ligne); border-radius: 12px; padding: 4px 14px; margin-bottom: 14px; }
 h2 { font-size: 16px; margin: 22px 0 8px; }
 h2.univers { font-size: 19px; margin: 26px 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--texte); }
@@ -371,11 +374,14 @@ function rendreManques() {
     const corps = roles.length ? parUnivers(roles, x => x, (liste, g) => carte(g, liste.map(r => {
       const tous = objetsPour(r, a.activite), prevus = tous.filter(o => !POSSEDES.includes(o.statut));
       const actuels = tous.filter(o => POSSEDES.includes(o.statut)), quand = contextes(a, r);
+      const boutons = id => !EDITION ? "" : `<div class="boutons">
+        <button class="btn petit principal" data-achete="${r}" data-activite="${esc(a.activite)}"${id ? ` data-objet="${esc(id)}"` : ""}>Acheté</button>
+        ${id ? `<button class="btn petit danger" data-supprimer="${esc(id)}">Supprimer</button>` : ""}</div>`;
       return `<div class="ligne"><div class="corps"><div class="titre">${esc(ROLE[r].libelle)}</div>
-        <div class="sous">${[...prevus.map(o => `${esc(o.nom)} (${STATUTS[o.statut].toLowerCase()})`),
-          actuels.length ? `remplace : ${actuels.map(o => esc(o.nom)).join(", ")}` : "",
-          quand.length ? `sert : ${esc(quand.join(", "))}` : ""].filter(Boolean).join(" · ")}</div></div>
-        <div class="droite">${EDITION ? `<button class="btn petit principal" data-achete="${r}" data-activite="${esc(a.activite)}"${prevus.length ? ` data-objet="${esc(prevus[0].id)}"` : ""}>Acheté</button>` : ""}</div></div>`;
+        <div class="sous">${[actuels.length ? `remplace : ${actuels.map(o => esc(o.nom)).join(", ")}` : "",
+          quand.length ? `sert : ${esc(quand.join(", "))}` : ""].filter(Boolean).join(" · ")}</div>
+        ${prevus.map(o => `<div class="prevu-objet"><span>${esc(o.nom)} <span class="sous">(${STATUTS[o.statut].toLowerCase()})</span></span>${boutons(o.id)}</div>`).join("")}
+        </div>${prevus.length ? "" : `<div class="droite">${boutons(null)}</div>`}</div>`;
     }).join("")), a.univers) : `<p class="vide">Rien ne manque.</p>`;
     return `<h2 class="activite">${majuscule(a.activite)} <span class="sous">· ${roles.length} à acheter</span></h2>${corps}`;
   }).join("");
@@ -567,6 +573,11 @@ $("#a-form").onsubmit = async e => {
 document.querySelector("main").addEventListener("click", e => {
   const d = e.target.dataset || {};
   if (d.achete) acheteOuvrir(d.achete, d.activite, d.objet);
+  if (d.supprimer) {
+    const o = D.objets.find(x => x.id === d.supprimer);
+    if (o && confirm(`Supprimer « ${o.nom} » de la liste à acheter ?`))
+      fetch(`/api/objets/${encodeURIComponent(o.id)}`, { method: "DELETE" }).then(r => r.json()).then(j => j.erreurs ? alert(j.erreurs.join("\n")) : appliquerDonnees(j));
+  }
   if (d.modifier) editeurOuvrir(D.objets.find(o => o.id === d.modifier));
 });
 
