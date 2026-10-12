@@ -45,6 +45,7 @@ section[hidden] { display: none; }
 .btn.principal { background: var(--accent); border-color: var(--accent); color: var(--carte); font-weight: 600; }
 .btn.danger { color: var(--manque); border-color: var(--manque-fond); }
 .btn.petit { font-size: 12px; padding: 3px 9px; }
+.droite .btn.petit { min-width: 76px; }
 .carte { background: var(--carte); border: 1px solid var(--ligne); border-radius: 12px; padding: 4px 14px; margin-bottom: 14px; }
 h2 { font-size: 16px; margin: 22px 0 8px; }
 h2.univers { font-size: 19px; margin: 26px 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--texte); }
@@ -197,6 +198,7 @@ const GROUPES = { haut: "Haut", bas: "Bas", accessoires: "Accessoires", portage:
 const SAISONS = { chaud: "Chaud", froid: "Froid", "toutes-saisons": "Toutes saisons" };
 const STATUTS = { possede: "Possédé", "a-confirmer": "À confirmer", "a-acheter": "À acheter", envisage: "Envisagé", reforme: "Réformé" };
 const POSSEDES = ["possede", "a-confirmer"];
+const VETEMENTS_GROUPES = ["haut", "bas", "accessoires"];
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const tag = s => s ? `<span class="tag ${s}">${SAISONS[s] || s}</span>` : "";
@@ -351,8 +353,9 @@ function rendreManques() {
       const prevus = objetsPour(r, a.activite).filter(o => !POSSEDES.includes(o.statut));
       return `<div class="ligne"><div class="corps"><div class="titre">${esc(ROLE[r].libelle)}</div>
         <div class="sous">${prevus.map(o => `${esc(o.nom)} (${STATUTS[o.statut].toLowerCase()}) · `).join("")}sert : ${esc(contextes(a, r).join(", "))}</div></div>
-        <div class="droite">${!EDITION ? "" : prevus.length ? `<button class="btn petit" data-modifier="${esc(prevus[0].id)}">Modifier</button>`
-          : `<button class="btn petit" data-ajouter-role="${r}" data-activite="${esc(a.activite)}">Ajouter</button>`}</div></div>`;
+        <div class="droite">${!EDITION ? "" : prevus.length
+          ? `<button class="btn petit principal" data-achete="${esc(prevus[0].id)}">Acheté</button><button class="btn petit" data-modifier="${esc(prevus[0].id)}">Modifier</button>`
+          : `<button class="btn petit principal" data-je-l-ai="${r}" data-activite="${esc(a.activite)}">Je l'ai</button>`}</div></div>`;
     }).join("")), a.univers) : `<p class="vide">Rien ne manque.</p>`;
     return `<h2 class="activite">${majuscule(a.activite)} <span class="sous">· ${roles.length} manque${roles.length > 1 ? "s" : ""}</span></h2>${corps}`;
   }).join("");
@@ -499,10 +502,36 @@ $("#m-activites").onclick = e => {
   if (a) { activiteManques = a; stocker.ecrire("activite-manques", a); rendreManques(); }
 };
 $("#m-ajouter").onclick = () => editeurOuvrir(null, { statut: "a-acheter" });
+// Ajout en un clic depuis À acheter : un objet possédé, nommé d'après le rôle, à compléter plus tard.
+const FICHIER_PAR_GROUPE = { haut: "vetements", bas: "vetements", accessoires: "extremites", "nuit-refuge": "bivouac" };
+async function enregistrerDirect(methode, url, corps) {
+  const r = await fetch(url, { method: methode, headers: { "Content-Type": "application/json" }, body: JSON.stringify(corps) });
+  const j = await r.json();
+  if (!r.ok) { alert((j.erreurs || ["erreur inconnue"]).join("\n")); return; }
+  appliquerDonnees(j);
+}
+function jeLAi(role, activite) {
+  const r = ROLE[role], a = D.activites.find(x => x.activite === activite), c = contextes(a, role);
+  const froid = c.some(x => /froid/.test(x)), chaud = c.some(x => x === "chaud" || x === "mi-saison");
+  let id = slug(r.libelle), n = 2;
+  while (D.objets.some(o => o.id === id)) id = `${slug(r.libelle)}-${n++}`;
+  const objet = { id, nom: r.libelle, marque: null, modele: null, roles: [role], activites: [activite],
+    temp_min: null, temp_max: null, impermeable: false, poids_g: null, statut: "possede", lien: null,
+    notes: "Ajouté depuis À acheter : modèle à préciser." };
+  if (VETEMENTS_GROUPES.includes(r.groupe)) objet.saison = froid && !chaud ? "froid" : chaud && !froid ? "chaud" : "toutes-saisons";
+  const voulu = FICHIER_PAR_GROUPE[r.groupe] || r.groupe, fichier = D.fichiers.includes(voulu) ? voulu : "vetements";
+  enregistrerDirect("POST", "/api/objets", { objet, fichier });
+}
+function achete(id) {
+  const o = { ...D.objets.find(x => x.id === id), statut: "possede" }, fichier = o.fichier;
+  delete o.fichier;
+  enregistrerDirect("PUT", `/api/objets/${encodeURIComponent(id)}`, { objet: o, fichier });
+}
 document.querySelector("main").addEventListener("click", e => {
   const d = e.target.dataset || {};
+  if (d.jeLAi) jeLAi(d.jeLAi, d.activite);
+  if (d.achete) achete(d.achete);
   if (d.modifier) editeurOuvrir(D.objets.find(o => o.id === d.modifier));
-  if (d.ajouterRole) editeurOuvrir(null, { statut: "a-acheter", roles: [d.ajouterRole], activites: [d.activite] });
 });
 
 // Recharge tout l'affichage avec de nouvelles données (après une édition ou un changement des fichiers).
