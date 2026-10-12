@@ -1,9 +1,4 @@
 # Même modèle d'objet que vetements.yaml, champs utiles en plus :
 # temp_confort, volume_compresse_l.
-- id: duvet-a-choisir
-  nom: Duvet bikepacking / rando
-  roles: [duvet]
-  activites: [bikepacking, rando]
-  temp_confort: -1
-  statut: envisage
-  notes: "Comparatif fait : Rab Mythic Ultra 360 et Simond Sprint 900 cuin retenus. Compressibilité prioritaire."
+
+[]
