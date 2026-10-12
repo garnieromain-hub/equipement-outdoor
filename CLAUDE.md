@@ -34,6 +34,7 @@ On n'édite donc jamais une checklist quand on ajoute un objet : on lui donne se
 - `sorties/` : checklists générées, `AAAA-MM-JJ-activite.md`
 - `documents/a-traiter/` : je dépose factures, fiches produits, photos, liens
 - `documents/traites/` : documents déjà intégrés à l'inventaire
+- `ROADMAP.md` : ce qui est fait, à faire, et la vision future
 - `vue/` : application locale `ruby vue/serveur.rb` → http://localhost:4567
   (consultation, checklist, édition de l'inventaire, mise à jour en direct)
 
