@@ -74,3 +74,17 @@
   statut: possede
   lien: null
   notes: "Modèle à préciser."
+
+- id: demonte-pneus
+  nom: Démonte-pneus
+  marque: null
+  modele: null
+  roles: [demonte-pneus]
+  activites: [gravel, bikepacking]
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: null
+  statut: possede
+  lien: null
+  notes: "Modèle à préciser."

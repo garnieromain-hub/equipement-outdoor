@@ -194,3 +194,18 @@
   statut: possede
   lien: null
   notes: "Pour le soir au gîte."
+
+- id: casquette-restrap
+  nom: Casquette vélo Restrap Logo
+  marque: Restrap
+  modele: Logo Cycling Cap
+  roles: [casquette]
+  activites: [gravel, bikepacking]
+  saison: toutes-saisons
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: null
+  statut: possede
+  lien: https://eu.restrap.com/fr/collections/clothing/products/restrap-logo-cycling-cap
+  notes: "Coton et polyester, coupe-vent et respirant, bandeau élastique antibactérien. Présentée pour toute l’année."
