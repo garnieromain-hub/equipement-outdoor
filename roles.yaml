@@ -13,10 +13,9 @@ en-action:
   haut:
     sous-maillot-court: Sous-couche manches courtes
     sous-maillot-long: Sous-couche manches longues
-    maillot-court: Maillot ou t-shirt manches courtes
+    maillot-court: Maillot manches courtes
     maillot-long: Maillot ou haut manches longues
     manchettes: Manchettes amovibles
-    gilet-coupe-vent: Gilet coupe-vent sans manches
     coupe-vent: Veste coupe-vent compressible
     veste-pluie: Veste imperméable
     doudoune-legere: Isolant léger pour les pauses
@@ -26,7 +25,6 @@ en-action:
     short-course: Short ou cuissard de course à pied
     collant-long: Collant / cuissard long
     collant-thermique: Collant long thermique
-    jambieres: Jambières ou genouillères amovibles
     surpantalon-pluie: Surpantalon imperméable
 
   accessoires:
@@ -40,12 +38,10 @@ en-action:
     gants-mi-saison: Gants longs légers
     gants-hiver: Gants hiver
     sur-gants-pluie: Sur-gants ou gants imperméables
-    sous-casque: Sous-casque ou bonnet fin
+    sous-casque: Bonnet fin
     tour-de-cou: Buff / tour de cou
-    cagoule: Cagoule
     chaussettes-ete: Chaussettes fines
     chaussettes-hiver: Chaussettes mérinos épaisses
-    couvre-chaussures: Couvre-chaussures
     chaussettes-impermeables: Chaussettes imperméables
 
   portage:

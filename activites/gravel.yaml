@@ -19,7 +19,6 @@ parametres:
 base:
   - casque
   - chaussures-velo
-  - gilet-coupe-vent
   - lunettes
   - reparation-tubeless
   - pompe
@@ -43,14 +42,14 @@ temperature:
     renfort:
       nom: mi-saison
       condition: "temp_min <= 16"
-      ajouter: [manchettes, jambieres]
+      ajouter: [manchettes]
   froid:
-    ajouter: [sous-maillot-long, maillot-long, collant-long, coupe-vent, gants-mi-saison, tour-de-cou, sous-casque, chaussettes-hiver]
+    ajouter: [sous-maillot-long, maillot-long, collant-long, coupe-vent, gants-mi-saison, tour-de-cou, chaussettes-hiver]
     renfort:
       nom: grand froid
       condition: "temp_min <= 5"
-      ajouter: [collant-thermique, gants-hiver, cagoule, couvre-chaussures, doudoune-legere]
-      retirer: [collant-long, gants-mi-saison, sous-casque]
+      ajouter: [collant-thermique, gants-hiver, doudoune-legere]
+      retirer: [collant-long, gants-mi-saison]
 
 # Modules : activés en plus de la température quand leur déclencheur est rempli.
 # Déclencheurs possibles : pluie, nuit, duree_h, jours, altitude_m, denivele_m, hebergement.
@@ -58,7 +57,7 @@ modules:
   pluie:
     condition: "risque de pluie"
     declencheur: { pluie: true }
-    ajouter: [veste-pluie, sur-gants-pluie, sac-etanche, couvre-chaussures]
+    ajouter: [veste-pluie, sur-gants-pluie, sac-etanche]
   longue-sortie:
     condition: "plus de 4 h ou loin de tout"
     declencheur: { duree_h: 4 }
