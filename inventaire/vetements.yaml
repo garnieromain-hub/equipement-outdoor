@@ -20,8 +20,8 @@
   nom: Veste pluie Raidlight Ultralight 3.0 MP+
   marque: Raidlight
   modele: Ultralight 3.0 MP+ 25K/50K
-  roles: [veste-pluie, coupe-vent]
-  activites: [gravel, trail, rando, bikepacking]
+  roles: [coupe-vent, veste-pluie]
+  activites: [gravel, trail, bikepacking, rando]
   saison: toutes-saisons
   temp_min: null
   temp_max: null
@@ -29,7 +29,7 @@
   poids_g: 175
   statut: envisage
   lien: https://raidlight.com/collections/vestes-de-trail-homme/products/veste-trail-ultralight-3-0-mp-2026
-  notes: "Doit remplacer la veste Compressport en trail. Remplace la Rab Kinetic 2.0 envisagée. 279,90 € (au 2026-10-12). Membrane MP+ 25 000 Schmerber / 50 000 MVTR, coutures thermosoudées, DWR sans PFC, soufflet dorsal compatible sac 12 L. Poids annoncé sans précision de taille. Capuche compatible casque non précisée."
+  notes: ""
 
 - id: maillot-long-gobik-cobble-conquer
   nom: Maillot manches longues Gobik Cobble Conquer
@@ -44,7 +44,7 @@
   poids_g: 280
   statut: possede
   lien: https://gobik.com/fr/products/maillot-hombre-manga-larga-cobble-conquer
-  notes: "Poids et plage fabricant (taille M). Corps pelucheux isolant, doublure micropolaire, manches légères. 3 poches + 1 zippée, détails réfléchissants. Niveau de protection vent non précisé."
+  notes: "Corps pelucheux isolant, doublure micropolaire, manches légères."
 
 - id: cuissard-court-gobik-grit-k10
   nom: Cuissard court Gobik Grit K10
@@ -95,8 +95,8 @@
   nom: Veste pluie Salomon Bonatti
   marque: Salomon
   modele: null
-  roles: [veste-pluie, coupe-vent]
-  activites: [trail, rando, gravel]
+  roles: [coupe-vent, veste-pluie]
+  activites: [gravel, trail, rando]
   saison: toutes-saisons
   temp_min: null
   temp_max: null
@@ -104,7 +104,7 @@
   poids_g: null
   statut: possede
   lien: null
-  notes: "Veste pluie orientée trail, bleu pétrole avec empiècement marine. Poche poitrine soudée, coutures étanchées, ancien logo Salomon. Taille S. Étiquette 1/5 : code 305683-SAL-Z-2018060006 (fabrication probablement 2018), sans nom de modèle. Version Bonatti non identifiée : voir les feuillets 2/5 à 5/5. Capuche non compatible casque : elle ne passe pas par-dessus."
+  notes: "Veste pluie orientée trail."
 
 - id: tshirt-nnormal-race-02
   nom: T-shirt de course NNormal Race 02
@@ -143,7 +143,7 @@
   roles: [maillot-long]
   roles_par_activite:
     gravel: [haut-rechange]
-  activites: [trail, rando, gravel]
+  activites: [gravel, trail, rando]
   saison: froid
   temp_min: null
   temp_max: null
@@ -151,7 +151,7 @@
   poids_g: null
   statut: possede
   lien: https://www.nnormal.com/fr_FR/homme/vetement/mls/nnormal-mens_merino_long_sleeve_t_shirt-N2CMML1-002
-  notes: "100 % mérinos. Présenté comme première couche en rando/montagne ou haut de course par temps frais. Bleu. Haut de course en trail ; tenue off bike (après, pauses) en gravel."
+  notes: "100 % mérinos. Présenté comme première couche en rando/montagne."
 
 - id: veste-pluie-compressport
   nom: Veste pluie Compressport

@@ -2,6 +2,8 @@
 
 ## Application locale (recommandée)
 
+Double-cliquer sur « Lancer équipement.command » à la racine du projet, ou :
+
     ruby vue/serveur.rb
 
 puis ouvrir http://localhost:4567 (Ctrl+C dans le terminal pour arrêter).

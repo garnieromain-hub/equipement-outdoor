@@ -73,7 +73,7 @@
   poids_g: 264
   statut: possede
   lien: https://www.nnormal.com/fr_FR/homme/chaussures/tmi/nnormal-tomir_02_shoe_brown-N2ZTR25-008
-  notes: "Poids fabricant en UK 8.5. Drop 8 mm, stack 25/33 mm, semelle Vibram Megagrip Litebase, crampons 5 mm. Pour sorties longues et techniques. Pas de membrane mentionnée."
+  notes: "Drop 8 mm, stack 25/33 mm, semelle Vibram Megagrip Litebase, crampons 5 mm."
 
 - id: chaussettes-salomon-pulse-race-flag
   nom: Chaussettes Salomon Pulse Race Flag Crew
@@ -103,7 +103,7 @@
   poids_g: null
   statut: possede
   lien: null
-  notes: "Modèle à préciser."
+  notes: ""
 
 - id: bonnet-icebreaker-merino
   nom: Bonnet mérinos Icebreaker
