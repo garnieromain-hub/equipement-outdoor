@@ -6,11 +6,13 @@
   modele: Sense Pro 10 Race Flag Set
   roles: [sac-hydratation, flasques, sifflet]
   activites: [trail]
+  temp_min: null
+  temp_max: null
   impermeable: false
   poids_g: 165
   statut: possede
   lien: https://www.i-run.fr/accessoires/Sac-hydratation-Gourde_c1008/Salomon_m96/Salomon-Sense-Pro-10-Race-Flag-Set_Salomon_fiche_126072.html
-  notes: "10 L. 165 g nu, 249 g avec accessoires. 2 flasques souples de 500 ml et sifflet inclus. Sangles porte-bâtons. Compatibilité poche à eau non précisée."
+  notes: "10 L avec 2 flasques souples de 500 ml et sifflet inclus."
 
 - id: sacoche-cadre-restrap-large
   nom: Sacoche de cadre Restrap Large
@@ -18,11 +20,13 @@
   modele: Frame Bag Large 4,5 L
   roles: [sacoche-cadre]
   activites: [gravel, bikepacking]
+  temp_min: null
+  temp_max: null
   impermeable: false
   poids_g: 238
   statut: possede
   lien: https://eu.restrap.com/fr/collections/frame-bags/products/frame-bag-large
-  notes: "4,5 L. Matériaux étanches et zips YKK AquaGuard (sans indice d’imperméabilité). Fixation par sangles caoutchoutées, passage de câble dynamo."
+  notes: "4,5 L. Matériaux étanches et zips."
 
 - id: sacoche-tube-restrap
   nom: Sacoche de tube supérieur Restrap
@@ -30,11 +34,13 @@
   modele: Top Tube Bag 0,8 L
   roles: [sacoche-tube]
   activites: [gravel, bikepacking]
+  temp_min: null
+  temp_max: null
   impermeable: true
   poids_g: 95
   statut: possede
   lien: https://eu.restrap.com/fr/collections/cockpit-bags/products/top-tube-bag
-  notes: "0,8 L. Nylon annoncé 100 % imperméable, zip YKK AquaGuard. Fixation sur le jeu de direction."
+  notes: "0,8 L. Nylon annoncé 100 % imperméable."
 
 - id: sacoche-selle-topeak-backloader
   nom: Sacoche de selle Topeak BackLoader
@@ -42,22 +48,24 @@
   modele: BackLoader
   roles: [sacoche-selle]
   activites: [gravel, bikepacking]
-  impermeable: false
-  poids_g: null
-  statut: possede
-  lien: https://www.topeak.com/global/en/product/969-BACKLOADER
-  notes: "Volume à préciser (6, 10 ou 15 L ; 413 à 565 g selon version et couleur). Sac intérieur étanche 10 000 mm inclus. Fixation rails de selle et tige, charge maxi 5 kg."
-
-- id: antivol
-  nom: Antivol
-  marque: null
-  modele: null
-  roles: [antivol]
-  activites: [gravel, bikepacking]
   temp_min: null
   temp_max: null
   impermeable: false
   poids_g: null
   statut: possede
-  lien: null
-  notes: "Modèle et poids à préciser."
+  lien: https://www.topeak.com/global/en/product/969-BACKLOADER
+  notes: "Sac intérieur étanche 10 000 mm inclus. Charge maxi 5 kg."
+
+- id: antivol
+  nom: Antivol spirale à clé Btwin 100
+  marque: Btwin (Decathlon)
+  modele: Antivol accessoires vélo à clé 100
+  roles: [antivol]
+  activites: [gravel, bikepacking]
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: 200
+  statut: possede
+  lien: https://www.decathlon.fr/p/antivol-accessoires-velo-a-cle-100-gris/345348/c4m8795800
+  notes: "Câble spirale, longueur utile 100 cm. Protection minimale annoncée : contre les vols d’opportunité, pour accessoires ou arrêts courts."
