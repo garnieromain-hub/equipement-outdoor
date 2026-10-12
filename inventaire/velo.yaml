@@ -14,3 +14,18 @@
   statut: possede
   lien: https://www.alltricks.fr/F-10006-chaussures-velo/P-1233413-paire_de_chaussures_gravel_fizik_terra_powerstrap_x4_noir
   notes: "Fermeture velcro Powerstrap 2 sangles, semelle nylon X4 rigidité 6, cales SPD."
+
+- id: casque-poc-omne
+  nom: Casque POC Omne
+  marque: POC
+  modele: Omne (sans MIPS)
+  roles: [casque]
+  activites: [gravel, bikepacking]
+  saison: toutes-saisons
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: null
+  statut: possede
+  lien: null
+  notes: "Ancien modèle sans MIPS, selon Romain."

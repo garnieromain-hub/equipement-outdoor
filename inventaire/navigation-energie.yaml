@@ -1,2 +1,15 @@
 # Même modèle d'objet que vetements.yaml.
-[]
+
+- id: eclairage-ravemen-ls20
+  nom: Éclairages Ravemen LS 20 (CR 1000 + CL 05)
+  marque: Ravemen
+  modele: LS 20 (CR 1000 / CL 05)
+  roles: [eclairage-avant, eclairage-arriere]
+  activites: [gravel, bikepacking]
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: 163
+  statut: possede
+  lien: https://www.alltricks.fr/F-11917-eclairage/P-2895103-paire_d_eclairages_ravemen_ls_20__cr_1000___cl_05__noir
+  notes: "Avant CR 1000 : 1000 lm, jusqu'à 45 h, 140 g, IPX6, USB-C. Arrière CL 05 : 22 lm, jusqu'à 20 h, 23 g, IPX6, USB-C. Poids = total de la paire."

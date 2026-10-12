@@ -119,3 +119,48 @@
   statut: possede
   lien: null
   notes: "Bonnet en mérinos. Modèle à préciser."
+
+- id: lunettes-oakley-sutro-prizm-24k
+  nom: Lunettes Oakley Sutro Prizm 24K
+  marque: Oakley
+  modele: Sutro, monture Matte Carbon, verres Prizm 24K
+  roles: [lunettes]
+  activites: [gravel, bikepacking, trail]
+  saison: toutes-saisons
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: null
+  statut: possede
+  lien: https://www.oakley.com/fr-fr/product/W0OO9406?variant=888392404794
+  notes: "Lunettes de soleil. Catégorie de verre non relevée sur la fiche."
+
+- id: lunettes-roadr-100-categorie-0
+  nom: Lunettes Roadr 100 catégorie 0
+  marque: Decathlon
+  modele: Roadr 100, incolore
+  roles: [lunettes]
+  activites: [gravel, bikepacking]
+  saison: toutes-saisons
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: null
+  statut: possede
+  lien: https://www.decathlon.fr/p/lunettes-de-vitesse-categorie-0-roadr-100/129779/c258m8118518
+  notes: "Verres incolores catégorie 0, polycarbonate anti-UV : pour la nuit, la tombée du jour et le temps gris."
+
+- id: surmoufles-compressport-hurricane
+  nom: Surmoufles imperméables Compressport Hurricane
+  marque: Compressport
+  modele: Hurricane Waterproof Mittens
+  roles: [sur-gants-pluie]
+  activites: [gravel, trail, rando, bikepacking]
+  saison: froid
+  temp_min: null
+  temp_max: null
+  impermeable: true
+  poids_g: 13
+  statut: possede
+  lien: https://www.compressport.com/fr/gants/2122-hurricane-waterproof-mittens-black-7630279410663.html
+  notes: "Surmoufles ultralégères et imperméables, par-dessus des gants, par temps humide et venteux."

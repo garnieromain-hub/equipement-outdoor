@@ -1,12 +1,13 @@
 - id: kit-tubeless
-  nom: Kit réparation tubeless
-  marque: null
-  modele: null
+  nom: Kit tubeless Granite Design Stash
+  marque: Granite Design
+  modele: Stash Tools + 4 mèches
   roles: [reparation-tubeless]
   activites: [gravel, bikepacking]
-  poids_g: null
+  poids_g: 35
   statut: possede
-  notes: "Kit constitué maison. Détailler le contenu (mèches, outil, préventif)."
+  lien: https://www.alltricks.fr/F-11929-outillage/P-1114875-kit_de_reparation_tubeless_granite_design_stash_outils___4_meches_orange
+  notes: "Se range dans le cintre (35 g) : lime, porte-mèche, mèches 1,5 et 3,5 mm. Liquide préventif tubeless dans les pneus."
 
 - id: pompe-gravel
   nom: Pompe gravel
@@ -17,3 +18,45 @@
   poids_g: null
   statut: possede
   notes: "Mode haut volume, flexible déporté. Choisie plutôt que le CO2. Préciser le modèle."
+
+- id: multi-outil-velo
+  nom: Multi-outil vélo
+  marque: null
+  modele: null
+  roles: [multi-outil]
+  activites: [gravel, bikepacking]
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: null
+  statut: possede
+  lien: null
+  notes: "Modèle à préciser. Vérifier s'il a un dérive-chaîne (le rôle le suppose)."
+
+- id: chambre-air-secours
+  nom: Chambre à air de secours
+  marque: null
+  modele: null
+  roles: [chambre-secours]
+  activites: [gravel, bikepacking]
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: null
+  statut: possede
+  lien: null
+  notes: "Dimension à préciser."
+
+- id: pince-montage-neatt
+  nom: Pince de montage pour pneus Neatt
+  marque: Neatt
+  modele: Pince de montage pour pneus
+  roles: [demonte-pneus]
+  activites: [gravel, bikepacking]
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: 120
+  statut: possede
+  lien: https://www.alltricks.fr/F-11929-outillage/P-2918028-pince_de_montage_pour_pneus_neatt_noir
+  notes: "Composite, pour monter les pneus tubeless sans pincer. Sert de démonte-pneus."
