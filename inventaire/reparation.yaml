@@ -31,7 +31,7 @@
   poids_g: null
   statut: possede
   lien: null
-  notes: "Modèle à préciser. Vérifier s'il a un dérive-chaîne (le rôle le suppose)."
+  notes: "Avec dérive-chaîne (confirmé par Romain). Modèle à préciser."
 
 - id: chambre-air-secours
   nom: Chambre à air de secours
@@ -60,3 +60,17 @@
   statut: possede
   lien: https://www.alltricks.fr/F-11929-outillage/P-2918028-pince_de_montage_pour_pneus_neatt_noir
   notes: "Composite, pour monter les pneus tubeless sans pincer. Sert de démonte-pneus."
+
+- id: couteau-leatherman
+  nom: Couteau Leatherman
+  marque: Leatherman
+  modele: null
+  roles: [couteau]
+  activites: [gravel, bikepacking, rando]
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: null
+  statut: possede
+  lien: null
+  notes: "Modèle à préciser."

@@ -167,3 +167,33 @@
   statut: possede
   lien: null
   notes: "À remplacer par la Raidlight Ultralight 3.0 MP+ (envisagée). Modèle à préciser."
+
+- id: collant-gobik-grit-g10
+  nom: Cuissard long Gobik Grit G10
+  marque: Gobik
+  modele: Bib tight Grit Havana G10
+  roles: [collant-long, collant-thermique]
+  activites: [gravel, bikepacking]
+  saison: froid
+  temp_min: 0
+  temp_max: 15
+  impermeable: false
+  poids_g: 300
+  statut: a-acheter
+  lien: https://gobik.com/fr/products/bib-tight-grit-men-havana-g10
+  notes: "À venir. Plage et poids fabricant (taille M). Tissu thermique microfleece, protection RAINLAB vent et pluie fine, peau G10 Graphene, 3 poches. 160 € (au 2026-10-13)."
+
+- id: doudoune-legere
+  nom: Doudoune légère
+  marque: null
+  modele: null
+  roles: [doudoune-legere]
+  activites: [gravel, trail, rando, bikepacking]
+  saison: froid
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: null
+  statut: possede
+  lien: null
+  notes: "Modèle à préciser."

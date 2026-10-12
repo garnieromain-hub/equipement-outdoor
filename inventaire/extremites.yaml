@@ -164,3 +164,33 @@
   statut: possede
   lien: https://www.compressport.com/fr/gants/2122-hurricane-waterproof-mittens-black-7630279410663.html
   notes: "Surmoufles ultralégères et imperméables, par-dessus des gants, par temps humide et venteux."
+
+- id: gants-tnf-rino
+  nom: Gants polaire The North Face Rino
+  marque: The North Face
+  modele: TNF Rino
+  roles: [gants-mi-saison, gants-hiver]
+  activites: [gravel, trail, rando, bikepacking]
+  saison: froid
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: null
+  statut: a-confirmer
+  lien: https://www.thenorthface.com/fr-fr/p/sacs-and-equipement-211747/gants-tnf-rino-NF0A55KZ?color=JK3
+  notes: "Modèle indiqué par Romain (« ce type de modèle ») : confirmer s'il est possédé. Polaire extensible fine, 93 % polyester recyclé, 7 % élasthanne, paumes silicone. Léger : en hiver, porter les surmoufles Compressport par-dessus."
+
+- id: tongs
+  nom: Tongs
+  marque: null
+  modele: null
+  roles: [chaussures-rechange]
+  activites: [gravel, trail, rando, bikepacking]
+  saison: toutes-saisons
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: null
+  statut: possede
+  lien: null
+  notes: "Pour le soir au gîte."

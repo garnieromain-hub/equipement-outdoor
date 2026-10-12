@@ -51,7 +51,7 @@ en-action:
   portage:
     sac-hydratation: Sac ou gilet d'hydratation
 
-  reparation:
+  reparation:            # affiché « Réparation et outils »
     reparation-tubeless: Mèches et outil tubeless
     pompe: Pompe
     chambre-secours: Chambre à air de secours
@@ -59,6 +59,7 @@ en-action:
     multi-outil: Multi-outil avec dérive-chaîne
     attache-rapide: Attache rapide de chaîne
     patte-derailleur: Patte de dérailleur de rechange
+    couteau: Couteau ou pince multifonction
 
   navigation-energie:
     gps: GPS ou compteur
