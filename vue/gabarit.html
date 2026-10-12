@@ -44,6 +44,7 @@ section[hidden] { display: none; }
 .btn:hover { border-color: var(--accent); }
 .btn.principal { background: var(--accent); border-color: var(--accent); color: var(--carte); font-weight: 600; }
 .btn.danger { color: var(--manque); border-color: var(--manque-fond); }
+.btn.danger.arme { background: var(--manque); border-color: var(--manque); color: var(--carte); }
 .btn.petit { font-size: 12px; padding: 3px 9px; }
 .droite .btn.petit { min-width: 76px; }
 .boutons { display: flex; gap: 6px; flex: none; }
@@ -539,10 +540,9 @@ $("#e-form").onsubmit = async e => {
   editeurEnvoyer(c ? "PUT" : "POST", c ? `/api/objets/${encodeURIComponent(c.id)}` : "/api/objets", editeurLire());
 };
 $("#e-annuler").onclick = () => $("#editeur").close();
-$("#e-supprimer").onclick = () => {
+$("#e-supprimer").onclick = e => {
   const c = editeurOuvrir.courant;
-  if (c && confirm(`Supprimer définitivement « ${c.nom} » ?\nPour le garder en historique, passe plutôt son statut à « Réformé ».`))
-    editeurEnvoyer("DELETE", `/api/objets/${encodeURIComponent(c.id)}`);
+  if (c) confirmer(e.target, () => editeurEnvoyer("DELETE", `/api/objets/${encodeURIComponent(c.id)}`));
 };
 $("#i-ajouter").onclick = () => editeurOuvrir(null);
 const FICHIER_PAR_GROUPE = { haut: "vetements", bas: "vetements", accessoires: "extremites", "nuit-refuge": "bivouac" };
@@ -661,16 +661,21 @@ $("#a-form").onsubmit = async e => {
   const fichier = objet.fichier; delete objet.fichier;
   if (await envoyer("PUT", `/api/objets/${encodeURIComponent(existant.id)}`, { objet, fichier }, $("#a-erreurs"))) $("#achat").close();
 };
+// Confirmation dans la page (les fenêtres confirm() natives sont bloquées dans certains navigateurs,
+// dont celui de l'app Claude) : 1er clic, le bouton devient « Confirmer ? » ; 2e clic dans les 4 s, l'action part.
+function confirmer(bouton, action) {
+  if (bouton.dataset.arme) { delete bouton.dataset.arme; action(); return; }
+  const texte = bouton.textContent;
+  bouton.dataset.arme = "1"; bouton.textContent = "Confirmer ?"; bouton.classList.add("arme");
+  setTimeout(() => { if (bouton.dataset.arme) { delete bouton.dataset.arme; bouton.textContent = texte; bouton.classList.remove("arme"); } }, 4000);
+}
 document.querySelector("main").addEventListener("click", e => {
   const d = e.target.dataset || {};
   if (d.acheteObjet) acheteOuvrir(d.acheteObjet);
   if (d.modele) listeOuvrir(d.modele);
   if (d.ajouterListe) ajouterAListe(d.ajouterListe);
   if (d.activiteManques) { activiteManques = d.activiteManques; stocker.ecrire("activite-manques", activiteManques); rendreManques(); }
-  if (d.supprimer) {
-    const o = D.objets.find(x => x.id === d.supprimer);
-    if (o && confirm(`Supprimer « ${o.nom} » de ta liste ?`)) envoyer("DELETE", `/api/objets/${encodeURIComponent(o.id)}`);
-  }
+  if (d.supprimer) confirmer(e.target, () => envoyer("DELETE", `/api/objets/${encodeURIComponent(d.supprimer)}`));
   if (d.modifier) editeurOuvrir(D.objets.find(o => o.id === d.modifier));
 });
 
