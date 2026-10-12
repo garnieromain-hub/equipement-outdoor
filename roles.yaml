@@ -92,11 +92,9 @@ hors-action:
   accessoires:
     chaussures-rechange: Chaussures légères pour le soir
 
-  nuit-refuge:
-    drap-sac: Drap de sac (refuge)
-
   bivouac:
     duvet: Sac de couchage
     matelas: Matelas
     abri: Tente, bivy ou tarp
     rechaud: Réchaud et popote
+    drap-sac: Drap de sac (refuge)

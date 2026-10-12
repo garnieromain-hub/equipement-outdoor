@@ -98,7 +98,7 @@ Température : froid (+ grand froid) · Modules : montagne, itinerance, refuge
 ### Haut
 ### Bas
 ### Accessoires
-### Nuit en refuge
+### Bivouac
 
 ## Eau et nourriture
 Estimation à venir.

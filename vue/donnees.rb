@@ -170,7 +170,7 @@ module Donnees
   end
 
   GROUPES_CONNUS = %w[haut bas accessoires portage reparation navigation-energie ravitaillement securite
-                      nuit-refuge bivouac].freeze
+                      bivouac].freeze
 
   # Déplace un rôle vers un autre groupe du même univers, en réécrivant roles.yaml ligne à ligne
   # (les commentaires sont conservés). Tous les objets qui remplissent ce rôle changent de catégorie.

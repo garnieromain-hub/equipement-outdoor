@@ -233,7 +233,7 @@ let ORDRE = [...new Set(D.roles.map(r => `${r.univers}/${r.groupe}`))];
 const UNIVERS_NEUTRE = { "en-action": "En activité", "hors-action": "Hors activité" };
 const GROUPES = { haut: "Haut", bas: "Bas", accessoires: "Accessoires", portage: "Portage", reparation: "Réparation et outils",
   "navigation-energie": "Navigation et énergie", ravitaillement: "Ravitaillement", securite: "Sécurité",
-  "nuit-refuge": "Nuit en refuge", bivouac: "Bivouac" };
+  bivouac: "Bivouac" };
 const SAISONS = { chaud: "Chaud", froid: "Froid", "toutes-saisons": "Toutes saisons" };
 const STATUTS = { possede: "Possédé", "a-confirmer": "À confirmer", "a-acheter": "À acheter", envisage: "Envisagé", reforme: "Réformé" };
 const POSSEDES = ["possede", "a-confirmer"];
@@ -496,7 +496,7 @@ $("#e-roles").onchange = () => {
   majCategorie();
   if (editeurOuvrir.courant) return;
   const r = ROLE[document.querySelector("#e-roles input:checked")?.value];
-  const parGroupe = { haut: "vetements", bas: "vetements", accessoires: "extremites", "nuit-refuge": "bivouac" };
+  const parGroupe = { haut: "vetements", bas: "vetements", accessoires: "extremites" };
   const f = r && (parGroupe[r.groupe] || r.groupe);
   if (f && D.fichiers.includes(f)) $("#e-form").fichier.value = f;
 };
@@ -545,7 +545,7 @@ $("#e-supprimer").onclick = e => {
   if (c) confirmer(e.target, () => editeurEnvoyer("DELETE", `/api/objets/${encodeURIComponent(c.id)}`));
 };
 $("#i-ajouter").onclick = () => editeurOuvrir(null);
-const FICHIER_PAR_GROUPE = { haut: "vetements", bas: "vetements", accessoires: "extremites", "nuit-refuge": "bivouac" };
+const FICHIER_PAR_GROUPE = { haut: "vetements", bas: "vetements", accessoires: "extremites" };
 async function envoyer(methode, url, corps, zoneErreurs) {
   const r = await fetch(url, { method: methode, headers: { "Content-Type": "application/json" }, body: corps && JSON.stringify(corps) });
   const j = await r.json();
