@@ -238,6 +238,7 @@ module Donnees
     return erreurs unless erreurs.empty?
 
     ancien = obs.find { |x| x["id"] == ancien_id }
+    renommer_dans_sorties(ancien["nom"], o["nom"]) if ancien && ancien["nom"] != o["nom"]
     if ancien && ancien["fichier"] != fichier
       supprimer(ancien_id)
       ancien = nil
@@ -250,6 +251,15 @@ module Donnees
     end
     ecrire_fichier(fichier, liste)
     []
+  end
+
+  # Un objet renommé l'est aussi dans les checklists déjà écrites (sorties/*.md).
+  def renommer_dans_sorties(ancien_nom, nouveau_nom)
+    return if ancien_nom.to_s.strip.empty?
+    Dir[chemin("sorties/????-??-??-*.md")].each do |f|
+      contenu = File.read(f)
+      File.write(f, contenu.gsub(ancien_nom, nouveau_nom)) if contenu.include?(ancien_nom)
+    end
   end
 
   def supprimer(id)

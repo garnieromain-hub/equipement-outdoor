@@ -166,7 +166,7 @@
   notes: "Surmoufles ultralégères et imperméables, par-dessus des gants, par temps humide et venteux."
 
 - id: gants-tnf-rino
-  nom: Gants polaire The North Face Rino
+  nom: Gants The North Face
   marque: The North Face
   modele: TNF Rino
   roles: [gants-mi-saison, gants-hiver]
