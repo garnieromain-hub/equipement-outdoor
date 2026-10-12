@@ -71,4 +71,4 @@ modules:
   bivouac:
     condition: "nuit en bivouac"
     declencheur: { hebergement: bivouac }
-    ajouter: [duvet, matelas, abri]
+    ajouter: [duvet, matelas, abri, rechaud]

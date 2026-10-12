@@ -6,11 +6,39 @@
   marque: Sea to Summit
   modele: Reactor Midweight Liner
   roles: [drap-sac]
-  activites: [trail, rando, bikepacking]
+  activites: [gravel, trail, rando, bikepacking]
   temp_min: null
   temp_max: null
   impermeable: false
   poids_g: null
   statut: possede
   lien: https://seatosummit.eu/fr-fr/products/reactor-midweight-liner
-  notes: "Polyester recyclé Thermolite Pro, forme sarcophage avec capuche. Jusqu’à +6 °C selon le duvet et le matelas. 330 à 365 g selon la taille (Short, Regular, Long) ; taille à préciser. Emballé 19 × 11,5 × 11,5 cm. 64,95 € (au 2026-10-12)."
+  notes: "Forme sarcophage avec capuche. Regular."
+
+- id: rechaud-jetboil-zip
+  nom: Réchaud Jetboil Zip
+  marque: Jetboil
+  modele: Zip
+  roles: [rechaud]
+  activites: [trail, rando, bikepacking]
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: 340
+  statut: possede
+  lien: https://www.jetboil.fr/fr/featured-products/856-zip.html
+  notes: "Tout-en-un : popote FluxRing 0,8 L isolée, couvercle-bol, stabilisateur de cartouche. 0,5 L bout en 2 min 30. Cartouche Jetpower 100 g non incluse."
+
+- id: tente-big-agnes-fly-creek-ul2
+  nom: Tente Big Agnes Fly Creek UL2
+  marque: Big Agnes
+  modele: Fly Creek UL2
+  roles: [abri]
+  activites: [trail, rando, bikepacking]
+  temp_min: null
+  temp_max: null
+  impermeable: true
+  poids_g: 1010
+  statut: possede
+  lien: https://www.bigagnes.fr/catalogue/p/tfcul225.html
+  notes: "2 places, 3 saisons, semi-autoportante. 1010 g complète, 859 g minimum, 680 g en Fast Fly. Intérieur 2,6 m², vestibule 0,7 m². Pliée 50 × 15 cm."

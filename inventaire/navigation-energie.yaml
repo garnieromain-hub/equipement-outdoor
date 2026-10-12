@@ -55,3 +55,17 @@
   statut: possede
   lien: https://www.suunto.com/fr-fr/Produits/Montres-de-sport/suunto-9-baro2/suunto-9-baro-black/
   notes: "Altimètre barométrique, alarme tempête. GPS : 40 h en mode Endurance. En gravel, fixée au cintre comme compteur."
+
+- id: telephone-iphone-16
+  nom: iPhone 16
+  marque: Apple
+  modele: iPhone 16
+  roles: [telephone]
+  activites: [gravel, trail, rando, bikepacking]
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: null
+  statut: possede
+  lien: null
+  notes: ""

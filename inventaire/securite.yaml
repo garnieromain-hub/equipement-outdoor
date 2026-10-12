@@ -1,2 +1,15 @@
 # Même modèle d'objet que vetements.yaml.
-[]
+
+- id: couverture-survie-decathlon
+  nom: Couverture de survie mono usage
+  marque: Decathlon
+  modele: Couverture de survie mono usage, dorée / argentée
+  roles: [couverture-survie]
+  activites: [gravel, trail, rando, bikepacking]
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: null
+  statut: possede
+  lien: https://www.decathlon.fr/p/couverture-de-survie-mono-usage/12837/c250c249m8572360
+  notes: "Usage unique, légère et compacte. Ni poids ni dimensions sur la fiche."
