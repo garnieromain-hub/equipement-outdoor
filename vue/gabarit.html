@@ -280,7 +280,8 @@ document.querySelectorAll("nav button").forEach(b => b.onclick = () => {
 
 /* Mes sorties : les checklists écrites par Claude dans sorties/, cochables */
 let sortieOuverte = stocker.lire("sortie-ouverte", null);
-const enLigne = t => esc(t).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+const enLigne = t => esc(t).replace(/\*\*à acheter\*\*/gi, `<span class="tag manque">à acheter</span>`)
+  .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
 // Rendu des checklists Markdown : titres, cases à cocher (avec numéro de ligne), puces, paragraphes.
 function rendreMarkdown(md) {
   const lignes = md.split("\n"), blocs = [];

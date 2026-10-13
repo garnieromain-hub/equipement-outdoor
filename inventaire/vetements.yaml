@@ -184,11 +184,11 @@
   notes: "À venir. Plage et poids fabricant (taille M). Tissu thermique microfleece, protection RAINLAB vent et pluie fine, peau G10 Graphene, 3 poches. 160 € (au 2026-10-13)."
 
 - id: doudoune-legere
-  nom: Doudoune hiver
+  nom: Doudoune Mammut
   marque: null
   modele: null
   roles: [doudoune-legere]
-  activites: [gravel, trail, bikepacking, rando]
+  activites: [gravel, trail, rando, bikepacking]
   saison: froid
   temp_min: null
   temp_max: null
@@ -196,7 +196,7 @@
   poids_g: null
   statut: possede
   lien: null
-  notes: "Doudoune Mammut"
+  notes: ""
 
 - id: manchettes
   nom: Manchettes

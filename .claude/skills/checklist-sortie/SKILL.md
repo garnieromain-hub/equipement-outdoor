@@ -68,8 +68,10 @@ Un objet qui couvre plusieurs rôles (veste pluie qui sert de coupe-vent) n'est 
 fois, avec une mention. Pour un bivouac, comparer `temp_confort` du duvet à la température
 mini de la nuit et alerter si elle est plus basse.
 
-Un rôle sans objet possédé va dans **Manques** : citer un objet `a-acheter` ou `envisage`
-s'il existe, sinon le décrire en une ligne.
+Un rôle sans objet possédé reste dans sa rubrique (Bas, Sécurité…), comme une case à cocher
+avec le libellé du rôle et le tag `**à acheter**` (l'application l'affiche en pastille), suivi
+si besoin d'un objet envisagé ou d'une solution de repli : `- [ ] Chaussettes mérinos épaisses – **à acheter** ; en attendant, …`.
+Il n'y a pas de section Manques séparée.
 
 ## 5. Écrire la checklist
 
@@ -89,6 +91,7 @@ Température : froid (+ grand froid) · Modules : montagne, itinerance, refuge
 ### Haut
 - [ ] Objet (rôle) – mention éventuelle
 ### Bas
+- [ ] Libellé du rôle manquant – **à acheter** ; solution de repli éventuelle
 ### Accessoires
 ### Portage
 ### Navigation et énergie
@@ -103,9 +106,6 @@ Température : froid (+ grand froid) · Modules : montagne, itinerance, refuge
 ## Eau et nourriture
 Estimation à venir.
 
-## Manques
-- rôle → objet envisagé ou suggestion
-
 ## Retour (à remplir après)
 - Ce qui a manqué :
 - Ce qui était en trop :
@@ -113,7 +113,7 @@ Estimation à venir.
 
 La checklist apparaît aussitôt dans l'application (onglet Mes sorties), où Romain la coche ;
 les cases cochées sont écrites dans le fichier (`- [x]`). Garder ce format : cases `- [ ] `
-pour les objets à emporter, puces simples `- ` pour les manques et le retour, texte complémentaire
+pour les objets à emporter (y compris ceux à acheter), puces simples `- ` pour le retour, texte complémentaire
 après « – » sur la même ligne.
 
 Terminer par une
