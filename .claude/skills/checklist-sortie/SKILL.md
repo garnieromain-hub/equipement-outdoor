@@ -6,7 +6,8 @@ description: Génère la checklist d'équipement d'une sortie (gravel, trail, ra
 # Checklist de sortie
 
 Toute la logique vient des fichiers : `activites/<activite>.yaml` (base, température,
-modules, paramètres), `roles.yaml` (univers et groupes), `inventaire/*.yaml` (objets).
+modules, paramètres), `roles.yaml` (univers et groupes), `inventaire/*.yaml` (objets),
+`profil.yaml` (allure, références, préférences et nutrition de Romain).
 Ne jamais coder en dur un seuil, une vitesse ou une liste propre à une activité ici :
 si une règle manque, proposer de l'ajouter au YAML de l'activité.
 
@@ -27,7 +28,8 @@ en tête de checklist.
 ## 2. Mesurer : trace et météo
 
 - Trace GPX : `ruby outils/gpx.rb <trace.gpx>` → distance, D+, D−, altitudes, point de départ.
-- Durée, si elle n'est pas donnée : appliquer `parametres.vitesse` de l'activité
+- Durée, si elle n'est pas donnée : appliquer l'allure de `profil.yaml` (`<activite>.allure`),
+  à défaut `parametres.vitesse` de l'activité
   (`velo` : km / plat_kmh + D+ / montee_m_h ; `km-effort` : (km + D+ / 100) / km_effort_h).
   Si la valeur est `null`, demander la durée prévue plutôt que deviner.
 - Météo : `ruby outils/meteo.rb --ville <ville> | --lat <lat> --lon <lon> --du AAAA-MM-JJ [--au AAAA-MM-JJ] --debut <h> --fin <h> [--alt-max <point haut>]`.

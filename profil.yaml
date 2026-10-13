@@ -1,0 +1,28 @@
+# Profil de Romain : ce qui lui est propre (les règles générales restent dans activites/).
+# Lu par la skill checklist-sortie. Les valeurs d'allure ici priment sur parametres.vitesse
+# des activités. Laisser null ce qui n'est pas connu : ne jamais deviner.
+
+general:
+  ville_depart: null          # pour la météo quand aucun lieu n'est donné
+  frilosite: null             # « frileux », « normal », « peu frileux » : nuance le choix chaud / froid
+
+trail:
+  allure:
+    km_effort_h: null         # km-effort par heure (km + D+ / 100)
+    plat_kmh: null
+  references: []              # courses ou sorties étalons :
+                              # - { nom, date, km, dplus, temps, notes }
+  preferences: []             # ex. « pas de bâtons sous 1 000 m D+ »
+
+gravel:
+  allure:
+    plat_kmh: null            # sinon 18 km/h (gravel.yaml)
+    montee_m_h: null          # sinon 600 m/h (gravel.yaml)
+  references: []
+  preferences: []
+
+nutrition:
+  eau_ml_h: null              # base ; préciser par froid / par chaleur dans regles si besoin
+  glucides_g_h: null
+  produits_habituels: []      # - { nom, type: gel | barre | poudre | solide, glucides_g, notes }
+  regles: []                  # ex. « un gel toutes les 45 min après la première heure »
