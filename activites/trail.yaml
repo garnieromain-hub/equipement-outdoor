@@ -52,6 +52,13 @@ modules:
     condition: "plus de 3 h"
     declencheur: { duree_h: 3 }
     ajouter: [batterie-externe, trousse-secours, frontale]
+    # Exception : un trail du matin de moins de 50 km se termine de jour.
+    sauf:
+      condition: "départ le matin, au plus tard à 8 h, et moins de 50 km ; la frontale reste si elle est au matériel obligatoire"
+      depart_max_h: 8
+      distance_max_km: 50
+      retirer: [frontale, batterie-externe]
+      garder_si_obligatoire: [frontale]
   montagne:
     condition: "point haut au-dessus de 1 500 m ou plus de 1 000 m de D+"
     declencheur: { altitude_m: 1500, denivele_m: 1000 }

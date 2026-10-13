@@ -118,7 +118,10 @@ module Donnees
     listes = ->(m) { (m["ajouter"] || []) + (m["retirer"] || []) }
     activites.each do |a|
       inconnus = a["base"] - connus
-      (a["modules"] || {}).each_value { |m| inconnus += listes.(m) - connus }
+      (a["modules"] || {}).each_value do |m|
+        inconnus += listes.(m) - connus
+        inconnus += (Array(m.dig("sauf", "retirer")) + Array(m.dig("sauf", "garder_si_obligatoire"))) - connus
+      end
       %w[chaud froid].each do |mode|
         m = a.dig("temperature", mode) or next
         inconnus += (listes.(m) + listes.(m["renfort"] || {})) - connus
