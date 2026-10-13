@@ -60,6 +60,10 @@ modules:
       distance_max_km: 50
       retirer: [frontale, batterie-externe]
       garder_si_obligatoire: [frontale]
+  course:
+    condition: "course organisée (dossard, règlement) : ajouter aussi le matériel obligatoire du règlement"
+    declencheur: { course: true }
+    ajouter: [gobelet]
   montagne:
     condition: "point haut au-dessus de 1 500 m ou plus de 1 000 m de D+"
     declencheur: { altitude_m: 1500, denivele_m: 1000 }

@@ -54,7 +54,7 @@ temperature:
       retirer: [collant-long, gants-mi-saison]
 
 # Modules : activés en plus de la température quand leur déclencheur est rempli.
-# Déclencheurs possibles : pluie, nuit, duree_h, jours, altitude_m, denivele_m, hebergement.
+# Déclencheurs possibles : pluie, nuit, duree_h, jours, altitude_m, denivele_m, hebergement, course.
 modules:
   pluie:
     condition: "risque de pluie"

@@ -51,6 +51,8 @@ Lire `activites/<activite>.yaml` :
    - `altitude_m: x` / `denivele_m: x` : point haut ou D+ de la trace au-delà de x
    - `jours: x` : sortie d'au moins x jours
    - `hebergement: refuge|bivouac` : type de nuit annoncé
+   - `course: true` : course organisée (dossard, règlement) ; lire le règlement et ajouter son
+     matériel obligatoire, en signalant ce qui est obligatoire et ce qui est conseillé
    Un module peut avoir une exception `sauf` : si ses conditions sont remplies (`depart_max_h` :
    départ au plus tard à cette heure ; `distance_max_km` : distance inférieure), retirer ses rôles
    `retirer`, sauf ceux de `garder_si_obligatoire` quand le règlement de la course les impose.

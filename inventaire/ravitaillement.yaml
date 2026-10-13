@@ -1,2 +1,15 @@
 # Même modèle d'objet que vetements.yaml.
-[]
+
+- id: gobelet-salomon-soft-cup-speed
+  nom: Gobelet souple Salomon Soft Cup Speed 150 ml
+  marque: Salomon
+  modele: Soft Cup Speed 150 ml
+  roles: [gobelet]
+  activites: [trail]
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: 12
+  statut: possede
+  lien: https://www.salomon.com/fr-fr/product/soft-cup-speed-150ml-5oz-lc1965/LC1917600
+  notes: "Souple, se range dans une poche ou s’attache par sa boucle. Sans PVC ni bisphénol A."
