@@ -4,10 +4,13 @@
   modele: Stash Tools + 4 mèches
   roles: [reparation-tubeless]
   activites: [gravel, bikepacking]
+  temp_min: null
+  temp_max: null
+  impermeable: false
   poids_g: 35
   statut: possede
   lien: https://www.alltricks.fr/F-11929-outillage/P-1114875-kit_de_reparation_tubeless_granite_design_stash_outils___4_meches_orange
-  notes: "Se range dans le cintre (35 g) : lime, porte-mèche, mèches 1,5 et 3,5 mm. Liquide préventif tubeless dans les pneus."
+  notes: "Lime, porte-mèche, mèches 1,5 et 3,5 mm."
 
 - id: pompe-gravel
   nom: Pompe gravel

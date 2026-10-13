@@ -12,7 +12,7 @@
   poids_g: 163
   statut: possede
   lien: https://www.alltricks.fr/F-11917-eclairage/P-2895103-paire_d_eclairages_ravemen_ls_20__cr_1000___cl_05__noir
-  notes: "Avant CR 1000 : 1000 lm, jusqu'à 45 h, 140 g, IPX6, USB-C. Arrière CL 05 : 22 lm, jusqu'à 20 h, 23 g, IPX6, USB-C. Poids = total de la paire."
+  notes: "Avant : 1000 lm, jusqu'à 45 h, IPX6. Arrière : 22 lm, jusqu'à 20 h, IPX6."
 
 - id: frontale-petzl-nao-plus
   nom: Frontale Petzl NAO+
@@ -47,14 +47,14 @@
   marque: Suunto
   modele: "9 Baro Black"
   roles: [gps]
-  activites: [trail, rando, gravel, bikepacking]
+  activites: [gravel, trail, rando, bikepacking]
   temp_min: null
   temp_max: null
   impermeable: false
   poids_g: null
   statut: possede
   lien: https://www.suunto.com/fr-fr/Produits/Montres-de-sport/suunto-9-baro2/suunto-9-baro-black/
-  notes: "Altimètre barométrique, alarme tempête. GPS : 40 h en mode Endurance. En gravel, fixée au cintre comme compteur."
+  notes: "Altimètre barométrique. GPS : 40 h en mode Endurance. En gravel, fixée au cintre comme compteur."
 
 - id: telephone-iphone-16
   nom: iPhone 16
