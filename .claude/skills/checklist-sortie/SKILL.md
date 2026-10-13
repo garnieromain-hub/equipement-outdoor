@@ -119,6 +119,10 @@ Estimation à venir.
 - Ce qui était en trop :
 ```
 
+Section « Eau et nourriture » : si `profil.yaml` renseigne la nutrition, l'estimer pour la
+durée prévue (eau, glucides, produits habituels, recharges aux ravitaillements) en montrant
+le calcul ; sinon écrire « Estimation à venir ». Appliquer aussi les `preferences` du profil.
+
 La checklist apparaît aussitôt dans l'application (onglet Mes sorties), où Romain la coche ;
 les cases cochées sont écrites dans le fichier (`- [x]`). Garder ce format : cases `- [ ] `
 pour les objets à emporter (y compris ceux à acheter), puces simples `- ` pour le retour, texte complémentaire

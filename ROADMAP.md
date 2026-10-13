@@ -52,7 +52,7 @@ Dernière mise à jour : 2026-10-12.
 - [ ] Tester la skill `checklist-sortie` sur une vraie sortie, puis faire le premier retour d'expérience.
 - [ ] Valider `trail.yaml` : base, seuil 10 °C, renforts, module montagne (1 500 m ou 1 000 m D+), longue sortie (3 h).
 - [ ] Valider les rôles ajoutés pour le trail et le multi-jours.
-- [ ] Renseigner l'allure trail (`km_effort_h`) pour estimer les durées depuis une trace.
+- [ ] Remplir `profil.yaml` : allure trail (`km_effort_h`), courses de référence, préférences, nutrition.
 - [ ] Saisir les objets communs : casque, lunettes, téléphone, papiers, bidons, nourriture, électrolytes.
 - [ ] Compléter le trail : frontale, bâtons, collant long et thermique, gants, chaussettes chaudes,
       manchettes, doudoune, pochette étanche, trousse de secours, couverture de survie.
