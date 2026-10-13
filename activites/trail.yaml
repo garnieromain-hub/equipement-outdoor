@@ -15,6 +15,7 @@ parametres:
   pluie_mm_min: 1
 
 base:
+  - maillot-court        # toujours un t-shirt manches courtes, quelle que soit la météo
   - chaussures-trail
   - sac-hydratation
   - flasques
@@ -30,7 +31,7 @@ base:
 temperature:
   seuil: 10
   chaud:
-    ajouter: [short-course, maillot-court, chaussettes-ete, casquette, electrolytes]
+    ajouter: [short-course, chaussettes-ete, casquette, electrolytes]
     renfort:
       nom: mi-saison
       condition: "temp_min <= 14"
