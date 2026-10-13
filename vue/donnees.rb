@@ -259,9 +259,14 @@ module Donnees
   # Un objet renommé l'est aussi dans les checklists déjà écrites (sorties/*.md).
   def renommer_dans_sorties(ancien_nom, nouveau_nom)
     return if ancien_nom.to_s.strip.empty?
+    # Si le nouveau nom prolonge l'ancien (« Veste X » → « Veste X Hurricane »), ne pas remplacer
+    # une occurrence déjà à jour.
+    suite = nouveau_nom.start_with?(ancien_nom) ? nouveau_nom[ancien_nom.length..-1] : ""
+    motif = suite.empty? ? Regexp.new(Regexp.escape(ancien_nom)) : Regexp.new("#{Regexp.escape(ancien_nom)}(?!#{Regexp.escape(suite)})")
     Dir[chemin("sorties/????-??-??-*.md")].each do |f|
       contenu = File.read(f)
-      File.write(f, contenu.gsub(ancien_nom, nouveau_nom)) if contenu.include?(ancien_nom)
+      nouveau = contenu.gsub(motif, nouveau_nom)
+      File.write(f, nouveau) if nouveau != contenu
     end
   end
 
