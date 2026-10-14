@@ -81,7 +81,10 @@ Dernière mise à jour : 2026-10-12.
 ### Rapprochement avec Profil course
 - Météo à l'heure de passage aux points clés, arrivée de nuit → frontale.
 - Quantités d'eau et de nourriture entre deux ravitaillements.
-- Allure réelle tirée du réalisé pour régler `km_effort_h`.
+- Allure réelle tirée du réalisé pour régler `km_effort_h`. Premier relevé (2026-10-14, API
+  `https://profil-course.vercel.app/api/profils`, lisible sans connexion) : Sparnatrail 2022 61 km 1 690 m D+ 7h09
+  (10,9 km-effort/h), Maxirace 2023 7,5, Grand Trail St Jacques 2024 et 2026 8,4 ; P'tiot Sparnatrail 33 km
+  en 3h15 selon Romain (D+ et année à préciser). L'allure dépend nettement de la distance : prévoir des tranches.
 - Module « course » avec le matériel obligatoire de l'organisation.
 - Retour d'expérience : réalisé + retour de checklist côte à côte.
 
