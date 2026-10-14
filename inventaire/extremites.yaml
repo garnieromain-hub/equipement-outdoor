@@ -224,3 +224,18 @@
   statut: possede
   lien: https://www.snowleader.com/distance-z-pewter-BLAD01961.html
   notes: "Aluminium, pliables en 3 brins (40 cm repliés), longueur fixe 120 cm."
+
+- id: gants-courts
+  nom: Gants chauds et imperméables
+  marque: null
+  modele: Gridtech Storm Hood Gloves
+  roles: [gants-hiver]
+  activites: [gravel, trail]
+  saison: froid
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: null
+  statut: a-acheter
+  lien: https://eu.blackdiamondequipment.com/fr/products/gridtech-storm-hood-gloves?variant=50075666252055
+  notes: ""

@@ -35,7 +35,7 @@ temperature:
     renfort:
       nom: mi-saison
       condition: "temp_min <= 14"
-      ajouter: [manchettes, gants-ete]
+      ajouter: [manchettes]
   froid:
     ajouter: [collant-long, maillot-long, gants-mi-saison, tour-de-cou, sous-casque, chaussettes-hiver]
     renfort:
