@@ -129,7 +129,9 @@ pour les objets à emporter (y compris ceux à acheter), puces simples `- ` pour
 après « – » sur la même ligne.
 
 Terminer par une
-phrase sur les manques et les objets `a-confirmer`, sans plus.
+phrase sur les manques et les objets `a-confirmer`, puis toujours le lien de l'application :
+http://localhost:4567 (onglet Mes sorties ; si elle n'est pas lancée : « Lancer équipement.command »
+ou `ruby vue/serveur.rb`).
 
 ## 6. Retour après la sortie
 
