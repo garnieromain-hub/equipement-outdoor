@@ -118,6 +118,8 @@ module Donnees
     listes = ->(m) { (m["ajouter"] || []) + (m["retirer"] || []) }
     activites.each do |a|
       inconnus = a["base"] - connus
+      r = a.dig("parametres", "renouvellement") || {}
+      inconnus += (Array(r["par_jour"]) + Array(r["si_pluie"])) - connus
       (a["modules"] || {}).each_value do |m|
         inconnus += listes.(m) - connus
         inconnus += (Array(m.dig("sauf", "retirer")) + Array(m.dig("sauf", "garder_si_obligatoire"))) - connus

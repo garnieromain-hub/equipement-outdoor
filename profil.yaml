@@ -5,6 +5,7 @@
 general:
   ville_depart: null          # pour la météo quand aucun lieu n'est donné
   frilosite: null             # « frileux », « normal », « peu frileux » : nuance le choix chaud / froid
+  lessive_en_route: null      # true : je lave le soir (rotation) ; false : un exemplaire par jour
 
 trail:
   allure:

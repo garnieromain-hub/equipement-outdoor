@@ -13,6 +13,13 @@ parametres:
     km_effort_h: null    # à renseigner (ton allure habituelle en km-effort par heure)
   pluie_proba_min: 40
   pluie_mm_min: 1
+  # Plusieurs jours : rôles qu'on change chaque jour (les autres : un seul exemplaire).
+  # Sans lessive : un par jour. Avec lessive le soir (profil : general.lessive_en_route) :
+  # une rotation de `rotation` exemplaires (un porté, un qui sèche).
+  renouvellement:
+    par_jour: [maillot-court, chaussettes-ete, chaussettes-hiver]
+    rotation: 2
+    si_pluie: [chaussettes-ete, chaussettes-hiver]   # + 1 paire sèche gardée au sac
 
 base:
   - maillot-court        # toujours un t-shirt manches courtes, quelle que soit la météo

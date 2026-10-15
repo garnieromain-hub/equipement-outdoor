@@ -61,6 +61,12 @@ Lire `activites/<activite>.yaml` :
    Le signaler dans les hypothèses.
 4. Plusieurs jours : une seule liste (on emporte tout dès le départ), en signalant les
    jours qui imposent un module (« pluie le dimanche »).
+5. **Quantités** (plusieurs jours) : pour chaque rôle de `parametres.renouvellement.par_jour`
+   retenu, emporter un exemplaire par jour ; si `profil.yaml` → `general.lessive_en_route`
+   vaut `true`, seulement `rotation` exemplaires (au plus un par jour). Si le module pluie
+   est actif, ajouter 1 aux rôles de `si_pluie`. Si `lessive_en_route` est `null`, donner
+   les deux nombres. Écrire la quantité après le nom : `- [ ] Objet (rôle) ×4 – …`.
+   L'inventaire ne compte pas les exemplaires possédés : le signaler quand il en faut plusieurs.
 
 ## 4. Choisir les objets
 
