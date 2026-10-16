@@ -421,10 +421,10 @@ function parGroupe(elements, cle, rendu) {
 }
 function rendreEquipements() {
   $("#i-liste").innerHTML = parGroupe(mesEquipements(), o => o.roles[0], liste => `<div class="carte">${liste.map(o => {
-    const details = [o.nombre > 1 ? `×${o.nombre}` : "", plage(o), o.poids_g != null ? `${o.poids_g} g` : "", (o.activites || []).join(", "),
+    const details = [plage(o), o.poids_g != null ? `${o.poids_g} g` : "", (o.activites || []).join(", "),
       (o.roles || []).map(r => ROLE[r]?.libelle || r).join(", "),
       ...Object.entries(o.roles_par_activite || {}).map(([act, rs]) => `en ${act} : ${rs.map(r => ROLE[r]?.libelle || r).join(", ")}`)].filter(Boolean).join(" · ");
-    return `<div class="ligne"><div class="corps"><div class="titre">${o.lien ? `<a href="${esc(o.lien)}" target="_blank" rel="noopener" style="color:inherit">${esc(o.nom)}</a>` : esc(o.nom)}${tag(o.saison)}</div>
+    return `<div class="ligne"><div class="corps"><div class="titre">${o.lien ? `<a href="${esc(o.lien)}" target="_blank" rel="noopener" style="color:inherit">${esc(o.nom)}</a>` : esc(o.nom)}${o.nombre > 1 ? ` ×${o.nombre}` : ""}${tag(o.saison)}</div>
       <div class="sous">${esc(details)}</div>${o.notes ? `<div class="sous">${esc(o.notes)}</div>` : ""}</div>
       <div class="droite">${o.statut === "a-confirmer" ? `<span class="pastille prevu">À confirmer</span>` : ""}
         ${o.a_completer ? `<span class="pastille prevu">À compléter</span>` : ""}
