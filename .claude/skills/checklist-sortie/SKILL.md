@@ -66,7 +66,9 @@ Lire `activites/<activite>.yaml` :
    vaut `true`, seulement `rotation` exemplaires (au plus un par jour). Si le module pluie
    est actif, ajouter 1 aux rôles de `si_pluie`. Si `lessive_en_route` est `null`, donner
    les deux nombres. Écrire la quantité après le nom : `- [ ] Objet (rôle) ×4 – …`.
-   L'inventaire ne compte pas les exemplaires possédés : le signaler quand il en faut plusieurs.
+   Le champ `nombre` de l'objet donne les exemplaires possédés (absent = 1) : s'il en faut
+   plus, compléter avec un autre objet du même rôle, sinon marquer le reste
+   `**à acheter**` (« ×4 – tu en as 1, 3 **à acheter** ; en attendant, … »).
 
 ## 4. Choisir les objets
 

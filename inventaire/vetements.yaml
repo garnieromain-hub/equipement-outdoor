@@ -12,6 +12,7 @@
 #   temp_max: null
 #   impermeable: false
 #   poids_g: null
+#   nombre: 2                      # facultatif : exemplaires possédés (absent = 1)
 #   statut: possede                # possede | a-confirmer | a-acheter | envisage | reforme
 #   lien: null                     # fiche produit
 #   notes: ""

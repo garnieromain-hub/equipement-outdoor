@@ -167,6 +167,7 @@ dialog::backdrop { background: rgba(0, 0, 0, .35); }
       <label>Temp. mini (°C)<input name="temp_min" type="number" step="any"></label>
       <label>Temp. maxi (°C)<input name="temp_max" type="number" step="any"></label>
       <label>Poids (g)<input name="poids_g" type="number" step="any"></label>
+      <label>Nombre possédé<input name="nombre" type="number" min="1" step="1" placeholder="1"></label>
       <label class="case"><input name="impermeable" type="checkbox">Imperméable</label>
       <label class="large">Lien<input name="lien" type="url"></label>
     </div>
@@ -420,7 +421,7 @@ function parGroupe(elements, cle, rendu) {
 }
 function rendreEquipements() {
   $("#i-liste").innerHTML = parGroupe(mesEquipements(), o => o.roles[0], liste => `<div class="carte">${liste.map(o => {
-    const details = [plage(o), o.poids_g != null ? `${o.poids_g} g` : "", (o.activites || []).join(", "),
+    const details = [o.nombre > 1 ? `×${o.nombre}` : "", plage(o), o.poids_g != null ? `${o.poids_g} g` : "", (o.activites || []).join(", "),
       (o.roles || []).map(r => ROLE[r]?.libelle || r).join(", "),
       ...Object.entries(o.roles_par_activite || {}).map(([act, rs]) => `en ${act} : ${rs.map(r => ROLE[r]?.libelle || r).join(", ")}`)].filter(Boolean).join(" · ");
     return `<div class="ligne"><div class="corps"><div class="titre">${o.lien ? `<a href="${esc(o.lien)}" target="_blank" rel="noopener" style="color:inherit">${esc(o.nom)}</a>` : esc(o.nom)}${tag(o.saison)}</div>
@@ -431,7 +432,7 @@ function rendreEquipements() {
   }).join("")}</div>`) || `<p class="vide">Aucun équipement.</p>`;
 }
 $("#i-export").onclick = () => {
-  const cols = ["id", "nom", "marque", "modele", "univers", "groupe", "saison", "roles", "activites", "temp_min", "temp_max", "impermeable", "poids_g", "statut", "lien", "notes"];
+  const cols = ["id", "nom", "marque", "modele", "univers", "groupe", "saison", "roles", "activites", "temp_min", "temp_max", "impermeable", "poids_g", "nombre", "statut", "lien", "notes"];
   const val = (o, c) => c === "univers" ? UNIVERS_NEUTRE[ROLE[o.roles[0]]?.univers] : c === "groupe" ? GROUPES[ROLE[o.roles[0]]?.groupe] : o[c];
   const cell = v => { v = Array.isArray(v) ? v.join(" ") : v ?? ""; v = String(v); return /[";\n]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v; };
   const csv = [cols.join(";"), ...D.objets.map(o => cols.map(c => cell(val(o, c))).join(";"))].join("\n");
@@ -449,7 +450,7 @@ function editeurOuvrir(o, modele) {
   f.fichier.innerHTML = D.fichiers.map(x => `<option>${esc(x)}</option>`).join("");
   f.statut.innerHTML = Object.entries(STATUTS).map(([k, v]) => `<option value="${k}">${v}</option>`).join("");
   f.saison.innerHTML = `<option value="">—</option>` + Object.entries(SAISONS).map(([k, v]) => `<option value="${k}">${v}</option>`).join("");
-  for (const k of ["nom", "id", "marque", "modele", "temp_min", "temp_max", "poids_g", "lien", "notes"]) f[k].value = o[k] ?? "";
+  for (const k of ["nom", "id", "marque", "modele", "temp_min", "temp_max", "poids_g", "nombre", "lien", "notes"]) f[k].value = o[k] ?? "";
   f.statut.value = o.statut; f.saison.value = o.saison || ""; f.impermeable.checked = !!o.impermeable;
   f.fichier.value = o.fichier || "vetements";
   f.id.readOnly = !nouveau; f.id.dataset.auto = nouveau ? "1" : "";
@@ -516,10 +517,11 @@ function editeurLire() {
     activites: [...new Set([...document.querySelectorAll("#e-activites input:checked")].map(i => i.value),
       ...f.autres_activites.value.split(",").map(x => slug(x)).filter(Boolean))],
     saison: f.saison.value || null, temp_min: nombre(f.temp_min.value), temp_max: nombre(f.temp_max.value),
-    impermeable: f.impermeable.checked, poids_g: nombre(f.poids_g.value), statut: f.statut.value,
+    impermeable: f.impermeable.checked, poids_g: nombre(f.poids_g.value), nombre: nombre(f.nombre.value), statut: f.statut.value,
     lien: texte(f.lien.value), notes: f.notes.value.trim()
   });
   if (!o.saison) delete o.saison;
+  if (o.nombre == null || o.nombre === 1) delete o.nombre;   // absent = un seul exemplaire
   delete o.fichier;
   return { objet: o, fichier: f.fichier.value };
 }

@@ -11,7 +11,7 @@ module Donnees
   GROUPES_VETEMENTS = %w[haut bas accessoires].freeze
   # Ordre des champs à l'écriture d'un objet.
   CHAMPS = %w[id nom marque modele roles roles_par_activite activites saison temp_min temp_max temp_confort
-              impermeable poids_g statut lien notes].freeze
+              impermeable poids_g nombre statut lien notes].freeze
 
   module_function
 
@@ -104,6 +104,7 @@ module Donnees
     %w[temp_min temp_max temp_confort poids_g].each do |k|
       e << "#{k} doit être un nombre" unless o[k].nil? || o[k].is_a?(Numeric)
     end
+    e << "nombre doit être un entier ≥ 1" unless o["nombre"].nil? || (o["nombre"].is_a?(Integer) && o["nombre"] >= 1)
     e
   end
 
