@@ -184,6 +184,9 @@ dialog::backdrop { background: rgba(0, 0, 0, .35); }
       <div class="sous">Une ligne par activité : « activité: rôle1, rôle2 ». Ces rôles remplacent les rôles ci-dessus pour cette activité.</div></fieldset>
     <div class="sous" id="e-aide-categorie"></div>
     <label class="large">Notes<textarea name="notes" rows="3"></textarea></label>
+    <label class="large">Contenu (pour un kit : trousse, réparation…)<textarea name="contenu" rows="8"
+      placeholder="Soins des plaies&#10;- 4 pansements adhésifs&#10;- 2 compresses stériles&#10;Petits outils&#10;- 1 tire-tique"></textarea></label>
+    <div class="sous">Une ligne sans tiret = une rubrique ; une ligne commençant par « - » = un élément.</div>
     <div class="erreur" id="e-erreurs"></div>
     <div class="outils actions">
       <button type="button" class="btn danger" id="e-supprimer">Supprimer</button>
@@ -480,6 +483,7 @@ function editeurOuvrir(o, modele) {
   }
   $("#e-roles").innerHTML = html; $("#e-filtre-roles").value = "";
   f.roles_par_activite.value = Object.entries(o.roles_par_activite || {}).map(([a, rs]) => `${a}: ${rs.join(", ")}`).join("\n");
+  f.contenu.value = Object.entries(o.contenu || {}).map(([r, l]) => [r, ...l.map(x => `- ${x}`)].join("\n")).join("\n");
   // Nouvel objet avec un rôle déjà choisi : catégorie et fichier proposés d'après ce rôle.
   if (nouveau) $("#e-roles").onchange(); else majCategorie();
   $("#editeur").showModal();
@@ -536,6 +540,15 @@ function editeurLire() {
   });
   if (!o.saison) delete o.saison;
   if (o.nombre == null || o.nombre === 1) delete o.nombre;   // absent = un seul exemplaire
+  // Contenu : « Rubrique » puis « - élément » ; un élément sans rubrique va dans « Contenu ».
+  const contenu = {};
+  let rubrique = null;
+  f.contenu.value.split("\n").map(l => l.trim()).filter(Boolean).forEach(l => {
+    if (/^[-•*]\s*/.test(l)) (contenu[rubrique ||= "Contenu"] ||= []).push(l.replace(/^[-•*]\s*/, ""));
+    else { rubrique = l.replace(/:$/, ""); contenu[rubrique] ||= []; }
+  });
+  Object.keys(contenu).forEach(k => { if (!contenu[k].length) delete contenu[k]; });
+  if (Object.keys(contenu).length) o.contenu = contenu; else delete o.contenu;
   delete o.fichier;
   return { objet: o, fichier: f.fichier.value };
 }
