@@ -13,3 +13,32 @@
   statut: possede
   lien: https://www.salomon.com/fr-fr/product/soft-cup-speed-150ml-5oz-lc1965/LC1917600
   notes: "Sans PVC ni bisphénol A."
+
+- id: bidon-camelbak-podium
+  nom: Bidon CamelBak Podium
+  marque: CamelBak
+  modele: Podium noir
+  roles: [bidons]
+  activites: [gravel, bikepacking]
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: null
+  nombre: 2
+  statut: possede
+  lien: https://probikeshop.fr/products/bidon-camelbak-podium-noir-1
+  notes: "Contenance à préciser : 620 ml (73 g) ou 710 ml (77 g). Sans BPA, BPS ni BPF."
+
+- id: bidon-maurten-500
+  nom: Bidon Maurten 500 ml
+  marque: Maurten
+  modele: Bottle 500 ml
+  roles: [bidons]
+  activites: [gravel, bikepacking]
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: null
+  statut: possede
+  lien: https://www.maurten.com/fr/products/bottle-500-ml
+  notes: "500 ml, gradué pour doser la boisson Maurten (un sachet pour 500 ml). Bouchon à vis, bec verrouillable, s’adapte aux porte-bidons standards."

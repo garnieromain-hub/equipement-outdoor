@@ -19,21 +19,21 @@
   marque: null
   modele: null
   roles: [trousse-secours]
-  activites: [gravel, trail]
+  activites: [gravel, trail, rando, bikepacking]
   temp_min: null
   temp_max: null
   impermeable: false
   poids_g: null
   statut: possede
   lien: null
-  notes: "Trousse constituée par Romain."
+  notes: "Trousse personnalisée."
   contenu:
     Soins des plaies et chutes:
       - "4 pansements adhésifs"
       - "2 sachets de compresses stériles"
       - "1 pansement absorbant stérile"
       - "2 dosettes de sérum physiologique"
-      - "2 lingettes antiseptiques"
+      - "2 lingettes antiseptiques : https://www.prorisk.fr/soins-et-materiel/antiseptiques-et-apaisants/nettoyants-et-desinfectants-plaies/p-393-sac-10-lingettes.html?utm_source=chatgpt.com"
       - "1 mini-rouleau de sparadrap"
     Ampoules et frottements:
       - "2 pansements hydrocolloïdes"
