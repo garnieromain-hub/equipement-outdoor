@@ -36,7 +36,7 @@ base:
 
 # Facultatif : proposé avec le tag « facultatif », sauf si un module actif le rend obligatoire.
 facultatif:
-  - trousse-secours      # obligatoire à partir de 2 jours, donc une nuit (module itinérance)
+  - trousse-secours      # obligatoire dès 2 jours (itinérance) ou en montagne, même sur une journée
 
 # Le trail chauffe plus que le vélo (pas de vent relatif) : seuil plus bas.
 temperature:
@@ -74,7 +74,7 @@ modules:
   montagne:
     condition: "point haut au-dessus de 1 500 m ou plus de 1 000 m de D+"
     declencheur: { altitude_m: 1500, denivele_m: 1000 }
-    ajouter: [veste-pluie, batons, doudoune-legere, gants-mi-saison]
+    ajouter: [veste-pluie, batons, doudoune-legere, gants-mi-saison, trousse-secours]
   nuit:
     condition: "départ ou retour de nuit"
     declencheur: { nuit: true }
