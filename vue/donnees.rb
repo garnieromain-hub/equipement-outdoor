@@ -118,7 +118,7 @@ module Donnees
     obs.each { |o| erreurs_objet(o, rs, []).each { |m| e << "#{o['id']} : #{m}" } }
     listes = ->(m) { (m["ajouter"] || []) + (m["retirer"] || []) }
     activites.each do |a|
-      inconnus = a["base"] - connus
+      inconnus = a["base"] + Array(a["facultatif"]) - connus
       r = a.dig("parametres", "renouvellement") || {}
       inconnus += (Array(r["par_jour"]) + Array(r["si_pluie"])) - connus
       (a["modules"] || {}).each_value do |m|

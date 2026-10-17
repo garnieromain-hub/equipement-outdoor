@@ -59,6 +59,9 @@ Lire `activites/<activite>.yaml` :
    départ au plus tard à cette heure ; `distance_max_km` : distance inférieure), retirer ses rôles
    `retirer`, sauf ceux de `garder_si_obligatoire` quand le règlement de la course les impose.
    Le signaler dans les hypothèses.
+   Enfin, ajouter les rôles `facultatif` de l'activité qui ne sont pas déjà dans la liste,
+   avec le tag `**facultatif**` (affiché en pastille par l'application) : `- [ ] Objet – **facultatif**`.
+   Un rôle facultatif qu'un module actif réclame (ex. trousse avec l'itinérance) est obligatoire.
 4. Plusieurs jours : une seule liste (on emporte tout dès le départ), en signalant les
    jours qui imposent un module (« pluie le dimanche »).
 5. **Quantités** (plusieurs jours) : pour chaque rôle de `parametres.renouvellement.par_jour`

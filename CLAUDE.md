@@ -12,7 +12,8 @@ Deux couches séparées, reliées par des **rôles** :
 2. `activites/` décrit, pour chaque activité, les rôles nécessaires :
    une base toujours emportée + une bascule de température chaud / froid (avec un
    renfort mi-saison ou grand froid) + des modules conditionnels (pluie, durée, nuit,
-   altitude, plusieurs jours, refuge, bivouac), chacun avec un `declencheur`.
+   altitude, plusieurs jours, refuge, bivouac), chacun avec un `declencheur`, et une liste
+   `facultatif` (rôles proposés avec le tag « facultatif », obligatoires si un module les réclame).
    Les seuils et vitesses sont dans `parametres` : la page et la skill lisent les mêmes.
 
 Les rôles sont rangés en deux univers : **en-action** (porté et emporté pendant l'effort)

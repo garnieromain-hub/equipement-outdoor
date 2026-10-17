@@ -41,6 +41,10 @@ base:
   - nourriture
   - papiers-argent
 
+# Facultatif : proposé avec le tag « facultatif », sauf si un module actif le rend obligatoire.
+facultatif:
+  - trousse-secours      # obligatoire à partir de 2 jours, donc une nuit (module itinérance)
+
 # Bascule chaud / froid, décidée par la température ressentie la plus basse prévue
 # sur la sortie (départ matinal, descente, vent, altitude).
 # Les vêtements portent un tag saison (chaud, froid, toutes-saisons) assorti.
@@ -70,7 +74,7 @@ modules:
   longue-sortie:
     condition: "plus de 4 h ou loin de tout"
     declencheur: { duree_h: 4 }
-    ajouter: [batterie-externe, patte-derailleur, trousse-secours, couverture-survie, gps]
+    ajouter: [batterie-externe, patte-derailleur, couverture-survie, gps]
   itinerance:
     condition: "au moins 2 jours (une nuit) : la tenue off bike apparaît"
     declencheur: { jours: 2 }

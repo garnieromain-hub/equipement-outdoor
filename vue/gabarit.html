@@ -286,6 +286,7 @@ document.querySelectorAll("nav button").forEach(b => b.onclick = () => {
 /* Mes sorties : les checklists écrites par Claude dans sorties/, cochables */
 let sortieOuverte = stocker.lire("sortie-ouverte", null);
 const enLigne = t => esc(t).replace(/\*\*à acheter\*\*/gi, `<span class="tag manque">à acheter</span>`)
+  .replace(/\*\*facultatif\*\*/gi, `<span class="tag toutes-saisons">facultatif</span>`)
   .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
 // Rendu des checklists Markdown : titres, cases à cocher (avec numéro de ligne), puces, paragraphes.
 function rendreMarkdown(md) {
@@ -368,6 +369,7 @@ function objetsPour(role, activite) {
 function contextes(a, role) {
   const c = [];
   if (a.base.includes(role)) c.push("toujours");
+  if ((a.facultatif || []).includes(role)) c.push("facultatif");
   for (const mode of ["chaud", "froid"]) {
     const t = a.temperature?.[mode];
     if (!t) continue;
@@ -379,7 +381,7 @@ function contextes(a, role) {
 }
 function rolesActivite(a) {
   const t = a.temperature || {};
-  return [...new Set([...a.base, ...["chaud", "froid"].flatMap(m => [...(t[m]?.ajouter || []), ...(t[m]?.renfort?.ajouter || [])]),
+  return [...new Set([...a.base, ...(a.facultatif || []), ...["chaud", "froid"].flatMap(m => [...(t[m]?.ajouter || []), ...(t[m]?.renfort?.ajouter || [])]),
     ...Object.values(a.modules || {}).flatMap(m => m.ajouter || [])])];
 }
 
