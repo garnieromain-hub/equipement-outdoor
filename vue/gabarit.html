@@ -102,6 +102,8 @@ dialog::backdrop { background: rgba(0, 0, 0, .35); }
 #a-form label, #n-form label { display: flex; flex-direction: column; gap: 3px; font-size: 13px; color: var(--doux); }
 #n-form select { font: inherit; font-size: 14px; color: var(--texte); padding: 8px 10px; border: 1px solid var(--ligne);
   border-radius: 8px; background: var(--fond); width: 100%; }
+#i-categorie { font: inherit; font-size: 14px; padding: 8px 10px; border: 1px solid var(--ligne); border-radius: 8px;
+  background: var(--carte); color: var(--texte); }
 #a-form input, #n-form input { font: inherit; font-size: 14px; color: var(--texte); padding: 8px 10px; border: 1px solid var(--ligne);
   border-radius: 8px; background: var(--fond); width: 100%; }
 #e-form h2 { margin-top: 0; }
@@ -151,6 +153,7 @@ dialog::backdrop { background: rgba(0, 0, 0, .35); }
     <div class="outils">
       <button class="btn principal" id="i-ajouter" hidden>Ajouter un objet</button>
       <button class="btn" id="i-export">Exporter (.csv)</button>
+      <select id="i-categorie" aria-label="Catégorie"></select>
     </div>
     <div id="i-liste"></div>
   </section>
@@ -436,8 +439,17 @@ function contenuHtml(o) {
   return `<details class="contenu"><summary>Contenu (${total} éléments)</summary>${c.map(([rubrique, l]) =>
     `<div class="rubrique">${esc(rubrique)}</div><ul>${l.map(x => `<li>${esc(x)}</li>`).join("")}</ul>`).join("")}</details>`;
 }
+// Filtre par catégorie (groupe du premier rôle), mémorisé.
+let categorieEquipements = stocker.lire("categorie-equipements", "");
+const groupeDe = o => ROLE[o.roles?.[0]]?.groupe || "a-classer";
 function rendreEquipements() {
-  $("#i-liste").innerHTML = parGroupe(mesEquipements(), o => o.roles[0], liste => `<div class="carte">${liste.map(o => {
+  const presentes = [...new Set(mesEquipements().map(groupeDe))];
+  const ordre = ["a-classer", ...new Set(D.roles.map(r => r.groupe))].filter(g => presentes.includes(g));
+  if (categorieEquipements && !ordre.includes(categorieEquipements)) categorieEquipements = "";
+  $("#i-categorie").innerHTML = `<option value="">Toutes les catégories</option>` + ordre.map(g =>
+    `<option value="${g}"${g === categorieEquipements ? " selected" : ""}>${g === "a-classer" ? "À classer" : GROUPES[g] || g}</option>`).join("");
+  const objets = mesEquipements().filter(o => !categorieEquipements || groupeDe(o) === categorieEquipements);
+  $("#i-liste").innerHTML = parGroupe(objets, o => o.roles[0], liste => `<div class="carte">${liste.map(o => {
     const details = [plage(o), o.poids_g != null ? `${o.poids_g} g` : "", (o.activites || []).join(", "),
       (o.roles || []).map(r => ROLE[r]?.libelle || r).join(", "),
       ...Object.entries(o.roles_par_activite || {}).map(([act, rs]) => `en ${act} : ${rs.map(r => ROLE[r]?.libelle || r).join(", ")}`)].filter(Boolean).join(" · ");
@@ -448,6 +460,7 @@ function rendreEquipements() {
         ${EDITION ? `<button class="btn petit" data-modifier="${esc(o.id)}">Modifier</button>` : ""}</div></div>`;
   }).join("")}</div>`) || `<p class="vide">Aucun équipement.</p>`;
 }
+$("#i-categorie").onchange = e => { categorieEquipements = e.target.value; stocker.ecrire("categorie-equipements", categorieEquipements); rendreEquipements(); };
 $("#i-export").onclick = () => {
   const cols = ["id", "nom", "marque", "modele", "univers", "groupe", "saison", "roles", "activites", "temp_min", "temp_max", "impermeable", "poids_g", "nombre", "statut", "lien", "notes"];
   const val = (o, c) => c === "univers" ? UNIVERS_NEUTRE[ROLE[o.roles[0]]?.univers] : c === "groupe" ? GROUPES[ROLE[o.roles[0]]?.groupe] : o[c];
