@@ -13,3 +13,37 @@
   statut: possede
   lien: https://www.decathlon.fr/p/couverture-de-survie-mono-usage/12837/c250c249m8572360
   notes: "Usage unique, légère et compacte."
+
+- id: trousse-secours
+  nom: Trousse de secours
+  marque: null
+  modele: null
+  roles: [trousse-secours]
+  activites: [gravel, trail]
+  temp_min: null
+  temp_max: null
+  impermeable: false
+  poids_g: null
+  statut: possede
+  lien: null
+  notes: "Trousse constituée par Romain."
+  contenu:
+    Soins des plaies et chutes:
+      - "4 pansements adhésifs"
+      - "2 sachets de compresses stériles"
+      - "1 pansement absorbant stérile"
+      - "2 dosettes de sérum physiologique"
+      - "2 lingettes antiseptiques"
+      - "1 mini-rouleau de sparadrap"
+    Ampoules et frottements:
+      - "2 pansements hydrocolloïdes"
+      - "50 cm de tape anti-frottement"
+    Maintien et protection:
+      - "1 petite bande cohésive"
+      - "1 paire de gants nitrile"
+      - "1 couverture de survie"
+    Petits outils:
+      - "1 mini-pince à épiler"
+      - "1 tire-tique"
+      - "1 mini-paire de ciseaux"
+      - "2 épingles de sûreté"

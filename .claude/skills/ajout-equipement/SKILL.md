@@ -30,6 +30,8 @@ d'après le modèle (kebab-case).
    systématiquement `saison` : `chaud`, `froid` ou `toutes-saisons`.
    Si l'objet sert différemment selon l'activité (haut de course en trail, tenue
    d'après-sortie en gravel), utiliser `roles_par_activite`.
+   Pour un kit (trousse de secours, kit de réparation…), le détail va dans `contenu` :
+   une liste d'éléments par rubrique. L'application l'affiche, dépliable, dans Mes équipements.
 4. Renseigner uniquement les caractéristiques présentes dans la source.
    Laisser `null` le reste et lister ces champs dans la réponse.
 5. Déplacer le document traité dans `documents/traites/`, puis contrôler la cohérence :

@@ -48,6 +48,10 @@ section[hidden] { display: none; }
 .btn.petit { font-size: 12px; padding: 3px 9px; }
 .droite .btn.petit { min-width: 76px; }
 .boutons { display: flex; gap: 6px; flex: none; }
+details.contenu { margin-top: 6px; font-size: 13px; }
+details.contenu summary { cursor: pointer; color: var(--accent); font-weight: 600; }
+details.contenu .rubrique { font-weight: 600; margin: 8px 0 2px; }
+details.contenu ul { margin: 0; padding-left: 18px; color: var(--doux); }
 .lien-nom { border: 0; background: none; padding: 0; font: inherit; font-weight: 600; color: inherit; cursor: pointer;
   text-decoration: underline; text-decoration-color: var(--ligne); text-underline-offset: 3px; }
 .lien-nom:hover { text-decoration-color: var(--accent); }
@@ -419,13 +423,21 @@ function parGroupe(elements, cle, rendu) {
   elements.forEach(x => { const r = ROLE[cle(x)]; (paquets[r ? r.groupe : "a-classer"] ||= []).push(x); });
   return ordre.filter(g => paquets[g]).map(g => `<h2 class="univers">${g === "a-classer" ? "À classer" : GROUPES[g] || g}</h2>${rendu(paquets[g])}`).join("");
 }
+// Contenu d'un kit (trousse de secours…), dépliable.
+function contenuHtml(o) {
+  const c = o.contenu && Object.entries(o.contenu);
+  if (!c?.length) return "";
+  const total = c.reduce((t, [, l]) => t + l.length, 0);
+  return `<details class="contenu"><summary>Contenu (${total} éléments)</summary>${c.map(([rubrique, l]) =>
+    `<div class="rubrique">${esc(rubrique)}</div><ul>${l.map(x => `<li>${esc(x)}</li>`).join("")}</ul>`).join("")}</details>`;
+}
 function rendreEquipements() {
   $("#i-liste").innerHTML = parGroupe(mesEquipements(), o => o.roles[0], liste => `<div class="carte">${liste.map(o => {
     const details = [plage(o), o.poids_g != null ? `${o.poids_g} g` : "", (o.activites || []).join(", "),
       (o.roles || []).map(r => ROLE[r]?.libelle || r).join(", "),
       ...Object.entries(o.roles_par_activite || {}).map(([act, rs]) => `en ${act} : ${rs.map(r => ROLE[r]?.libelle || r).join(", ")}`)].filter(Boolean).join(" · ");
     return `<div class="ligne"><div class="corps"><div class="titre">${o.lien ? `<a href="${esc(o.lien)}" target="_blank" rel="noopener" style="color:inherit">${esc(o.nom)}</a>` : esc(o.nom)}${o.nombre > 1 ? ` ×${o.nombre}` : ""}${tag(o.saison)}</div>
-      <div class="sous">${esc(details)}</div>${o.notes ? `<div class="sous">${esc(o.notes)}</div>` : ""}</div>
+      <div class="sous">${esc(details)}</div>${o.notes ? `<div class="sous">${esc(o.notes)}</div>` : ""}${contenuHtml(o)}</div>
       <div class="droite">${o.statut === "a-confirmer" ? `<span class="pastille prevu">À confirmer</span>` : ""}
         ${o.a_completer ? `<span class="pastille prevu">À compléter</span>` : ""}
         ${EDITION ? `<button class="btn petit" data-modifier="${esc(o.id)}">Modifier</button>` : ""}</div></div>`;

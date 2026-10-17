@@ -11,7 +11,7 @@ module Donnees
   GROUPES_VETEMENTS = %w[haut bas accessoires].freeze
   # Ordre des champs à l'écriture d'un objet.
   CHAMPS = %w[id nom marque modele roles roles_par_activite activites saison temp_min temp_max temp_confort
-              impermeable poids_g nombre statut lien notes].freeze
+              impermeable poids_g nombre statut lien notes contenu].freeze
 
   module_function
 
@@ -155,7 +155,12 @@ module Donnees
     cles.each_with_index do |k, i|
       prefixe = i.zero? ? "- " : "  "
       v = o[k]
-      if v.is_a?(Hash)
+      if v.is_a?(Hash) && v.values.all? { |sv| sv.is_a?(Array) } && k == "contenu"
+        # Contenu d'un kit (trousse…) : une liste par rubrique, un élément par ligne.
+        next if v.empty?
+        lignes << "#{prefixe}#{k}:"
+        v.each { |sk, sv| lignes << "    #{sk}:"; sv.each { |x| lignes << "      - #{valeur(x)}" } }
+      elsif v.is_a?(Hash)
         next if v.empty?
         lignes << "#{prefixe}#{k}:"
         v.each { |sk, sv| lignes << "    #{sk}: #{valeur(sv)}" }
