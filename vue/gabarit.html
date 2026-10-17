@@ -59,7 +59,7 @@ details.contenu ul { margin: 0; padding-left: 18px; color: var(--doux); }
   padding: 6px 0 0; border-top: 1px dashed var(--ligne); font-size: 14px; }
 .carte { background: var(--carte); border: 1px solid var(--ligne); border-radius: 12px; padding: 4px 14px; margin-bottom: 14px; }
 h2 { font-size: 16px; margin: 22px 0 8px; }
-h2.univers { font-size: 19px; margin: 26px 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--texte); }
+h2.univers { scroll-margin-top: 112px; font-size: 19px; margin: 26px 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--texte); }
 h2.activite { font-size: 21px; margin: 8px 0 4px; }
 h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--doux); margin: 12px 0 4px; }
 .ligne { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-top: 1px solid var(--ligne); }
@@ -102,6 +102,8 @@ dialog::backdrop { background: rgba(0, 0, 0, .35); }
 #a-form label, #n-form label { display: flex; flex-direction: column; gap: 3px; font-size: 13px; color: var(--doux); }
 #n-form select { font: inherit; font-size: 14px; color: var(--texte); padding: 8px 10px; border: 1px solid var(--ligne);
   border-radius: 8px; background: var(--fond); width: 100%; }
+/* Barre d'outils de Mes équipements fixée sous les onglets. */
+#equipements > .outils { position: sticky; top: 45px; z-index: 1; background: var(--fond); margin: -16px -16px 14px; padding: 12px 16px; }
 #i-categorie { font: inherit; font-size: 14px; padding: 8px 10px; border: 1px solid var(--ligne); border-radius: 8px;
   background: var(--carte); color: var(--texte); }
 #a-form input, #n-form input { font: inherit; font-size: 14px; color: var(--texte); padding: 8px 10px; border: 1px solid var(--ligne);
@@ -429,7 +431,7 @@ function mesEquipements() { return D.objets.filter(o => POSSEDES.includes(o.stat
 function parGroupe(elements, cle, rendu) {
   const paquets = {}, ordre = ["a-classer", ...new Set(D.roles.map(r => r.groupe))];
   elements.forEach(x => { const r = ROLE[cle(x)]; (paquets[r ? r.groupe : "a-classer"] ||= []).push(x); });
-  return ordre.filter(g => paquets[g]).map(g => `<h2 class="univers">${g === "a-classer" ? "À classer" : GROUPES[g] || g}</h2>${rendu(paquets[g])}`).join("");
+  return ordre.filter(g => paquets[g]).map(g => `<h2 class="univers" id="categorie-${g}">${g === "a-classer" ? "À classer" : GROUPES[g] || g}</h2>${rendu(paquets[g])}`).join("");
 }
 // Contenu d'un kit (trousse de secours…), dépliable.
 function contenuHtml(o) {
@@ -439,17 +441,14 @@ function contenuHtml(o) {
   return `<details class="contenu"><summary>Contenu (${total} éléments)</summary>${c.map(([rubrique, l]) =>
     `<div class="rubrique">${esc(rubrique)}</div><ul>${l.map(x => `<li>${esc(x)}</li>`).join("")}</ul>`).join("")}</details>`;
 }
-// Filtre par catégorie (groupe du premier rôle), mémorisé.
-let categorieEquipements = stocker.lire("categorie-equipements", "");
+// Raccourci vers une catégorie : toutes restent affichées, la page défile jusqu'au titre choisi.
 const groupeDe = o => ROLE[o.roles?.[0]]?.groupe || "a-classer";
 function rendreEquipements() {
   const presentes = [...new Set(mesEquipements().map(groupeDe))];
   const ordre = ["a-classer", ...new Set(D.roles.map(r => r.groupe))].filter(g => presentes.includes(g));
-  if (categorieEquipements && !ordre.includes(categorieEquipements)) categorieEquipements = "";
-  $("#i-categorie").innerHTML = `<option value="">Toutes les catégories</option>` + ordre.map(g =>
-    `<option value="${g}"${g === categorieEquipements ? " selected" : ""}>${g === "a-classer" ? "À classer" : GROUPES[g] || g}</option>`).join("");
-  const objets = mesEquipements().filter(o => !categorieEquipements || groupeDe(o) === categorieEquipements);
-  $("#i-liste").innerHTML = parGroupe(objets, o => o.roles[0], liste => `<div class="carte">${liste.map(o => {
+  $("#i-categorie").innerHTML = `<option value="">Aller à une catégorie…</option>` + ordre.map(g =>
+    `<option value="${g}">${g === "a-classer" ? "À classer" : GROUPES[g] || g}</option>`).join("");
+  $("#i-liste").innerHTML = parGroupe(mesEquipements(), o => o.roles[0], liste => `<div class="carte">${liste.map(o => {
     const details = [plage(o), o.poids_g != null ? `${o.poids_g} g` : "", (o.activites || []).join(", "),
       (o.roles || []).map(r => ROLE[r]?.libelle || r).join(", "),
       ...Object.entries(o.roles_par_activite || {}).map(([act, rs]) => `en ${act} : ${rs.map(r => ROLE[r]?.libelle || r).join(", ")}`)].filter(Boolean).join(" · ");
@@ -460,7 +459,10 @@ function rendreEquipements() {
         ${EDITION ? `<button class="btn petit" data-modifier="${esc(o.id)}">Modifier</button>` : ""}</div></div>`;
   }).join("")}</div>`) || `<p class="vide">Aucun équipement.</p>`;
 }
-$("#i-categorie").onchange = e => { categorieEquipements = e.target.value; stocker.ecrire("categorie-equipements", categorieEquipements); rendreEquipements(); };
+$("#i-categorie").onchange = e => {
+  document.getElementById(`categorie-${e.target.value}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  e.target.value = "";
+};
 $("#i-export").onclick = () => {
   const cols = ["id", "nom", "marque", "modele", "univers", "groupe", "saison", "roles", "activites", "temp_min", "temp_max", "impermeable", "poids_g", "nombre", "statut", "lien", "notes"];
   const val = (o, c) => c === "univers" ? UNIVERS_NEUTRE[ROLE[o.roles[0]]?.univers] : c === "groupe" ? GROUPES[ROLE[o.roles[0]]?.groupe] : o[c];
