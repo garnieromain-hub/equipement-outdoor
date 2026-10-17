@@ -48,6 +48,8 @@ section[hidden] { display: none; }
 .btn.petit { font-size: 12px; padding: 3px 9px; }
 .droite .btn.petit { min-width: 76px; }
 .boutons { display: flex; gap: 6px; flex: none; }
+#e-ajouter-contenu { margin-top: 10px; }
+#e-bloc-contenu[hidden], #e-ajouter-contenu[hidden] { display: none; }
 details.contenu { margin-top: 6px; font-size: 13px; }
 details.contenu summary { cursor: pointer; color: var(--accent); font-weight: 600; }
 details.contenu .rubrique { font-weight: 600; margin: 8px 0 2px; }
@@ -189,9 +191,12 @@ dialog::backdrop { background: rgba(0, 0, 0, .35); }
       <div class="sous">Une ligne par activité : « activité: rôle1, rôle2 ». Ces rôles remplacent les rôles ci-dessus pour cette activité.</div></fieldset>
     <div class="sous" id="e-aide-categorie"></div>
     <label class="large">Notes<textarea name="notes" rows="3"></textarea></label>
-    <label class="large">Contenu (pour un kit : trousse, réparation…)<textarea name="contenu" rows="8"
-      placeholder="Soins des plaies&#10;- 4 pansements adhésifs&#10;- 2 compresses stériles&#10;Petits outils&#10;- 1 tire-tique"></textarea></label>
-    <div class="sous">Une ligne sans tiret = une rubrique ; une ligne commençant par « - » = un élément.</div>
+    <button type="button" class="btn petit" id="e-ajouter-contenu">+ Ajouter un contenu (kit : trousse, réparation…)</button>
+    <div id="e-bloc-contenu">
+      <label class="large">Contenu<textarea name="contenu" rows="8"
+        placeholder="Exemple :&#10;Soins des plaies&#10;- 4 pansements adhésifs&#10;Petits outils&#10;- 1 tire-tique"></textarea></label>
+      <div class="sous">Une ligne sans tiret = une rubrique ; une ligne commençant par « - » = un élément.</div>
+    </div>
     <div class="erreur" id="e-erreurs"></div>
     <div class="outils actions">
       <button type="button" class="btn danger" id="e-supprimer">Supprimer</button>
@@ -499,6 +504,8 @@ function editeurOuvrir(o, modele) {
   $("#e-roles").innerHTML = html; $("#e-filtre-roles").value = "";
   f.roles_par_activite.value = Object.entries(o.roles_par_activite || {}).map(([a, rs]) => `${a}: ${rs.join(", ")}`).join("\n");
   f.contenu.value = Object.entries(o.contenu || {}).map(([r, l]) => [r, ...l.map(x => `- ${x}`)].join("\n")).join("\n");
+  // Le champ Contenu n'apparaît que pour un objet qui en a un, ou à la demande.
+  $("#e-bloc-contenu").hidden = !f.contenu.value; $("#e-ajouter-contenu").hidden = !!f.contenu.value;
   // Nouvel objet avec un rôle déjà choisi : catégorie et fichier proposés d'après ce rôle.
   if (nouveau) $("#e-roles").onchange(); else majCategorie();
   $("#editeur").showModal();
@@ -520,6 +527,7 @@ function majAideCategorie() {
     : "";
 }
 $("#e-form").categorie.onchange = majAideCategorie;
+$("#e-ajouter-contenu").onclick = () => { $("#e-bloc-contenu").hidden = false; $("#e-ajouter-contenu").hidden = true; $("#e-form").contenu.focus(); };
 $("#e-form").nom.oninput = e => { const f = $("#e-form"); if (f.id.dataset.auto) f.id.value = slug(e.target.value); };
 $("#e-form").id.oninput = e => { e.target.dataset.auto = ""; };
 $("#e-filtre-roles").oninput = e => {

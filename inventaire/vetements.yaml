@@ -33,7 +33,7 @@
   notes: ""
 
 - id: maillot-long-gobik-cobble-conquer
-  nom: Maillot manches longues Gobik Cobble Conquer
+  nom: Maillot manches longues Gobik Cobble
   marque: Gobik
   modele: Cobble Conquer
   roles: [maillot-long]
@@ -63,11 +63,11 @@
   notes: "Poids et plage fabricant (taille M). Peau K10 Elastic Interface 11 mm, annoncée jusqu'à 8 h. 2 poches latérales + 2 arrière (cargo), UPF 50."
 
 - id: sous-maillot-court-cascada-merino
-  nom: Sous-maillot mérinos manches courtes Cascada
+  nom: Maillot manches courtes Cascada
   marque: Cascada
   modele: Merino Base Layer Short Sleeve Unisex Earth Black
   roles: [sous-maillot-court]
-  activites: [gravel, bikepacking, trail, rando]
+  activites: [gravel, trail, rando, bikepacking]
   saison: toutes-saisons
   temp_min: null
   temp_max: null
@@ -78,7 +78,7 @@
   notes: "45 % mérinos, 40 % polyester, 10 % polyamide, 5 % élasthanne. Présenté « toutes saisons », sans plage chiffrée."
 
 - id: sous-maillot-long-cascada-merino
-  nom: Sous-maillot mérinos manches longues Cascada
+  nom: Maillot manches longues Cascada
   marque: Cascada
   modele: Merino Base Layer Long Sleeve Unisex Earth Black
   roles: [sous-maillot-long]
@@ -108,7 +108,7 @@
   notes: "Veste pluie orientée trail."
 
 - id: tshirt-nnormal-race-02
-  nom: T-shirt de course NNormal Race 02
+  nom: T-shirt NNormal Race 02
   marque: NNormal
   modele: Race T-shirt 02 White
   roles: [maillot-court]
@@ -139,7 +139,7 @@
   notes: "88 % polyamide, 12 % élasthanne. Doublure de maintien, poches zippées avant et arrière, porte-bâtons dans le dos. Bleu."
 
 - id: tshirt-long-nnormal-merino
-  nom: T-shirt manches longues mérinos NNormal
+  nom: T-shirt manches longues NNormal
   marque: NNormal
   modele: Men's Merino Long Sleeve T-shirt
   roles: [maillot-long]
